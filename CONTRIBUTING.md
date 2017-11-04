@@ -6,7 +6,7 @@ If you're going to work on a functionality that will require several days of wor
 **Only push code that won't make others' project crash.**
 
 - branching is the real way to go
-- commenting is the lazy way to go (most practiced by @Graygzou)
+- commenting is the lazy way to go (mostly practiced by @Graygzou)
 
 ## Syntax conventions
 
