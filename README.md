@@ -1,5 +1,5 @@
 # Metenorage
-Game engine developed for class 8INF871 at [https://uqac.ca](UQAC) (QC, CA).
+Game engine developed for class 8INF871 at [UQAC](https://uqac.ca) (QC, CA).
 
 # Contributors
 
