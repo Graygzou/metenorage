@@ -16,8 +16,9 @@ int myVariable = MyClass.someLengthyName(someOtherVariable);
 - avoid shortcuts, and self-describing type in variables' name:
 ```java
 int iCounter; // not correct
+int occurrencesCounter; // correct
 
-string fullDirName; // not correct
+String fullDirName; // not correct
 String fullDirectoryName; // correct
 
 String helloString; // not correct
