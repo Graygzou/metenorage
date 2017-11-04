@@ -17,7 +17,7 @@ int myVariable = MyClass.someLengthyName(someOtherVariable);
 ```java
 int iCounter; // not correct
 
-String fullDirName; // not correct
+string fullDirName; // not correct
 String fullDirectoryName; // correct
 
 String helloString; // not correct
