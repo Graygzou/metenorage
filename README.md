@@ -3,6 +3,8 @@ Game engine developed for class [*Game Engines Principles* **(8INF871)**](http:/
 
 # Contributors
 
+Please read the [contribution contract](CONTRIBUTING.md).
+
 - Noémy Artigouha
 - Matthieu Le Boucher
 - Grégoire Boiron
