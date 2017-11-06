@@ -26,8 +26,8 @@ public class GameEngine implements Runnable {
         try {
             initialize();
             gameLoop();
-        } catch (Exception excp) {
-            excp.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
