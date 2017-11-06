@@ -7,7 +7,7 @@ package Logic;
  */
 
 public interface GameLogic {
-    void init() throws Exception;
+    void initialize() throws Exception;
 
     void processInput();
 
