@@ -17,7 +17,7 @@ public interface GameLogic {
     /**
      * Retrieves and processes the inputs.
      */
-    void processInput();
+    void handleInput();
 
     /**
      * Wraps the whole game logic per se and updates the game state.
