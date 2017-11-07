@@ -16,7 +16,7 @@ If you're going to work on a functionality that will require several days of wor
 ```java
 int myVariable = MyClass.someLengthyName(someOtherVariable);
 ```
-- avoid shortcuts and self-describing type in variables' name to the benefit of names that fully describe the functional role of the variable:
+- avoid shortcuts and self-describing type **for basic types** in variables' name to the benefit of names that fully describe the functional role of the variable:
 ```java
 int iCounter; // not correct
 int occurrencesCounter; // correct
@@ -26,4 +26,7 @@ String fullDirectoryName; // correct
 
 String helloString; // not correct
 String helloMessage; // correct
+
+Thread test; // not correct (not a basic type)
+Thread testThread; // correct
 ```
