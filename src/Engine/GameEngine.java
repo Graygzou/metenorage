@@ -3,6 +3,12 @@ package Engine;/*
  */
 
 import Engine.Helper.Timer;
+import Engine.Main.Entity;
+import Engine.System.Logic.LogicSystem;
+import Engine.System.Logic.TestComponent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameEngine implements Runnable {
     private float timePerUpdate = 1f / 50;
@@ -15,8 +21,17 @@ public class GameEngine implements Runnable {
 
     private Timer timer;
 
+    private List<Entity> entities;
+
+    private LogicSystem logicSystem;
+
     public GameEngine(String windowTitle, int windowWidth, int windowHeight) {
         this.gameLoopThread = new Thread(this);
+
+        // Systems setup.
+        this.logicSystem = new LogicSystem();
+
+        this.entities = new ArrayList<>();
 
         this.window = new Window(windowTitle, windowWidth, windowHeight, false);
         this.timer = new Timer();
@@ -29,6 +44,8 @@ public class GameEngine implements Runnable {
     @Override
     public void run() {
         try {
+            System.out.println("Metenorage game engine started...");
+
             initialize();
             gameLoop();
         } catch (Exception e) {
@@ -54,6 +71,7 @@ public class GameEngine implements Runnable {
      */
     protected void update(float timeStep) {
         // Todo: implement this logic.
+        logicSystem.iterate(entities);
     }
 
     /**
@@ -107,6 +125,11 @@ public class GameEngine implements Runnable {
         try {
             // GameLogic gameLogic = new Game();
             GameEngine gameEngine = new GameEngine("Metenorage", 800, 600);
+
+            Entity testEntity = new Entity();
+            testEntity.addComponent(new TestComponent(testEntity));
+            gameEngine.addEntity(testEntity);
+
             gameEngine.start();
         } catch (Exception e) {
             e.printStackTrace();
@@ -120,5 +143,9 @@ public class GameEngine implements Runnable {
 
     public void setRenderingsPerSecond(int renderingsPerSecond) {
         this.timePerRendering = 1f / renderingsPerSecond;
+    }
+
+    public void addEntity(Entity entity) {
+        this.entities.add(entity);
     }
 }

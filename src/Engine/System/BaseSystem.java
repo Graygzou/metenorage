@@ -16,10 +16,10 @@ public abstract class BaseSystem implements GameSystem {
     }
 
     public List<Component> getLocalSystemComponentsFor(Entity entity) {
-        List<Component> systemComponents = getLocalSystemComponents();
+        List<Class<? extends Component>> systemComponents = getLocalSystemComponents();
 
-        return entity.getComponents()
-                .stream().filter(systemComponents::contains)
+        return entity.getComponents().stream()
+                .filter(component -> systemComponents.contains(component.getClass()))
                 .collect(Collectors.toList());
     }
 
@@ -27,5 +27,5 @@ public abstract class BaseSystem implements GameSystem {
         component.apply();
     }
 
-    public abstract List<Component> getLocalSystemComponents();
+    public abstract List<Class<? extends Component>> getLocalSystemComponents();
 }
