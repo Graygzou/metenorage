@@ -11,10 +11,13 @@ public class GameEngine implements Runnable {
 
     private GameLogic gameLogic;
 
+    private Window window;
+
     public GameEngine(String windowTitle, int windowWidth, int windowHeight, GameLogic gameLogic) {
         this.gameLoopThread = new Thread(this);
         this.gameLogic = gameLogic;
-        // Create window.
+
+        this.window = new Window(windowTitle, windowWidth, windowHeight, false);
     }
 
     public void start() {
