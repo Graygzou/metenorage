@@ -2,6 +2,7 @@ package Engine.System.Logic;
 
 import Engine.System.BaseSystem;
 import Engine.System.Component.Component;
+import Engine.System.Logic.Component.TestComponent;
 
 import java.util.ArrayList;
 import java.util.List;

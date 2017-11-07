@@ -5,7 +5,7 @@ package Engine;/*
 import Engine.Helper.Timer;
 import Engine.Main.Entity;
 import Engine.System.Logic.LogicSystem;
-import Engine.System.Logic.TestComponent;
+import Engine.System.Logic.Component.TestComponent;
 
 import java.util.ArrayList;
 import java.util.List;

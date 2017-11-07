@@ -1,4 +1,4 @@
-package Engine.System.Logic;
+package Engine.System.Logic.Component;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
@@ -6,6 +6,10 @@ package Engine.System.Logic;
 
 import Engine.Main.Entity;
 import Engine.System.Component.BaseComponent;
+
+/*
+ * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
+ */
 
 public class TestComponent extends BaseComponent {
     private boolean hasBeenApplied = false;
