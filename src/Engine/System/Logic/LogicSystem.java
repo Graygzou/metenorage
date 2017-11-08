@@ -1,6 +1,5 @@
 package Engine.System.Logic;
 
-import Engine.Main.Entity;
 import Engine.System.BaseSystem;
 import Engine.System.Component.Component;
 
@@ -11,12 +10,6 @@ import java.util.List;
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  */
 public class LogicSystem extends BaseSystem {
-
-    @Override
-    public List<Component> getLocalSystemComponentsFor(Entity entity) {
-        return null;
-    }
-
     @Override
     public void applyComponent(Component component) {
 
@@ -26,7 +19,7 @@ public class LogicSystem extends BaseSystem {
     public List<Component> getLocalSystemComponents() {
         List<Component> systemComponents = new ArrayList<>();
 
-        systemComponents.add(new TestComponent());
+        systemComponents.add(new TestComponent(null));
 
         return systemComponents;
     }
