@@ -9,7 +9,7 @@ public class Timer {
     /**
      * @return The current system time.
      */
-    public double getTime() {
+    public static double getTime() {
         return System.nanoTime() / 1000000000.0;
     }
 
@@ -19,7 +19,7 @@ public class Timer {
      * @return The elapsed time since last loop occurrence.
      */
     public float getElapsedTime() {
-        double time = this.getTime();
+        double time = getTime();
         float elapsedTime = (float) (time - lastLoopTime);
         lastLoopTime = time;
 
@@ -31,6 +31,6 @@ public class Timer {
     }
 
     public void initialize() {
-        lastLoopTime = this.getTime();
+        lastLoopTime = getTime();
     }
 }
