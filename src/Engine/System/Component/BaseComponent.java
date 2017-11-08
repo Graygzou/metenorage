@@ -24,5 +24,6 @@ public abstract class BaseComponent implements Component {
         this.entity = entity;
     }
 
+    @Override
     public abstract void apply();
 }

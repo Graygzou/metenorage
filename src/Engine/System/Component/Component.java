@@ -10,4 +10,6 @@ public interface Component {
     void setEntity(Entity entity);
 
     Entity getEntity();
+
+    void apply();
 }
