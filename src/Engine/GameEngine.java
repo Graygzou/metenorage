@@ -3,7 +3,6 @@ package Engine;/*
  */
 
 import Engine.Helper.Timer;
-import Engine.Logic.GameLogic;
 
 public class GameEngine implements Runnable {
     private float timePerUpdate = 1f / 50;
@@ -12,15 +11,12 @@ public class GameEngine implements Runnable {
 
     private final Thread gameLoopThread;
 
-    private GameLogic gameLogic;
-
     private Window window;
 
     private Timer timer;
 
-    public GameEngine(String windowTitle, int windowWidth, int windowHeight, GameLogic gameLogic) {
+    public GameEngine(String windowTitle, int windowWidth, int windowHeight) {
         this.gameLoopThread = new Thread(this);
-        this.gameLogic = gameLogic;
 
         this.window = new Window(windowTitle, windowWidth, windowHeight, false);
         this.timer = new Timer();
@@ -49,7 +45,7 @@ public class GameEngine implements Runnable {
      * Delegates the input handling to the game logic.
      */
     protected void handleInput() {
-        gameLogic.handleInput();
+        // Todo: implement this logic.
     }
 
     /**
@@ -57,14 +53,14 @@ public class GameEngine implements Runnable {
      * @param timeStep The theoretical time step between each update.
      */
     protected void update(float timeStep) {
-        gameLogic.update(timeStep);
+        // Todo: implement this logic.
     }
 
     /**
      * Delegates the rendering to the game logic, and then updates the window.
      */
     protected void render() {
-        gameLogic.render();
+        // Todo: implement this logic.
         // Todo: should update the window as well.
     }
 
@@ -110,7 +106,7 @@ public class GameEngine implements Runnable {
     public static void main(String[] args) {
         try {
             // GameLogic gameLogic = new Game();
-            GameEngine gameEngine = new GameEngine("Metenorage", 800, 600, null);
+            GameEngine gameEngine = new GameEngine("Metenorage", 800, 600);
             gameEngine.start();
         } catch (Exception e) {
             e.printStackTrace();
