@@ -4,6 +4,7 @@ package Engine;/*
 
 import Engine.Helper.Timer;
 import Engine.Main.Entity;
+import Engine.System.Component.BaseComponent;
 import Engine.System.Logic.LogicSystem;
 import Engine.System.Logic.Component.TestComponent;
 
@@ -127,7 +128,13 @@ public class GameEngine implements Runnable {
             GameEngine gameEngine = new GameEngine("Metenorage", 800, 600);
 
             Entity testEntity = new Entity();
-            testEntity.addComponent(new TestComponent(testEntity));
+            
+            // Create and active a component
+            BaseComponent test = new TestComponent(testEntity);
+            test.setActiveState(true);
+            
+            // Add the component to the entity
+            testEntity.addComponent(test);
             gameEngine.addEntity(testEntity);
 
             gameEngine.start();

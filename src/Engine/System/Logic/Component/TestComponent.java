@@ -19,7 +19,7 @@ public class TestComponent extends BaseComponent {
     }
 
     public void apply() {
-        if(!hasBeenApplied) {
+        if(isActive() && !hasBeenApplied) {
             System.out.println("Hello from TestComponent! :)");
             hasBeenApplied = true;
         }
