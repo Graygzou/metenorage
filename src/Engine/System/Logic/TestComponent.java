@@ -1,4 +1,4 @@
-package Engine.Logic;
+package Engine.System.Logic;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
