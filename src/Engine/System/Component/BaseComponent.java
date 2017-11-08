@@ -23,4 +23,6 @@ public abstract class BaseComponent implements Component {
     public void setEntity(Entity entity) {
         this.entity = entity;
     }
+
+    public abstract void apply();
 }
