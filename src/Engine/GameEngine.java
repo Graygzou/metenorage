@@ -1,4 +1,6 @@
-package Engine;/*
+package Engine;
+
+/*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  */
 
@@ -57,6 +59,9 @@ public class GameEngine implements Runnable {
     private void initialize() {
         // Todo: implement this logic.
         // e.g. initialize the renderer (when we'll have one. (:).
+
+        window.initialize();
+        timer.initialize();
     }
 
     /**
@@ -80,7 +85,7 @@ public class GameEngine implements Runnable {
      */
     protected void render() {
         // Todo: implement this logic.
-        // Todo: should update the window as well.
+        window.update();
     }
 
     /**
