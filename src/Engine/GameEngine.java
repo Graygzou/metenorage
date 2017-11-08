@@ -1,9 +1,9 @@
-/*
+package Engine;/*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  */
 
-import Helper.Timer;
-import Logic.GameLogic;
+import Engine.Helper.Timer;
+import Engine.Logic.GameLogic;
 
 public class GameEngine implements Runnable {
     private float timePerUpdate = 1f / 50;
@@ -73,20 +73,20 @@ public class GameEngine implements Runnable {
      */
     private void gameLoop() {
         double previousLoopTime = Timer.getTime();
-        double steps = 0;
+        double timeSteps = 0;
 
         while (true) {
             // Keep track of the elapsed time and time steps.
             double currentLoopStartTime = Timer.getTime();
             double elapsedTime = currentLoopStartTime - previousLoopTime;
             previousLoopTime = currentLoopStartTime;
-            steps += elapsedTime;
+            timeSteps += elapsedTime;
 
             handleInput();
 
-            while (steps >= timePerUpdate) {
-                update((float) steps);
-                steps -= timePerUpdate;
+            while (timeSteps >= timePerUpdate) {
+                update((float) timeSteps);
+                timeSteps -= timePerUpdate;
             }
 
             render();

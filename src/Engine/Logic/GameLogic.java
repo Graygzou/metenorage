@@ -1,4 +1,4 @@
-package Logic;
+package Engine.Logic;
 
 /*
  * This interface gives the minimal function any game logic system should provide.

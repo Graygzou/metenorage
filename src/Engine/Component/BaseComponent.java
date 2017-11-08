@@ -1,6 +1,6 @@
-package Component;
+package Engine.Component;
 
-import Main.Entity;
+import Engine.Main.Entity;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>

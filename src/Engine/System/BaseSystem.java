@@ -1,11 +1,11 @@
-package System;
+package Engine.System;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  */
 
-import Component.Component;
-import Main.Entity;
+import Engine.Component.Component;
+import Engine.Main.Entity;
 
 import java.util.List;
 

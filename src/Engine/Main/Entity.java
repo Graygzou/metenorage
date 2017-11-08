@@ -1,6 +1,6 @@
-package Main;
+package Engine.Main;
 
-import Component.Component;
+import Engine.Component.Component;
 
 import java.util.ArrayList;
 import java.util.List;
