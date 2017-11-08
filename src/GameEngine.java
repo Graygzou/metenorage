@@ -2,10 +2,13 @@
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  */
 
+import Helper.Timer;
 import Logic.GameLogic;
 
 public class GameEngine implements Runnable {
-    private static int updatesPerSecond = 30;
+    private float timePerUpdate = 1f / 50;
+
+    private float timePerRendering = 1f / 30;
 
     private final Thread gameLoopThread;
 
@@ -13,11 +16,14 @@ public class GameEngine implements Runnable {
 
     private Window window;
 
+    private Timer timer;
+
     public GameEngine(String windowTitle, int windowWidth, int windowHeight, GameLogic gameLogic) {
         this.gameLoopThread = new Thread(this);
         this.gameLogic = gameLogic;
 
         this.window = new Window(windowTitle, windowWidth, windowHeight, false);
+        this.timer = new Timer();
     }
 
     public void start() {
@@ -66,10 +72,38 @@ public class GameEngine implements Runnable {
      * Core function of the game engine.
      */
     private void gameLoop() {
-        double updateRate = 1.0d / updatesPerSecond;
+        double previousLoopTime = Timer.getTime();
+        double steps = 0;
 
         while (true) {
-            // Todo: implement game loop. (issue #8)
+            // Keep track of the elapsed time and time steps.
+            double currentLoopStartTime = Timer.getTime();
+            double elapsedTime = currentLoopStartTime - previousLoopTime;
+            previousLoopTime = currentLoopStartTime;
+            steps += elapsedTime;
+
+            handleInput();
+
+            while (steps >= timePerUpdate) {
+                update((float) steps);
+                steps -= timePerUpdate;
+            }
+
+            render();
+            synchronizeRenderer(currentLoopStartTime);
+        }
+    }
+
+    /**
+     * Avoids exhausting the system resources by controlling the rendering rate independently..
+     *
+     * @param currentLoopStartTime The time at with the current loop started.
+     */
+    private void synchronizeRenderer(double currentLoopStartTime) {
+        while(Timer.getTime() < currentLoopStartTime + this.timePerRendering) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException ignored) {}
         }
     }
 
@@ -82,5 +116,13 @@ public class GameEngine implements Runnable {
             e.printStackTrace();
             System.exit(-1);
         }
+    }
+
+    public void setUpdatesPerSecond(int updatesPerSecond) {
+        this.timePerUpdate = 1f / updatesPerSecond;
+    }
+
+    public void setRenderingsPerSecond(int renderingsPerSecond) {
+        this.timePerRendering = 1f / renderingsPerSecond;
     }
 }
