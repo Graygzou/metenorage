@@ -1,4 +1,4 @@
-package Engine.Component;
+package Engine.System.Component;
 
 import Engine.Main.Entity;
 
