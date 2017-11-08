@@ -32,4 +32,8 @@ public class Entity {
     public void removeComponent(Component component) {
         this.components.remove(component);
     }
+
+    public List<Component> getComponents() {
+        return components;
+    }
 }
