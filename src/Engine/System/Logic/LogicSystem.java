@@ -11,11 +11,6 @@ import java.util.List;
  */
 public class LogicSystem extends BaseSystem {
     @Override
-    public void applyComponent(Component component) {
-
-    }
-
-    @Override
     public List<Component> getLocalSystemComponents() {
         List<Component> systemComponents = new ArrayList<>();
 

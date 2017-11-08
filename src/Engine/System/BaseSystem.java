@@ -23,7 +23,9 @@ public abstract class BaseSystem implements GameSystem {
                 .collect(Collectors.toList());
     }
 
-    public abstract void applyComponent(Component component);
+    public void applyComponent(Component component) {
+        component.apply();
+    }
 
     public abstract List<Component> getLocalSystemComponents();
 }
