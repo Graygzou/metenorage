@@ -1,10 +1,15 @@
-package Engine.System;
+package Engine.System.Physics;
+
+import Engine.System.BaseSystem;
+import Engine.System.Component.Component;
 
 import java.util.List;
 
-import Engine.System.Component.Component;
+/*
+ * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
+ */
 
-public class PhysicSystem extends BaseSystem {
+public class PhysicsSystem extends BaseSystem {
 	
 	public void activatePhysics() {
 		// get all the entities of the game
