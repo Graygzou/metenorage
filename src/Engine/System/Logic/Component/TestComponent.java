@@ -9,6 +9,7 @@ import Engine.System.Component.BaseComponent;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
+ * @author Grégoire Boiron <gregoire.boiron@gmail.com>
  */
 
 public class TestComponent extends BaseComponent {

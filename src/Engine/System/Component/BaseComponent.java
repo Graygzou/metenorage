@@ -4,6 +4,7 @@ import Engine.Main.Entity;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
+ * @author Grégoire Boiron <gregoire.boiron@gmail.com>
  */
 
 public abstract class BaseComponent implements Component {
