@@ -4,42 +4,19 @@ import Engine.Main.Entity;
 import javafx.geometry.Point3D;
 
 /*
- * @author Grégoire Boiron <gregoire.boiron@gmail.com>
+ * @author GrÃ©goire Boiron <gregoire.boiron@gmail.com>
+ * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  */
 
-public abstract class PhysicComponent implements Component {
-    /*
-     * Handle to the entity the component is linked to.
-     */
-    private Entity entity;
-    
-    private boolean active;
-    
+public abstract class BasePhysicsComponent extends BaseComponent {
     private Point3D coordinates;
 
-    public PhysicComponent(Entity entity) {
-        this.entity = entity;
-        this.active = false;
+    public BasePhysicsComponent(Entity entity) {
+        super(entity);
         
         // Place the current object at the center of the scene.
         // Maybe we need to place it depending of the target position.
         coordinates = Point3D.ZERO;
-    }
-
-    public Entity getEntity() {
-        return entity;
-    }
-
-    public void setEntity(Entity entity) {
-        this.entity = entity;
-    }
-    
-    public boolean isActive() {
-    	return active;
-    }
-    
-    public void setActiveState(boolean state) {
-    	active = state;
     }
     
     public double getX() {
