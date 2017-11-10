@@ -1,6 +1,7 @@
-package Engine.System.Component;
+package Engine.System.Physics;
 
 import Engine.Main.Entity;
+import Engine.System.Component.BaseComponent;
 import javafx.geometry.Point3D;
 
 /*
