@@ -9,7 +9,7 @@ import javafx.geometry.Point3D;
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  */
 
-public abstract class BasePhysicsComponent extends BaseComponent {
+public abstract class BasePhysicsComponent extends BaseComponent implements PhysicsComponent {
     private Point3D coordinates;
 
     public BasePhysicsComponent(Entity entity) {
