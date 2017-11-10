@@ -1,12 +1,14 @@
-package Engine.System.Logic.Component;
+package Engine.System.Physics.Component;
 import Engine.Main.Entity;
 import Engine.System.Component.BaseComponent;
+import Engine.System.Physics.PhysicsComponent;
 
 /*
- * @author Grégoire Boiron <gregoire.boiron@gmail.com>
+ * @author Grï¿½goire Boiron <gregoire.boiron@gmail.com>
+ * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  */
 
-public class TestPhysicComponent extends BaseComponent {
+public class TestPhysicComponent extends BaseComponent implements PhysicsComponent {
 	
     private boolean hasBeenApplied = false;
 

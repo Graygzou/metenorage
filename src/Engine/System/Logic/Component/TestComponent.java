@@ -1,9 +1,5 @@
 package Engine.System.Logic.Component;
 
-/*
- * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
- */
-
 import Engine.Main.Entity;
 import Engine.System.Component.BaseComponent;
 import Engine.System.Logic.LogicComponent;
