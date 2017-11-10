@@ -7,8 +7,8 @@ package Engine.System;
 import Engine.Main.Entity;
 import Engine.System.Component.Component;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class BaseSystem implements GameSystem {
     public void iterate(List<Entity> entities) {
@@ -16,16 +16,18 @@ public abstract class BaseSystem implements GameSystem {
     }
 
     public List<Component> getLocalSystemComponentsFor(Entity entity) {
-        List<Class<? extends Component>> systemComponents = getLocalSystemComponents();
+        List<Component> componentsToApply = new ArrayList<>();
 
-        return entity.getComponents().stream()
-                .filter(component -> systemComponents.contains(component.getClass()))
-                .collect(Collectors.toList());
+        for(Component component : entity.getComponents())
+            if(getRecognizedInterface().isAssignableFrom(component.getClass()))
+                componentsToApply.add(component);
+
+        return componentsToApply;
     }
 
     public void applyComponent(Component component) {
         component.apply();
     }
 
-    public abstract List<Class<? extends Component>> getLocalSystemComponents();
+    public abstract Class<? extends Component> getRecognizedInterface();
 }
