@@ -15,7 +15,7 @@ public abstract class BaseSystem implements GameSystem {
         entities.forEach(entity -> getLocalSystemComponentsFor(entity).forEach(this::applyComponent));
     }
 
-    public List<Component> getLocalSystemComponentsFor(Entity entity) {
+    private List<Component> getLocalSystemComponentsFor(Entity entity) {
         List<Component> componentsToApply = new ArrayList<>();
 
         for(Component component : entity.getComponents())
@@ -25,7 +25,7 @@ public abstract class BaseSystem implements GameSystem {
         return componentsToApply;
     }
 
-    public void applyComponent(Component component) {
+    private void applyComponent(Component component) {
         component.apply();
     }
 
