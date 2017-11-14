@@ -26,17 +26,21 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
     private int vboId;
     private int vaoId;
+    private int verticesCount;
 
     public Mesh3D(Entity entity, String meshURI) {
         super(entity);
 
         this.meshURI = meshURI;
+
+        // Todo: implement this logic.
     }
 
     public Mesh3D(Entity entity, float[] vertices) {
         super(entity);
 
         this.vertices = vertices;
+        this.verticesCount = vertices.length;
     }
 
     @Override
@@ -53,7 +57,7 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         GL20.glEnableVertexAttribArray(0);
 
         // Draw the vertices
-        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
+        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, this.verticesCount);
 
         // Restore state
         glDisableVertexAttribArray(0);
