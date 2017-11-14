@@ -15,6 +15,11 @@ public class PhysicsSystem extends BaseSystem {
     }
 
     @Override
+    public void cleanUp() {
+
+    }
+
+    @Override
     public void initialize() throws Exception {
 
     }

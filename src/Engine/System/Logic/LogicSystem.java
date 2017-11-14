@@ -13,6 +13,11 @@ public class LogicSystem extends BaseSystem {
     }
 
     @Override
+    public void cleanUp() {
+
+    }
+
+    @Override
     public void initialize() throws Exception {
 
     }

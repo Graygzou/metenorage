@@ -7,7 +7,11 @@ import org.lwjgl.system.MemoryUtil;
 
 import java.nio.FloatBuffer;
 
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 import static org.lwjgl.system.MemoryUtil.memFree;
@@ -34,6 +38,20 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     @Override
     public void apply() {
 
+    }
+
+    @Override
+    public void render() {
+        // Bind to the VAO
+        glBindVertexArray(vaoId);
+        glEnableVertexAttribArray(0);
+
+        // Draw the vertices
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        // Restore state
+        glDisableVertexAttribArray(0);
+        glBindVertexArray(0);
     }
 
     @Override

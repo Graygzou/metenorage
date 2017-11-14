@@ -31,7 +31,7 @@ public class Window {
     /**
      * Tells whether or not the window can be resized by the user.
      */
-    private boolean isResizeable;
+    private boolean isResized;
 
     private long windowHandle;
 
@@ -39,7 +39,7 @@ public class Window {
         this.title = title;
         this.width = width;
         this.height = height;
-        this.isResizeable = isResizeable;
+        this.isResized = isResizeable;
     }
 
     public void initialize() {
@@ -68,7 +68,7 @@ public class Window {
         glfwSetFramebufferSizeCallback(windowHandle, (window, width, height) -> {
             this.width = width;
             this.height = height;
-            this.setResizeable(true);
+            this.setResized(true);
         });
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
@@ -123,13 +123,15 @@ public class Window {
         return height;
     }
 
-    public boolean isResizeable() {
-        return isResizeable;
+    public boolean isResized() {
+        return isResized;
     }
 
-    public void setResizeable(boolean resizeable) {
-        isResizeable = resizeable;
+    public void setResized(boolean resized) {
+        isResized = resized;
     }
+
+
 
     public void update() {
         glfwSwapBuffers(windowHandle);

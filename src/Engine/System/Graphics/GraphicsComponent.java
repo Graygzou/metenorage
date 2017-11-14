@@ -10,4 +10,6 @@ public interface GraphicsComponent extends Component {
     void initialize();
 
     void cleanUp();
+
+    void render();
 }

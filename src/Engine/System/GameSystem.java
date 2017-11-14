@@ -6,4 +6,6 @@ package Engine.System;
 
 public interface GameSystem {
     void initialize() throws Exception;
+
+    void cleanUp();
 }
