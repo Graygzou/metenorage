@@ -3,18 +3,16 @@ package Engine.System.Graphics.Component;
 import Engine.Main.Entity;
 import Engine.System.Component.BaseComponent;
 import Engine.System.Graphics.GraphicsComponent;
-import org.lwjgl.system.MemoryUtil;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 
 import java.nio.FloatBuffer;
 
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
-import static org.lwjgl.opengl.GL30.glGenVertexArrays;
-import static org.lwjgl.system.MemoryUtil.memFree;
 
 /**
  * @author : Matthieu Le Boucher
@@ -50,11 +48,12 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     public void render() {
         System.out.println("Mesh3D: rendering.");
         // Bind to the VAO
-        glBindVertexArray(vaoId);
-        glEnableVertexAttribArray(0);
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+        GL30.glBindVertexArray(vaoId);
+        GL20.glEnableVertexAttribArray(0);
 
         // Draw the vertices
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
 
         // Restore state
         glDisableVertexAttribArray(0);
@@ -63,34 +62,38 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
     @Override
     public void cleanUp() {
-        // Unbind the VBO.
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        // Disable the VBO index from the VAO attributes list
+        GL20.glDisableVertexAttribArray(0);
 
-        // Unbind the VAO.
-        glBindVertexArray(0);
+        // Delete the VBO
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL15.glDeleteBuffers(vboId);
 
-        if (verticesBuffer != null) {
-            MemoryUtil.memFree(verticesBuffer);
-        }
+        // Delete the VAO
+        GL30.glBindVertexArray(0);
+        GL30.glDeleteVertexArrays(vaoId);
     }
 
     @Override
     public void initialize() {
         // Todo: parse and load mesh data stored in file.
 
-        verticesBuffer = MemoryUtil.memAllocFloat(vertices.length);
+        verticesBuffer = BufferUtils.createFloatBuffer(vertices.length);
         verticesBuffer.put(vertices).flip();
 
         // Create and bind VAO.
-        this.vaoId = glGenVertexArrays();
-        glBindVertexArray(vaoId);
+        this.vaoId = GL30.glGenVertexArrays();
+        GL30.glBindVertexArray(vaoId);
 
         // Create, bind and hydrate VBO.
-        vboId = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, vboId);
-        glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
-        memFree(verticesBuffer);
+        vboId = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboId);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
+        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+        GL30.glBindVertexArray(0);
 
         // Define data structure.
+        System.out.println("Mesh3D initialized.");
     }
 }

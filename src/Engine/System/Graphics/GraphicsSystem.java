@@ -46,7 +46,6 @@ public class GraphicsSystem extends BaseSystem {
                 component.apply();
             }
         }
-        entities.forEach(entity -> getLocalSystemComponentsFor(entity).forEach(this::applyComponent));
 
         shadersHandler.unbind();
 
