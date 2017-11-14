@@ -153,9 +153,12 @@ public class GameEngine implements Runnable {
 
             Entity testTriangle = new Entity();
             testTriangle.addComponent(new Mesh3D(testTriangle, new float[]{
-                    0.0f,  0.5f, 0.0f,
+                    -0.5f,  0.5f, 0.0f,
                     -0.5f, -0.5f, 0.0f,
-                    0.5f, -0.5f, 0.0f
+                    0.5f,  0.5f, 0.0f,
+                    0.5f,  0.5f, 0.0f,
+                    -0.5f, -0.5f, 0.0f,
+                    0.5f, -0.5f, 0.0f,
             }));
 
             
