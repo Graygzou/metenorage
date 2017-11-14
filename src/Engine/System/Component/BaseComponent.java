@@ -4,7 +4,7 @@ import Engine.Main.Entity;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
- * @author Grégoire Boiron <gregoire.boiron@gmail.com>
+ * @author Grï¿½goire Boiron <gregoire.boiron@gmail.com>
  */
 
 public abstract class BaseComponent implements Component {
@@ -17,7 +17,7 @@ public abstract class BaseComponent implements Component {
 
     public BaseComponent(Entity entity) {
         this.entity = entity;
-        this.active = false;
+        this.active = true;
     }
 
     public Entity getEntity() {

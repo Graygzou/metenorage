@@ -6,9 +6,10 @@ package Engine;
 
 import Engine.Helper.Timer;
 import Engine.Main.Entity;
-import Engine.System.Component.BaseComponent;
-import Engine.System.Logic.LogicSystem;
+import Engine.System.Graphics.Component.Mesh3D;
+import Engine.System.Graphics.GraphicsSystem;
 import Engine.System.Logic.Component.TestComponent;
+import Engine.System.Logic.LogicSystem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,16 +29,19 @@ public class GameEngine implements Runnable {
 
     private LogicSystem logicSystem;
 
+    private GraphicsSystem graphicsSystem;
+
     public GameEngine(String windowTitle, int windowWidth, int windowHeight) {
         this.gameLoopThread = new Thread(this);
 
-        // Systems setup.
-        this.logicSystem = new LogicSystem();
-
-        this.entities = new ArrayList<>();
-
         this.window = new Window(windowTitle, windowWidth, windowHeight, false);
         this.timer = new Timer();
+
+        // Systems setup.
+        this.logicSystem = new LogicSystem();
+        this.graphicsSystem = new GraphicsSystem(this.window);
+
+        this.entities = new ArrayList<>();
     }
 
     public void start() {
@@ -58,12 +62,14 @@ public class GameEngine implements Runnable {
         }
     }
 
-    private void initialize() {
+    private void initialize() throws Exception {
         // Todo: implement this logic.
         // e.g. initialize the renderer (when we'll have one. (:).
 
         window.initialize();
         timer.initialize();
+
+        this.graphicsSystem.initialize();
     }
 
     /**
@@ -88,10 +94,11 @@ public class GameEngine implements Runnable {
     protected void render() {
         // Todo: implement this logic.
         window.update();
+        graphicsSystem.iterate(entities);
     }
 
     private void cleanUp() {
-
+        graphicsSystem.cleanUp();
     }
 
     /**
@@ -141,12 +148,21 @@ public class GameEngine implements Runnable {
             Entity testEntity = new Entity();
             
             // Create and active a component
-            BaseComponent test = new TestComponent(testEntity);
+            TestComponent test = new TestComponent(testEntity);
             test.setActiveState(true);
+
+            Entity testTriangle = new Entity();
+            testTriangle.addComponent(new Mesh3D(testTriangle, new float[]{
+                    0.0f,  0.5f, 0.0f,
+                    -0.5f, -0.5f, 0.0f,
+                    0.5f, -0.5f, 0.0f
+            }));
+
             
             // Add the component to the entity
             testEntity.addComponent(test);
             gameEngine.addEntity(testEntity);
+            gameEngine.addEntity(testTriangle);
 
             gameEngine.start();
         } catch (Exception e) {

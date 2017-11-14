@@ -12,4 +12,6 @@ public interface Component {
     Entity getEntity();
 
     void apply();
+
+    void initialize();
 }

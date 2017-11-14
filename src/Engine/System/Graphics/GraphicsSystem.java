@@ -40,6 +40,12 @@ public class GraphicsSystem extends BaseSystem {
 
         shadersHandler.bind();
 
+        for (Entity entity : entities) {
+            for (Component component : getLocalSystemComponentsFor(entity)) {
+                component.initialize();
+                component.apply();
+            }
+        }
         entities.forEach(entity -> getLocalSystemComponentsFor(entity).forEach(this::applyComponent));
 
         shadersHandler.unbind();
@@ -54,8 +60,8 @@ public class GraphicsSystem extends BaseSystem {
     @Override
     public void initialize() throws Exception {
         shadersHandler = new ShadersHandler();
-        shadersHandler.createVertexShader(Utils.readTextResource("/ShadersHandler/vertex.vs"));
-        shadersHandler.createFragmentShader(Utils.readTextResource("/ShadersHandler/fragment.fs"));
+        shadersHandler.createVertexShader(Utils.readTextResource("Shader/basicShader.vs"));
+        shadersHandler.createFragmentShader(Utils.readTextResource("Shader/basicShader.fs"));
         shadersHandler.link();
 
         // Define shaders data structure.

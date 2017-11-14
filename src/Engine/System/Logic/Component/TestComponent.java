@@ -12,6 +12,11 @@ import Engine.System.Logic.LogicComponent;
 public class TestComponent extends BaseComponent implements LogicComponent {
     private boolean hasBeenApplied = false;
 
+    @Override
+    public void initialize() {
+
+    }
+
     public TestComponent(Entity entity) {
         super(entity);
     }

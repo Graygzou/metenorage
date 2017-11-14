@@ -9,6 +9,6 @@ import java.nio.file.Paths;
  */
 public class Utils {
     public static String readTextResource(String filename) throws IOException {
-        return new String(Files.readAllBytes(Paths.get("../resources/" + filename)));
+        return new String(Files.readAllBytes(Paths.get("./resources/" + filename)));
     }
 }

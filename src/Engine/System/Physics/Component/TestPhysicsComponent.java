@@ -21,4 +21,9 @@ public class TestPhysicsComponent extends BasePhysicsComponent {
             hasBeenApplied = true;
         }
     }
+
+    @Override
+    public void initialize() {
+
+    }
 }

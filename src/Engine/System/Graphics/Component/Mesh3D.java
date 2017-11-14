@@ -35,13 +35,20 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         this.meshURI = meshURI;
     }
 
+    public Mesh3D(Entity entity, float[] vertices) {
+        super(entity);
+
+        this.vertices = vertices;
+    }
+
     @Override
     public void apply() {
-
+        this.render();
     }
 
     @Override
     public void render() {
+        System.out.println("Mesh3D: rendering.");
         // Bind to the VAO
         glBindVertexArray(vaoId);
         glEnableVertexAttribArray(0);
@@ -71,13 +78,7 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     public void initialize() {
         // Todo: parse and load mesh data stored in file.
 
-        this.vertices = new float[]{
-                0.0f,  0.5f, 0.0f,
-                -0.5f, -0.5f, 0.0f,
-                0.5f, -0.5f, 0.0f
-        };
-
-        MemoryUtil.memAllocFloat(vertices.length);
+        verticesBuffer = MemoryUtil.memAllocFloat(vertices.length);
         verticesBuffer.put(vertices).flip();
 
         // Create and bind VAO.
