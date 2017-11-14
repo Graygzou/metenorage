@@ -7,5 +7,7 @@ import Engine.System.Component.Component;
  */
 
 public interface GraphicsComponent extends Component {
-    void Update();
+    void initialize();
+
+    void cleanUp();
 }
