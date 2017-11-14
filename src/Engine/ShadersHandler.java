@@ -5,7 +5,7 @@ import static org.lwjgl.opengl.GL20.*;
 /**
  * @author : Matthieu Le Boucher <matt.leboucher@gmail.com>
  */
-public class Shader {
+public class ShadersHandler {
 
     private final int programId;
 
@@ -13,7 +13,7 @@ public class Shader {
 
     private int fragmentShaderId;
 
-    public Shader() throws Exception {
+    public ShadersHandler() throws Exception {
         programId = glCreateProgram();
 
         if (programId == 0)

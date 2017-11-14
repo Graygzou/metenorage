@@ -53,6 +53,8 @@ public class GameEngine implements Runnable {
             gameLoop();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+
         }
     }
 
@@ -86,6 +88,10 @@ public class GameEngine implements Runnable {
     protected void render() {
         // Todo: implement this logic.
         window.update();
+    }
+
+    private void cleanUp() {
+
     }
 
     /**

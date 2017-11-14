@@ -11,4 +11,9 @@ public class LogicSystem extends BaseSystem {
     public Class<? extends Component> getRecognizedInterface() {
         return LogicComponent.class;
     }
+
+    @Override
+    public void initialize() throws Exception {
+
+    }
 }

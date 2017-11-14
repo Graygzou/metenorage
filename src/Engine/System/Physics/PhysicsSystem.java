@@ -13,4 +13,9 @@ public class PhysicsSystem extends BaseSystem {
     public Class<? extends Component> getRecognizedInterface() {
         return PhysicsComponent.class;
     }
+
+    @Override
+    public void initialize() throws Exception {
+
+    }
 }
