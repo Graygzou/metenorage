@@ -63,6 +63,8 @@ public class GraphicsSystem extends BaseSystem {
         shadersHandler.createFragmentShader(Utils.readTextResource("Shader/basicShader.fs"));
         shadersHandler.link();
 
+
+
         // Define shaders data structure.
         glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
     }
