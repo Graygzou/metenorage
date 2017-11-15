@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
@@ -19,14 +20,18 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
  */
 public class Mesh3D extends BaseComponent implements GraphicsComponent {
     private float[] vertices;
+    private int[] indices;
 
     private FloatBuffer verticesBuffer;
+    private IntBuffer indicesBuffer;
 
     private String meshURI;
 
     private int vboId;
+    private int indexVboId;
     private int vaoId;
     private int verticesCount;
+    private int indicesCount;
 
     public Mesh3D(Entity entity, String meshURI) {
         super(entity);
@@ -43,6 +48,16 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         this.verticesCount = vertices.length;
     }
 
+    public Mesh3D(Entity entity, float[] vertices, int[] indices) {
+        super(entity);
+
+        this.vertices = vertices;
+        this.verticesCount = vertices.length;
+
+        this.indices = indices;
+        this.indicesCount = indices.length;
+    }
+
     @Override
     public void apply() {
         this.render();
@@ -56,10 +71,14 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         GL30.glBindVertexArray(vaoId);
         GL20.glEnableVertexAttribArray(0);
 
+        // Bind to the index VBO that has all the information about the order of the vertices.
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indexVboId);
+
         // Draw the vertices
-        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, this.verticesCount);
+        GL11.glDrawElements(GL11.GL_TRIANGLES, this.indicesCount, GL11.GL_UNSIGNED_INT, 0);
 
         // Restore state
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
         glDisableVertexAttribArray(0);
         glBindVertexArray(0);
     }
@@ -72,6 +91,10 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         // Delete the VBO
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         GL15.glDeleteBuffers(vboId);
+
+        // Delete the index VBO
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+        GL15.glDeleteBuffers(indexVboId);
 
         // Delete the VAO
         GL30.glBindVertexArray(0);
@@ -96,6 +119,15 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         GL30.glBindVertexArray(0);
+
+        indexVboId = GL15.glGenBuffers();
+        indicesBuffer = BufferUtils.createIntBuffer(indicesCount);
+        indicesBuffer.put(indices).flip();
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indexVboId);
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
+
+        // Deselect (bind to 0) the VBO
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
         // Define data structure.
         System.out.println("Mesh3D initialized.");
