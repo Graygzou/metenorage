@@ -147,6 +147,10 @@ public class GameEngine implements Runnable {
 
             Entity testEntity = new Entity();
             
+            // Read from a json file to load Entity and Components attached 
+           // Utils.parser("Game/example.json", gameEngine);
+            
+            
             // Create and active a component
             TestComponent test = new TestComponent(testEntity);
             test.setActiveState(true);
@@ -169,7 +173,7 @@ public class GameEngine implements Runnable {
             
             // Add the component to the entity
             testEntity.addComponent(test);
-            gameEngine.addEntity(testEntity);
+            //gameEngine.addEntity(testEntity);
             gameEngine.addEntity(testTriangle);
 
             gameEngine.start();
