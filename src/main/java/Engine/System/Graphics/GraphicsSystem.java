@@ -11,10 +11,8 @@ import org.joml.Matrix4f;
 
 import java.util.List;
 
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 /**
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
@@ -29,9 +27,9 @@ public class GraphicsSystem extends BaseSystem {
      */
     private static final float FOV = (float) Math.toRadians(60.0f);
 
-    private static final float Z_NEAR = 0.01f;
+    private static final float Z_NEAR = 1f;
 
-    private static final float Z_FAR = 1000.f;
+    private static final float Z_FAR = 100.f;
 
     private Matrix4f projectionMatrix;
 
@@ -97,7 +95,6 @@ public class GraphicsSystem extends BaseSystem {
         shadersHandler.createUniform("worldMatrix");
         shadersHandler.setUniform("worldMatrix", new Matrix4f());
 
-        // Define shaders data structure.
-        glVertexAttribPointer(0, 4, GL_FLOAT, false, 0, 0);
+
     }
 }

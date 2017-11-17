@@ -8,7 +8,6 @@ import Engine.Helper.Timer;
 import Engine.Main.Entity;
 import Engine.System.Graphics.Component.Mesh3D;
 import Engine.System.Graphics.GraphicsSystem;
-import Engine.System.Logic.Component.TestComponent;
 import Engine.System.Logic.LogicSystem;
 import org.joml.Vector3f;
 
@@ -202,8 +201,8 @@ public class GameEngine implements Runnable {
             
             
             // Create and active a component
-            TestComponent test = new TestComponent(testEntity);
-            test.setActiveState(true);
+            /*TestComponent test = new TestComponent(testEntity);
+            test.setActiveState(true);*/
 
             Entity testTriangle = new Entity();
             testTriangle.addComponent(new Mesh3D(testTriangle, new float[]{
@@ -246,12 +245,12 @@ public class GameEngine implements Runnable {
                     0.0f, 0.0f, 0.5f, 1f,
                     0.0f, 0.5f, 0.5f, 1f,
             }));
-            testTriangle.setPosition(0, 0, -2);
-            testTriangle.setRotation(0, 45, 45);
+            testTriangle.setPosition(0, 0, -4f);
+            testTriangle.setRotation(0, 0, 0);
             testTriangle.setScale(1f);
 
             // Add the component to the entity
-            testEntity.addComponent(test);
+            //testEntity.addComponent(test);
             //gameEngine.addEntity(testEntity);
             gameEngine.addEntity(testTriangle);
 
