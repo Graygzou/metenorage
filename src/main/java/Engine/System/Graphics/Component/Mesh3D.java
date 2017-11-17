@@ -3,6 +3,9 @@ package Engine.System.Graphics.Component;
 import Engine.Main.Entity;
 import Engine.System.Component.BaseComponent;
 import Engine.System.Graphics.GraphicsComponent;
+import Engine.System.Graphics.WorldMatrixOverwritter;
+import Engine.TransformationUtils;
+import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -15,7 +18,7 @@ import java.nio.IntBuffer;
 /**
  * @author : Matthieu Le Boucher
  */
-public class Mesh3D extends BaseComponent implements GraphicsComponent {
+public class Mesh3D extends BaseComponent implements GraphicsComponent, WorldMatrixOverwritter {
     private float[] vertices;
     private int[] indices;
     private float[] colors;
@@ -152,5 +155,12 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
         GL30.glBindVertexArray(0);
+    }
+
+    public Matrix4f getWorldMatrix() {
+        return TransformationUtils.getWorldMatrix(
+                this.getEntity().getPosition(),
+                this.getEntity().getRotation(),
+                this.getEntity().getScale());
     }
 }

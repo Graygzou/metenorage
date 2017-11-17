@@ -1,7 +1,7 @@
 package Engine.Main;
 
 import Engine.System.Component.Component;
-import org.joml.Vector4f;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +16,11 @@ public class Entity {
      */
     public int uniqueID;
 
-    private Vector4f position;
+    private Vector3f position;
 
-    private Vector4f rotation;
+    private Vector3f rotation;
 
-    private Vector4f scale;
+    private Vector3f scale;
 
     /**
      * List of components attached to the entity.
@@ -44,11 +44,11 @@ public class Entity {
         return components;
     }
 
-    public Vector4f getPosition() {
+    public Vector3f getPosition() {
         return position;
     }
 
-    public void setPosition(Vector4f position) {
+    public void setPosition(Vector3f position) {
         this.position = position;
     }
 
@@ -56,14 +56,13 @@ public class Entity {
         this.position.x = x;
         this.position.y = y;
         this.position.z = z;
-        this.position.w = 1f;
     }
 
-    public Vector4f getRotation() {
+    public Vector3f getRotation() {
         return rotation;
     }
 
-    public void setRotation(Vector4f rotation) {
+    public void setRotation(Vector3f rotation) {
         this.rotation = rotation;
     }
 
@@ -71,14 +70,13 @@ public class Entity {
         this.rotation.x = x;
         this.rotation.y = y;
         this.rotation.z = z;
-        this.rotation.w = 1f;
     }
 
-    public Vector4f getScale() {
+    public Vector3f getScale() {
         return scale;
     }
 
-    public void setScale(Vector4f scale) {
+    public void setScale(Vector3f scale) {
         this.scale = scale;
     }
 }

@@ -68,6 +68,12 @@ public class GraphicsSystem extends BaseSystem {
         for (Entity entity : entities) {
             for (Component component : getLocalSystemComponentsFor(entity)) {
                 component.initialize();
+
+                if(WorldMatrixOverwritter.class.isAssignableFrom(component.getClass())) {
+                    WorldMatrixOverwritter component1 = (WorldMatrixOverwritter) component;
+                    shadersHandler.setUniform("worldMatrix", component1.getWorldMatrix());
+                }
+
                 component.apply();
             }
         }
@@ -89,6 +95,7 @@ public class GraphicsSystem extends BaseSystem {
         shadersHandler.link();
 
         shadersHandler.createUniform("projectionMatrix");
+        shadersHandler.createUniform("worldMatrix");
 
         // Define shaders data structure.
         glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
