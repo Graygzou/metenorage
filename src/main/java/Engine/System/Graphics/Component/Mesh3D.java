@@ -74,7 +74,6 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
     @Override
     public void render() {
-        System.out.println("Mesh3D: rendering.");
         // Bind to the VAO
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
         GL30.glBindVertexArray(vaoId);
@@ -153,8 +152,5 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
         GL30.glBindVertexArray(0);
-
-        // Define data structure.
-        System.out.println("Mesh3D initialized.");
     }
 }

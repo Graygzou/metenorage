@@ -96,7 +96,7 @@ public class Window {
 
         GL.createCapabilities();
 
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.2f, 0.0f, 0.0f, 1.0f);
     }
 
     public void setClearColor(float r, float g, float b, float alpha) {

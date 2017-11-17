@@ -1,5 +1,12 @@
 package Engine;
 
+import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.system.MemoryStack;
+
+import java.nio.FloatBuffer;
+import java.util.HashMap;
+
 import static org.lwjgl.opengl.GL20.*;
 
 /**
@@ -13,11 +20,38 @@ public class ShadersHandler {
 
     private int fragmentShaderId;
 
+    private final HashMap<String, Integer> uniforms;
+
     public ShadersHandler() throws Exception {
+        this.uniforms = new HashMap<>();
         programId = glCreateProgram();
 
         if (programId == 0)
-            throw new Exception("Metenorage: could not create shader program.");
+            throw new Exception("ShadersHandler: could not create shader program.");
+    }
+
+    public void createUniform(String uniformName) throws Exception {
+        int uniformLocation = glGetUniformLocation(programId, uniformName);
+
+        if (uniformLocation < 0) {
+            throw new Exception("ShadersHandler: could not find uniform:" + uniformName);
+        }
+
+        uniforms.put(uniformName, uniformLocation);
+    }
+
+    public void setUniform(String uniformName, Matrix4f value) {
+        GL20.glUseProgram(programId);
+        // Dump the matrix into an auto-managed float buffer.
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            FloatBuffer fb = stack.mallocFloat(16);
+            value.get(fb);
+            glUniformMatrix4fv(uniforms.get(uniformName), false, fb);
+        } catch(Exception e) {
+            e.getStackTrace();
+        }
+
+        GL20.glUseProgram(0);
     }
 
     public void createVertexShader(String shaderCode) throws Exception {

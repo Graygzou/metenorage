@@ -6,6 +6,7 @@ import Engine.System.BaseSystem;
 import Engine.System.Component.Component;
 import Engine.Utils;
 import Engine.Window;
+import org.joml.Matrix4f;
 
 import java.util.List;
 
@@ -22,8 +23,27 @@ public class GraphicsSystem extends BaseSystem {
 
     private Window window;
 
+    /**
+     * Field of View in radians.
+     */
+    private static final float FOV = (float) Math.toRadians(60.0f);
+
+    private static final float Z_NEAR = 0.01f;
+
+    private static final float Z_FAR = 1000.f;
+
+    private Matrix4f projectionMatrix;
+
     public GraphicsSystem(Window window) {
         this.window = window;
+    }
+
+    public void resetProjectionMatrix() throws Exception {
+        float aspectRatio = (float) window.getWidth() / window.getHeight();
+        projectionMatrix = new Matrix4f().perspective(FOV, aspectRatio,
+                Z_NEAR, Z_FAR);
+        System.out.println("Projection matrix reset with aspect ratio: " + aspectRatio + " to:\n" + projectionMatrix);
+        shadersHandler.setUniform("projectionMatrix", projectionMatrix);
     }
 
     @Override
@@ -34,6 +54,11 @@ public class GraphicsSystem extends BaseSystem {
     @Override
     public void iterate(List<Entity> entities) {
         if (window.isResized()) {
+            try {
+                resetProjectionMatrix();
+            } catch (Exception e) {
+                System.out.println("GraphicsEngine: could not reset projection matrix.");
+            }
             glViewport(0, 0, window.getWidth(), window.getHeight());
             window.setResized(false);
         }
@@ -63,7 +88,7 @@ public class GraphicsSystem extends BaseSystem {
         shadersHandler.createFragmentShader(Utils.readTextResource("Shader/basicShader.fs"));
         shadersHandler.link();
 
-
+        shadersHandler.createUniform("projectionMatrix");
 
         // Define shaders data structure.
         glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
