@@ -9,6 +9,6 @@ uniform mat4 projectionMatrix;
 uniform mat4 worldMatrix;
 
 void main(void) {
-    gl_Position = projectionMatrix * in_Position;
+    gl_Position = projectionMatrix * worldMatrix * in_Position;
     pass_Color = in_Color;
 }
