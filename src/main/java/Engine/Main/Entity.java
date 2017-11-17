@@ -28,6 +28,9 @@ public class Entity {
     private List<Component> components;
 
     public Entity() {
+        this.position = new Vector3f();
+        this.rotation = new Vector3f();
+        this.scale = new Vector3f();
         this.components = new ArrayList<Component>();
     }
 
@@ -78,5 +81,11 @@ public class Entity {
 
     public void setScale(Vector3f scale) {
         this.scale = scale;
+    }
+
+    public void setScale(float s) {
+        this.scale.x = s;
+        this.scale.y = s;
+        this.scale.z = s;
     }
 }

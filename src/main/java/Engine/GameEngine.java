@@ -169,6 +169,9 @@ public class GameEngine implements Runnable {
                     0.0f, 0.0f, 0.5f, 1.0f,
                     0.0f, 0.5f, 0.5f, 1.0f,
             }));
+            testTriangle.setPosition(0, 0, -2);
+            testTriangle.setRotation(0, 0, 0);
+            testTriangle.setScale(1);
 
 
             // Add the component to the entity
