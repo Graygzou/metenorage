@@ -10,9 +10,12 @@ import Engine.System.Graphics.Component.Mesh3D;
 import Engine.System.Graphics.GraphicsSystem;
 import Engine.System.Logic.Component.TestComponent;
 import Engine.System.Logic.LogicSystem;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 public class GameEngine implements Runnable {
     private float timePerUpdate = 1f / 50;
@@ -77,6 +80,53 @@ public class GameEngine implements Runnable {
      */
     protected void handleInput() {
         // Todo: implement this logic.
+        float xIncrement = 0;
+        float yIncrement = 0;
+        float zIncrement = 0;
+        float scaleIncrement = 0;
+
+        if (window.isKeyPressed(GLFW_KEY_UP)) {
+            xIncrement = 1;
+        } else if (window.isKeyPressed(GLFW_KEY_DOWN)) {
+            xIncrement = -1;
+        } else if (window.isKeyPressed(GLFW_KEY_LEFT)) {
+            yIncrement = -1;
+        } else if (window.isKeyPressed(GLFW_KEY_RIGHT)) {
+            yIncrement = 1;
+        } else if (window.isKeyPressed(GLFW_KEY_A)) {
+            zIncrement = -1;
+        } else if (window.isKeyPressed(GLFW_KEY_Q)) {
+            zIncrement = 1;
+        } else if (window.isKeyPressed(GLFW_KEY_Z)) {
+            scaleIncrement = -1;
+        } else if (window.isKeyPressed(GLFW_KEY_X)) {
+            scaleIncrement = 1;
+        }
+
+        for(Entity entity: entities) {
+            // Update position
+            Vector3f entityPosition = entity.getPosition();
+            float newXPosition = entityPosition.x + yIncrement * 0.01f;
+            float newYPosition = entityPosition.y + xIncrement * 0.01f;
+            float newZPosition = entityPosition.z + zIncrement * 0.01f;
+            entity.setPosition(newXPosition, newYPosition, newZPosition);
+
+            // Update scale
+            float scale = entity.getScale().x;
+            scale += scaleIncrement * 0.05f;
+            if (scale < 0) {
+                scale = 0;
+            }
+            entity.setScale(scale);
+
+            // Update rotation angle
+            float rotation = entity.getRotation().x + 1.5f;
+            if (rotation > 360) {
+                rotation = 0;
+            }
+
+            entity.setRotation(rotation, rotation, rotation);
+        }
     }
 
     /**
