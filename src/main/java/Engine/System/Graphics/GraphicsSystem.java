@@ -4,6 +4,7 @@ import Engine.Main.Entity;
 import Engine.ShadersHandler;
 import Engine.System.BaseSystem;
 import Engine.System.Component.Component;
+import Engine.TransformationUtils;
 import Engine.Utils;
 import Engine.Window;
 import org.joml.Matrix4f;
@@ -63,23 +64,21 @@ public class GraphicsSystem extends BaseSystem {
             window.setResized(false);
         }
 
-        shadersHandler.bind();
-
         for (Entity entity : entities) {
+            shadersHandler.setUniform("worldMatrix", TransformationUtils.getWorldMatrix(
+                    entity.getPosition(),
+                    entity.getRotation(),
+                    entity.getScale()));
+
+            shadersHandler.bind();
+
             for (Component component : getLocalSystemComponentsFor(entity)) {
                 component.initialize();
-
-                if(WorldMatrixOverwritter.class.isAssignableFrom(component.getClass())) {
-                    WorldMatrixOverwritter component1 = (WorldMatrixOverwritter) component;
-                    shadersHandler.setUniform("worldMatrix", component1.getWorldMatrix());
-                }
-
                 component.apply();
             }
+
+            shadersHandler.unbind();
         }
-
-        shadersHandler.unbind();
-
     }
 
     @Override
@@ -96,8 +95,9 @@ public class GraphicsSystem extends BaseSystem {
 
         shadersHandler.createUniform("projectionMatrix");
         shadersHandler.createUniform("worldMatrix");
+        shadersHandler.setUniform("worldMatrix", new Matrix4f());
 
         // Define shaders data structure.
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+        glVertexAttribPointer(0, 4, GL_FLOAT, false, 0, 0);
     }
 }
