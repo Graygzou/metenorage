@@ -1,7 +1,11 @@
 package Engine;
 
 import Engine.Main.Entity;
+import Engine.System.Component.Component;
+import Engine.System.Graphics.Component.Mesh3D;
 import Engine.System.Graphics.GraphicsComponent;
+import Engine.System.Logic.Component.TestComponent;
+import Engine.System.Logic.LogicComponent;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -41,7 +45,8 @@ public class Utils {
             		gameEngine.addEntity(createEntity(reader));
             	}
             }
-			
+
+            reader.close();
 			jsonFile.close();
 			
 		} catch (FileNotFoundException e) {
@@ -56,28 +61,89 @@ public class Utils {
     }
     
     private static Entity createEntity(BufferedReader reader) throws IOException {
-    	Entity entity = null;
+    	Entity entity = new Entity();
     	String line;
-		while ((line = reader.readLine()) != null) {
-			if(line.trim().contains("Name")) {
+		while (!(line = reader.readLine().replaceAll("\\s+","")).contains("}")) {
+            Component currentComponent = null;
+			if(line.contains("Name")) {
 				System.out.println(line.split(":")[1]);
 				//entity.setName();
-			} else if(line.trim().startsWith("GraphicsComponent")) {
-				GraphicsComponent component = createComponent(reader);
+			} else if(line.contains("GraphicsComponent")) {
+                currentComponent = createGraphicComponent(entity, reader);
+			} else if(line.contains("LogicComponent")) {
+                currentComponent = createLogicComponent(entity, reader);
 			}
+			if(currentComponent != null) {
+                entity.addComponent(currentComponent);
+            }
 		}
     	return entity;
     }
     
-    private static GraphicsComponent createComponent(BufferedReader reader) throws IOException {
-    	GraphicsComponent component = null;
+    private static GraphicsComponent createGraphicComponent(Entity entity, BufferedReader reader) throws IOException {
+    	GraphicsComponent component = new Mesh3D(entity);
     	String line;
-    	while ((line = reader.readLine()) != null) {
-    		if(line.trim().contains("Name")) {
-				System.out.println(line.split(":")[1]);
-				//entity.setName();
-			}
+    	while (!(line = reader.readLine().replaceAll("\\s+","")).contains("}")) {
+            if(line.trim().contains("Name")) {
+                System.out.println(line.split(":")[1]);
+                switch(line.split(":")[1]) {
+                    case "Mesh3D":
+                        //component = new Mesh3D(entity);
+                        break;
+                }
+            } else if(line.contains("active")) {
+                System.out.println(line.split(":")[1]);
+                //entity.setActive();
+            } else if(line.contains("vertices")) {
+                component.setVertices(Utils.getFloatValues(line));
+            } else if(line.contains("indices")) {
+                component.setIndices(Utils.getIntegerValues(line));
+            } else if(line.contains("colors")) {
+                component.setColors(Utils.getFloatValues(line));
+            }
         }
     	return component;
     }
+
+    private static LogicComponent createLogicComponent(Entity entity, BufferedReader reader) throws IOException {
+        LogicComponent component = null;
+        String line;
+        while (!(line = reader.readLine().replaceAll("\\s+","")).contains("}")) {
+            if(line.trim().contains("Name")) {
+                System.out.println(line.split(":")[1]);
+                switch(line.split(":")[1]) {
+                    case "TestComponent":
+                        component = new TestComponent(entity);
+                        break;
+                }
+            } else if(line.contains("active")) {
+                System.out.println(line.split(":")[1]);
+                //entity.setActive();
+            }
+        }
+        return component;
+    }
+
+    private static float[] getFloatValues(String line) {
+        int counter = 0;
+        String[] stringValues = line.substring(line.indexOf("[")+1, line.indexOf("]")).split(",");
+        float[] floatValues = new float[stringValues.length];
+        for(String value : stringValues) {
+            System.out.println(value);
+            floatValues[counter++] = Float.parseFloat(value);
+        }
+        return floatValues;
+    }
+
+    private static int[] getIntegerValues(String line) {
+        int counter = 0;
+        String[] stringValues = line.substring(line.indexOf("[")+1, line.indexOf("]")).split(",");
+        System.out.println(stringValues);
+        int[] floatValues = new int[stringValues.length];
+        for(String value : stringValues) {
+            floatValues[counter++] = Integer.parseInt(value);
+        }
+        return floatValues;
+    }
+
 }

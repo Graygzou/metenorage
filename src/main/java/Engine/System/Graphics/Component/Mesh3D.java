@@ -14,6 +14,7 @@ import java.nio.IntBuffer;
 
 /**
  * @author : Matthieu Le Boucher
+ * @author : Gregoire Boiron
  */
 public class Mesh3D extends BaseComponent implements GraphicsComponent {
     private float[] vertices;
@@ -33,6 +34,10 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     private int verticesCount;
     private int indicesCount;
     private int colorsCount;
+
+    public Mesh3D(Entity entity) {
+        super(entity);
+    }
 
     public Mesh3D(Entity entity, String meshURI) {
         super(entity);
@@ -66,6 +71,17 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         this.colorsCount = colors.length;
     }
 
+    public void setVertices(float[] vertices) {
+        this.vertices = vertices;
+    }
+
+    public void setIndices(int[] indices) {
+        this.indices = indices;
+    }
+
+    public void setColors(float[] colors) {
+        this.colors = colors;
+    }
 
     @Override
     public void apply() {
