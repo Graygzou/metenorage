@@ -2,6 +2,7 @@ package Engine.System.Graphics.Component;
 
 import Engine.Main.Entity;
 import Engine.System.Component.BaseComponent;
+import Engine.System.Component.Messaging.Message;
 import Engine.System.Graphics.GraphicsComponent;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -86,6 +87,10 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     @Override
     public void apply() {
         this.render();
+    }
+
+    @Override
+    public void onMessage(Message message) {
     }
 
     @Override
