@@ -17,23 +17,23 @@ import java.nio.IntBuffer;
  * @author : Gregoire Boiron
  */
 public class Mesh3D extends BaseComponent implements GraphicsComponent {
-    private float[] vertices;
-    private int[] indices;
-    private float[] colors;
+    protected float[] vertices;
+    protected int[] indices;
+    protected float[] colors;
 
-    private FloatBuffer verticesBuffer;
-    private IntBuffer indicesBuffer;
-    private FloatBuffer colorsBuffer;
+    protected FloatBuffer verticesBuffer;
+    protected IntBuffer indicesBuffer;
+    protected FloatBuffer colorsBuffer;
 
     private String meshURI;
 
-    private int vboId;
-    private int indexVboId;
-    private int colorsVboId;
-    private int vaoId;
-    private int verticesCount;
-    private int indicesCount;
-    private int colorsCount;
+    protected int vboId;
+    protected int indexVboId;
+    protected int colorsVboId;
+    protected int vaoId;
+    protected int verticesCount;
+    protected int indicesCount;
+    protected int colorsCount;
 
     public Mesh3D(Entity entity) {
         super(entity);
@@ -136,7 +136,7 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     public void initialize() {
         // Todo: parse and load mesh data stored in file.
 
-        verticesBuffer = BufferUtils.createFloatBuffer(vertices.length);
+        verticesBuffer = BufferUtils.createFloatBuffer(verticesCount);
         verticesBuffer.put(vertices).flip();
 
         // Create and bind VAO.
@@ -145,8 +145,21 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
         // Create, bind and hydrate VBO.
         vboId = GL15.glGenBuffers();
+        // Binds a named buffer object. (target<=specifiedEnum, bufferObjectName)
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboId);
+        // Creates and initializes a buffer object's data store. (target, data, hint<=how data store will be accessed)
+        // ~data : pointer to data
+        // ~hint : how data store will be accessed (depend of frequency and nature)
+        // frequency
+        //      STREAM - The data store contents will be modified once and used at most a few times.
+        //      STATIC - The data store contents will be modified once and used many times.
+        //      DYNAMIC - The data store contents will be modified repeatedly and used many times.
+        // nature
+        //      DRAW - The data store contents are modified by the application, and used as the source for GL drawing and image specification commands.
+        //      READ - // modified by reading data from the GL, and used to return that data when queried by the application.
+        //      COPY - // modified by reading data from the GL, and used as the source for GL drawing and image specification commands.
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
+        // size 4 : BRGA for each vertex. So each vertex need 4 float (the last one for alpha parameter)
         GL20.glVertexAttribPointer(0, 4, GL11.GL_FLOAT, false, 0, 0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
