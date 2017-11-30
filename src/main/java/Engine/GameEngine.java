@@ -7,8 +7,10 @@ package Engine;
 import Engine.Helper.Timer;
 import Engine.Main.Entity;
 import Engine.System.Component.Messaging.MessageQueue;
-import Engine.System.Graphics.Component.Mesh3D;
+import Engine.System.Graphics.Component.Cube;
+import Engine.System.Graphics.Component.Plane;
 import Engine.System.Graphics.GraphicsSystem;
+import Engine.System.Logic.Component.TestComponent;
 import Engine.System.Logic.LogicSystem;
 import org.joml.Vector3f;
 
@@ -39,7 +41,7 @@ public class GameEngine implements Runnable {
     public GameEngine(String windowTitle, int windowWidth, int windowHeight) {
         this.gameLoopThread = new Thread(this);
 
-        this.window = new Window(windowTitle, windowWidth, windowHeight, false);
+        this.window = new Window(windowTitle, windowWidth, windowHeight, true);
         this.timer = new Timer();
 
         // Systems setup.
@@ -123,12 +125,14 @@ public class GameEngine implements Runnable {
             entity.setScale(scale);
 
             // Update rotation angle
+            /*
             float rotation = entity.getRotation().x + 1.5f;
             if (rotation > 360) {
                 rotation = 0;
             }
 
             entity.setRotation(rotation, rotation, rotation);
+            */
         }
     }
 
@@ -162,7 +166,7 @@ public class GameEngine implements Runnable {
         double previousLoopTime = Timer.getTime();
         double timeSteps = 0;
 
-        while (true) {
+        while (!window.windowShouldClose()) {
             // Keep track of the elapsed time and time steps.
             double currentLoopStartTime = Timer.getTime();
             double elapsedTime = currentLoopStartTime - previousLoopTime;
@@ -200,64 +204,41 @@ public class GameEngine implements Runnable {
             GameEngine gameEngine = new GameEngine("Metenorage", 800, 600);
 
             Entity testEntity = new Entity();
-            
-            // Read from a json file to load Entity and Components attached 
-           // Utils.parser("Game/example.json", gameEngine);
-            
-            
-            // Create and active a component
-            /*TestComponent test = new TestComponent(testEntity);
-            test.setActiveState(true);*/
-
             Entity testTriangle = new Entity();
-            testTriangle.addComponent(new Mesh3D(testTriangle, new float[]{
-                    // VO
-                    -0.5f,  0.5f,  0.5f, 1f,
-                    // V1
-                    -0.5f, -0.5f,  0.5f, 1f,
-                    // V2
-                    0.5f, -0.5f,  0.5f, 1f,
-                    // V3
-                    0.5f,  0.5f,  0.5f, 1f,
-                    // V4
-                    -0.5f,  0.5f, -0.5f, 1f,
-                    // V5
-                    0.5f,  0.5f, -0.5f, 1f,
-                    // V6
-                    -0.5f, -0.5f, -0.5f, 1f,
-                    // V7
-                    0.5f, -0.5f, -0.5f, 1f,
-            }, new int[]{
-                    // Front face
-                    0, 1, 3, 3, 1, 2,
-                    // Top Face
-                    4, 0, 3, 5, 4, 3,
-                    // Right face
-                    3, 2, 7, 5, 3, 7,
-                    // Left face
-                    6, 1, 0, 6, 0, 4,
-                    // Bottom face
-                    2, 1, 6, 2, 6, 7,
-                    // Back face
-                    7, 6, 4, 7, 4, 5,
-            }, new float[]{
-                    0.5f, 0.0f, 0.0f, 1f,
-                    0.0f, 0.5f, 0.0f, 1f,
-                    0.0f, 0.0f, 0.5f, 1f,
-                    0.0f, 0.5f, 0.5f, 1f,
-                    0.5f, 0.0f, 0.0f, 1f,
-                    0.0f, 0.5f, 0.0f, 1f,
-                    0.0f, 0.0f, 0.5f, 1f,
-                    0.0f, 0.5f, 0.5f, 1f,
-            }));
-            testTriangle.setPosition(0, 0, -4f);
-            testTriangle.setRotation(0, 0, 0);
+            Entity testEntityPlane = new Entity();
+
+            // Read from a json file to load Entity and Components attached
+           // Utils.parser("Game/example.json", gameEngine);
+
+
+            // Create and active a component
+            TestComponent test = new TestComponent(testEntity);
+            test.setActiveState(true);
+
+            // Create a graphics components
+            Plane testPlane = new Plane(testEntityPlane);
+            Cube testCube = new Cube(testTriangle);
+
+            // Set the position, scale and rotation of graphics entities
+            testEntityPlane.setPosition(0, 0, -2);
+            testEntityPlane.setRotation(0, 0, 0);
+            testEntityPlane.setScale(1f);
+
+            testTriangle.setPosition(0, 0, -2);
+            testTriangle.setRotation(0, 45, 45);
             testTriangle.setScale(1f);
 
-            // Add the component to the entity
-            //testEntity.addComponent(test);
-            //gameEngine.addEntity(testEntity);
+
+            // Add all the components to their entities
+            testEntity.addComponent(test);
+            testEntityPlane.addComponent(testPlane);
+            testTriangle.addComponent(testCube);
+
+            // Add all the entities to the gameEngine
+            gameEngine.addEntity(testEntityPlane);
+            gameEngine.addEntity(testEntity);
             gameEngine.addEntity(testTriangle);
+
 
             gameEngine.start();
         } catch (Exception e) {
