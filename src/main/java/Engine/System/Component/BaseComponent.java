@@ -1,10 +1,13 @@
 package Engine.System.Component;
 
 import Engine.Main.Entity;
+import Engine.System.Component.Messaging.Message;
+import Engine.System.Component.Messaging.MessageQueue;
 
-/*
+/**
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
- * @author Gregoire Boiron <gregoire.boiron@gmail.com>
+ * @author Gregoire Boiron     <gregoire.boiron@gmail.com>
+ * @author Florian Vidal       <florianvidals@gmail.com>
  */
 
 public abstract class BaseComponent implements Component {
@@ -38,4 +41,7 @@ public abstract class BaseComponent implements Component {
 
     @Override
     public abstract void apply();
+
+    @Override
+    public abstract void onMessage(Message message);
 }

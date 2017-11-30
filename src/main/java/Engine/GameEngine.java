@@ -6,6 +6,7 @@ package Engine;
 
 import Engine.Helper.Timer;
 import Engine.Main.Entity;
+import Engine.System.Component.Messaging.MessageQueue;
 import Engine.System.Graphics.Component.Cube;
 import Engine.System.Graphics.Component.Plane;
 import Engine.System.Graphics.GraphicsSystem;
@@ -35,6 +36,8 @@ public class GameEngine implements Runnable {
 
     private GraphicsSystem graphicsSystem;
 
+    public MessageQueue messageQueue;
+
     public GameEngine(String windowTitle, int windowWidth, int windowHeight) {
         this.gameLoopThread = new Thread(this);
 
@@ -44,6 +47,7 @@ public class GameEngine implements Runnable {
         // Systems setup.
         this.logicSystem = new LogicSystem();
         this.graphicsSystem = new GraphicsSystem(this.window);
+        this.messageQueue = new MessageQueue();
 
         this.entities = new ArrayList<>();
     }
@@ -139,6 +143,7 @@ public class GameEngine implements Runnable {
     protected void update(float timeStep) {
         // Todo: implement this logic.
         logicSystem.iterate(entities);
+        messageQueue.dispatch();
     }
 
     /**
