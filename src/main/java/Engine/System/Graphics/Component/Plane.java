@@ -31,7 +31,8 @@ public class Plane extends Mesh3D {
                 0.5f, 0.0f, 0.0f, 1f,
                 0.0f, 0.5f, 0.0f, 1f,
                 0.0f, 0.0f, 0.5f, 1f,
-                0.0f, 0.5f, 0.5f, 1f,};
+                0.0f, 0.5f, 0.5f, 1f,
+        };
 
         this.verticesCount = vertices.length;
         this.indicesCount = indices.length;

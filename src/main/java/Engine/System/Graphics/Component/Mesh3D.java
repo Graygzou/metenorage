@@ -96,13 +96,13 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     @Override
     public void render() {
         // Bind to the VAO
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-        GL30.glBindVertexArray(vaoId);
+        //GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+        GL30.glBindVertexArray(this.vaoId);
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
 
         // Bind to the index VBO that has all the information about the order of the vertices.
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indexVboId);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, this.indexVboId);
 
         // Draw the vertices
         GL11.glDrawElements(GL11.GL_TRIANGLES, this.indicesCount, GL11.GL_UNSIGNED_INT, 0);
@@ -146,12 +146,12 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
         // Create and bind VAO.
         this.vaoId = GL30.glGenVertexArrays();
-        GL30.glBindVertexArray(vaoId);
+        GL30.glBindVertexArray(this.vaoId);
 
         // Create, bind and hydrate VBO.
-        vboId = GL15.glGenBuffers();
+        this.vboId = GL15.glGenBuffers();
         // Binds a named buffer object. (target<=specifiedEnum, bufferObjectName)
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboId);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, this.vboId);
         // Creates and initializes a buffer object's data store. (target, data, hint<=how data store will be accessed)
         // ~data : pointer to data
         // ~hint : how data store will be accessed (depend of frequency and nature)
@@ -163,24 +163,24 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         //      DRAW - The data store contents are modified by the application, and used as the source for GL drawing and image specification commands.
         //      READ - // modified by reading data from the GL, and used to return that data when queried by the application.
         //      COPY - // modified by reading data from the GL, and used as the source for GL drawing and image specification commands.
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_DYNAMIC_DRAW);
         // size 4 : BRGA for each vertex. So each vertex need 4 float (the last one for alpha parameter)
         GL20.glVertexAttribPointer(0, 4, GL11.GL_FLOAT, false, 0, 0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
-        indexVboId = GL15.glGenBuffers();
+        this.indexVboId = GL15.glGenBuffers();
         indicesBuffer = BufferUtils.createIntBuffer(indicesCount);
         indicesBuffer.put(indices).flip();
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indexVboId);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, this.indexVboId);
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
 
         // Deselect (bind to 0) the VBO
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 
-        colorsVboId = GL15.glGenBuffers();
+        this.colorsVboId = GL15.glGenBuffers();
         colorsBuffer = BufferUtils.createFloatBuffer(colorsCount);
         colorsBuffer.put(colors).flip();
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, colorsVboId);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, this.colorsVboId);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, colorsBuffer, GL15.GL_STATIC_DRAW);
         GL20.glVertexAttribPointer(1, 4, GL11.GL_FLOAT, false, 0, 0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
