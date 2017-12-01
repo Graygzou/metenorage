@@ -16,11 +16,11 @@ public class Entity {
      */
     public int uniqueID;
 
-    private Vector3f position;
+    protected Vector3f position;
 
-    private Vector3f rotation;
+    protected Vector3f rotation;
 
-    private Vector3f scale;
+    protected Vector3f scale;
 
     /**
      * List of components attached to the entity.
@@ -75,6 +75,12 @@ public class Entity {
         this.rotation.z = z;
     }
 
+    public void rotate(float offsetX, float offsetY, float offsetZ) {
+        rotation.x += offsetX;
+        rotation.y += offsetY;
+        rotation.z += offsetZ;
+    }
+
     public Vector3f getScale() {
         return scale;
     }
@@ -87,5 +93,17 @@ public class Entity {
         this.scale.x = s;
         this.scale.y = s;
         this.scale.z = s;
+    }
+
+    public void movePosition(float offsetX, float offsetY, float offsetZ) {
+        if (offsetZ != 0) {
+            position.x += (float) Math.sin(Math.toRadians(rotation.y)) * -1.0f * offsetZ;
+            position.z += (float) Math.cos(Math.toRadians(rotation.y)) * offsetZ;
+        }
+        if (offsetX != 0) {
+            position.x += (float) Math.sin(Math.toRadians(rotation.y - 90)) * -1.0f * offsetX;
+            position.z += (float) Math.cos(Math.toRadians(rotation.y - 90)) * offsetX;
+        }
+        position.y += offsetY;
     }
 }

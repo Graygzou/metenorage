@@ -78,9 +78,6 @@ public class Minedraft {
             testTriangle.setRotation(0, 0, 0);
             testTriangle.setScale(1f);
 
-            // Add the component to the entity
-            //testEntity.addComponent(test);
-            //gameEngine.addEntity(testEntity);
             gameEngine.addEntity(testTriangle);
 
             gameEngine.start();

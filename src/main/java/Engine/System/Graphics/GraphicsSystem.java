@@ -37,6 +37,8 @@ public class GraphicsSystem extends BaseSystem {
 
     private Camera camera;
 
+    private boolean isInitialized = false;
+
     public GraphicsSystem(Window window) {
         this.window = window;
 
@@ -85,8 +87,15 @@ public class GraphicsSystem extends BaseSystem {
 
             shadersHandler.bind();
 
+            if(!isInitialized) {
+                for (Component component : getLocalSystemComponentsFor(entity)) {
+                    component.initialize();
+                }
+
+                isInitialized = true;
+            }
+
             for (Component component : getLocalSystemComponentsFor(entity)) {
-                component.initialize();
                 component.apply();
             }
 
