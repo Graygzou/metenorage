@@ -15,10 +15,6 @@ public class Minedraft {
         try {
             GameEngine gameEngine = new GameEngine("Minedraft", 800, 600);
 
-            float[] positions = new float[]{
-                    // V0
-                    ,};
-
             Entity block1 = new Entity("Block 1");
             Entity block2 = new Entity("Block 2");
             Entity block3 = new Entity("Block 3");
