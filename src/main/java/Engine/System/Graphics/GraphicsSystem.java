@@ -76,11 +76,11 @@ public class GraphicsSystem extends BaseSystem {
 
         for (Entity entity : entities) {
             // Update the world matrix.
-            shadersHandler.setUniform("worldMatrix",
+            /*shadersHandler.setUniform("worldMatrix",
                     TransformationUtils.getWorldMatrix(
                         entity.getPosition(),
                         entity.getRotation(),
-                        entity.getScale()));
+                        entity.getScale()));*/
 
             // Update the model-view matrix for the current entity.
             shadersHandler.setUniform("modelViewMatrix",
@@ -118,12 +118,12 @@ public class GraphicsSystem extends BaseSystem {
 
         shadersHandler.createUniform("projectionMatrix");
         shadersHandler.createUniform("modelViewMatrix");
-        shadersHandler.createUniform("texture_sampler");
+        shadersHandler.createUniform("textureSampler");
         shadersHandler.createUniform("color");
         shadersHandler.createUniform("useColor");
 
         shadersHandler.setUniform("modelViewMatrix", new Matrix4f());
-        shadersHandler.setUniform("texture_sampler", 0);
+        shadersHandler.setUniform("textureSampler", 0);
     }
 
     public Camera getCamera() {
