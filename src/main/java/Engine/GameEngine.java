@@ -7,11 +7,9 @@ package Engine;
 import Engine.Helper.Timer;
 import Engine.Main.Entity;
 import Engine.System.Component.Messaging.MessageQueue;
-import Engine.System.Graphics.Component.Cube;
-import Engine.System.Graphics.Component.Plane;
+import Engine.System.Graphics.Component.Mesh3D;
 import Engine.System.Graphics.GraphicsSystem;
 import Engine.System.Graphics.Texture;
-import Engine.System.Logic.Component.TestComponent;
 import Engine.System.Logic.LogicSystem;
 import org.joml.Vector3f;
 

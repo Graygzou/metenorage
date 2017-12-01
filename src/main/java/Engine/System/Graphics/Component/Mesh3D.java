@@ -26,9 +26,9 @@ import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
  */
 public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
-    private float[] vertices;
-    private int[] indices;
-    private float[] colors;
+    protected float[] vertices;
+    protected int[] indices;
+    protected float[] colors;
     private float[] textureCoordinates;
 
     private FloatBuffer verticesBuffer;
@@ -44,9 +44,9 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     private int colorsVboId;
     private int textureCoordinatesVboId;
     private int vaoId;
-    private int verticesCount;
-    private int indicesCount;
-    private int colorsCount;
+    protected int verticesCount;
+    protected int indicesCount;
+    protected int colorsCount;
     private int textureCoordinatesCount;
 
     public Mesh3D(Entity entity) {
@@ -100,6 +100,7 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
     public void setTexture(Texture texture) {
         this.texture = texture;
+    }
 
     public void setVertices(float[] vertices) {
         this.vertices = vertices;
