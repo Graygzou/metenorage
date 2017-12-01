@@ -93,8 +93,9 @@ public class GraphicsSystem extends BaseSystem {
 
         shadersHandler.createUniform("projectionMatrix");
         shadersHandler.createUniform("worldMatrix");
+        shadersHandler.createUniform("texture_sampler");
+
         shadersHandler.setUniform("worldMatrix", new Matrix4f());
-
-
+        shadersHandler.setUniform("texture_sampler", 0);
     }
 }
