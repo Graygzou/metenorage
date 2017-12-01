@@ -214,6 +214,7 @@ public class GameEngine implements Runnable {
 
     public void addEntity(Entity entity) {
         this.entities.add(entity);
+        System.out.println("Added entity " + entity);
     }
 
     public void setCamera(Camera camera) {

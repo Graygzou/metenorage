@@ -34,7 +34,7 @@ public class Entity {
         this.components = new ArrayList<Component>();
         this.position = new Vector3f();
         this.rotation = new Vector3f();
-        this.scale = new Vector3f();
+        this.scale = new Vector3f(1f, 1f, 1f);
     }
 
     public Entity() {
