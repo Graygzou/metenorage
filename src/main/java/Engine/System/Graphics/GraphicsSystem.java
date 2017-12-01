@@ -113,4 +113,12 @@ public class GraphicsSystem extends BaseSystem {
         shadersHandler.setUniform("modelViewMatrix", new Matrix4f());
         shadersHandler.setUniform("texture_sampler", 0);
     }
+
+    public Camera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(Camera camera) {
+        this.camera = camera;
+    }
 }

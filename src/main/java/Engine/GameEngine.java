@@ -89,21 +89,21 @@ public class GameEngine implements Runnable {
 
         float[] positions = new float[] {
                 // VO
-                -0.5f,  0.5f,  0.5f,
+                -0.5f,  0.5f,  0.5f, 1f,
                 // V1
-                -0.5f, -0.5f,  0.5f,
+                -0.5f, -0.5f,  0.5f, 1f,
                 // V2
-                0.5f, -0.5f,  0.5f,
+                0.5f, -0.5f,  0.5f, 1f,
                 // V3
-                0.5f,  0.5f,  0.5f,
+                0.5f,  0.5f,  0.5f, 1f,
                 // V4
-                -0.5f,  0.5f, -0.5f,
+                -0.5f,  0.5f, -0.5f, 1f,
                 // V5
-                0.5f,  0.5f, -0.5f,
+                0.5f,  0.5f, -0.5f, 1f,
                 // V6
-                -0.5f, -0.5f, -0.5f,
+                -0.5f, -0.5f, -0.5f, 1f,
                 // V7
-                0.5f, -0.5f, -0.5f,
+                0.5f, -0.5f, -0.5f, 1f,
         };
         float[] colours = new float[]{
                 0.5f, 0.0f, 0.0f,
@@ -164,6 +164,9 @@ public class GameEngine implements Runnable {
      * Delegates the input handling to the game logic.
      */
     protected void handleInput() {
+        float CAMERA_POS_STEP = 0.1f;
+        graphicsSystem.getCamera().movePosition(CAMERA_POS_STEP, CAMERA_POS_STEP, 0);
+
         // Todo: implement this logic.
         float xIncrement = 0;
         float yIncrement = 0;
