@@ -9,6 +9,7 @@ import static org.lwjgl.glfw.GLFW.*;
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  */
+
 public class MouseInput {
 
     private boolean cursorInWindow = false;

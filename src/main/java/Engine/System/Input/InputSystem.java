@@ -7,6 +7,7 @@ import Engine.Window;
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  */
+
 public class InputSystem extends BaseSystem {
     private Window window;
 
@@ -30,5 +31,9 @@ public class InputSystem extends BaseSystem {
     @Override
     public void cleanUp() {
 
+    }
+
+    public void handleInput() {
+        this.mouseInput.handleInput();
     }
 }
