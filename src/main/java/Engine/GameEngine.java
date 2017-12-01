@@ -6,11 +6,14 @@ package Engine;
 
 import Engine.Helper.Timer;
 import Engine.Main.Entity;
+import Engine.Main.Material;
+import Engine.Main.Light.PointLight;
 import Engine.System.Component.Messaging.MessageQueue;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.GraphicsSystem;
 import Engine.System.Input.InputSystem;
 import Engine.System.Logic.LogicSystem;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,8 @@ public class GameEngine implements Runnable {
     private Timer timer;
 
     private List<Entity> entities;
+
+    private List<Material> materials;
 
     private LogicSystem logicSystem;
 
@@ -50,6 +55,7 @@ public class GameEngine implements Runnable {
 
 
         this.entities = new ArrayList<>();
+        this.materials = new ArrayList<>();
     }
 
     public void start() {
@@ -76,6 +82,10 @@ public class GameEngine implements Runnable {
 
         window.initialize();
         timer.initialize();
+
+        for (Material material : materials) {
+            material.initialize();
+        }
 
         this.inputSystem.initialize();
         this.graphicsSystem.initialize();
@@ -217,10 +227,22 @@ public class GameEngine implements Runnable {
         System.out.println("Added entity " + entity);
     }
 
+    public void addMaterial(Material material) {
+        this.materials.add(material);
+    }
+
     public void setCamera(Camera camera) {
         if(this.graphicsSystem != null)
             this.graphicsSystem.setCamera(camera);
 
         this.addEntity(camera);
+    }
+
+    public void setPointLight(PointLight pointLight) {
+        graphicsSystem.setPointLight(pointLight);
+    }
+
+    public void setAmbientLight(Vector3f ambientLight) {
+        graphicsSystem.setAmbientLight(ambientLight);
     }
 }

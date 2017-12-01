@@ -1,11 +1,10 @@
 package Engine.System.Graphics.Component;
 
 import Engine.Main.Entity;
+import Engine.Main.Material;
 import Engine.System.Component.BaseComponent;
 import Engine.System.Component.Messaging.Message;
 import Engine.System.Graphics.GraphicsComponent;
-import Engine.System.Graphics.Texture;
-import Engine.TexturesManager;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -15,7 +14,6 @@ import org.lwjgl.opengl.GL30;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.Arrays;
 
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBindTexture;
@@ -43,7 +41,7 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     private FloatBuffer normalsBuffer;
 
     private String meshURI;
-    private Texture texture;
+    private Material material;
 
     private int vboId;
     private int indexVboId;
@@ -81,20 +79,6 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
         this.textureCoordinates = textureCoordinates;
         this.textureCoordinatesCount = textureCoordinates.length;
-
-        System.out.println("Indices: " + Arrays.toString(vertices));
-    }
-
-    public Texture getTexture() {
-        return texture;
-    }
-
-    public void setVertices(float[] vertices) {
-        this.vertices = vertices;
-    }
-
-    public void setIndices(int[] indices) {
-        this.indices = indices;
     }
 
     @Override
@@ -108,11 +92,11 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
     @Override
     public void render() {
-        if(texture != null) {
+        if(material.getTexture() != null) {
             // Activate first texture unit
             glActiveTexture(GL_TEXTURE0);
             // Bind the texture
-            glBindTexture(GL_TEXTURE_2D, texture.getId());
+            glBindTexture(GL_TEXTURE_2D, material.getTexture().getId());
         }
         // Bind to the VAO
         //GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
@@ -161,19 +145,6 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     @Override
     public void initialize() {
         // Todo: parse and load mesh data stored in file.
-
-        if(textureName != null) {
-            try {
-                if(!TexturesManager.getInstance().getTextures().containsKey(textureName)) {
-                    this.texture = new Texture(textureName);
-                    TexturesManager.getInstance().addTexture(textureName, this.texture);
-                } else {
-                    this.texture = TexturesManager.getInstance().getTexture(textureName);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
 
         // Create and bind VAO.
         this.vaoId = GL30.glGenVertexArrays();
@@ -229,19 +200,15 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         GL30.glBindVertexArray(0);
     }
 
-    public void setTextureName(String name) {
-        this.textureName = name;
-    }
-
-    public Vector3f getColor() {
-        return meshColor;
-    }
-
-    public void setColor(Vector3f meshColor) {
-        this.meshColor = meshColor;
-    }
-
     public boolean isTextured() {
-        return this.texture != null;
+        return this.material.getTexture() != null;
+    }
+
+    public Material getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 }

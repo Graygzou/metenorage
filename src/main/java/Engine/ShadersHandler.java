@@ -1,7 +1,10 @@
 package Engine;
 
+import Engine.Main.Material;
+import Engine.Main.Light.PointLight;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.system.MemoryStack;
 
@@ -35,7 +38,7 @@ public class ShadersHandler {
         int uniformLocation = glGetUniformLocation(programId, uniformName);
 
         if (uniformLocation < 0) {
-            throw new Exception("ShadersHandler: could not find uniform:" + uniformName);
+            throw new Exception("ShadersHandler: could not find uniform: " + uniformName);
         }
 
         uniforms.put(uniformName, uniformLocation);
@@ -59,8 +62,16 @@ public class ShadersHandler {
         glUniform1i(uniforms.get(uniformName), value);
     }
 
+    public void setUniform(String uniformName, float value) {
+        glUniform1f(uniforms.get(uniformName), value);
+    }
+
     public void setUniform(String uniformName, Vector3f value) {
         glUniform3f(uniforms.get(uniformName), value.x, value.y, value.z);
+    }
+
+    public void setUniform(String uniformName, Vector4f value) {
+        glUniform4f(uniforms.get(uniformName), value.x, value.y, value.z, value.w);
     }
 
     public void createVertexShader(String shaderCode) throws Exception {
@@ -89,6 +100,41 @@ public class ShadersHandler {
         glAttachShader(programId, shaderId);
 
         return shaderId;
+    }
+
+    public void setUniform(String uniformName, PointLight pointLight) {
+        setUniform(uniformName + ".color", pointLight.getColor() );
+        setUniform(uniformName + ".position", pointLight.getPosition());
+        setUniform(uniformName + ".intensity", pointLight.getIntensity());
+        PointLight.Attenuation attenuation = pointLight.getAttenuation();
+        setUniform(uniformName + ".attenuation.constant", attenuation.getConstant());
+        setUniform(uniformName + ".attenuation.linear", attenuation.getLinear());
+        setUniform(uniformName + ".attenuation.exponent", attenuation.getExponent());
+    }
+
+    public void setUniform(String uniformName, Material material) {
+        setUniform(uniformName + ".ambient", material.getAmbientColor());
+        setUniform(uniformName + ".diffuse", material.getDiffuseColor());
+        setUniform(uniformName + ".specular", material.getSpecularColor());
+        setUniform(uniformName + ".hasTexture", material.isTextured() ? 1 : 0);
+        setUniform(uniformName + ".reflectance", material.getReflectance());
+    }
+
+    public void createPointLightUniform(String uniformName) throws Exception {
+        createUniform(uniformName + ".color");
+        createUniform(uniformName + ".position");
+        createUniform(uniformName + ".intensity");
+        createUniform(uniformName + ".attenuation.constant");
+        createUniform(uniformName + ".attenuation.linear");
+        createUniform(uniformName + ".attenuation.exponent");
+    }
+
+    public void createMaterialUniform(String uniformName) throws Exception {
+        createUniform(uniformName + ".ambient");
+        createUniform(uniformName + ".diffuse");
+        createUniform(uniformName + ".specular");
+        createUniform(uniformName + ".hasTexture");
+        createUniform(uniformName + ".reflectance");
     }
 
     public void link() throws Exception {

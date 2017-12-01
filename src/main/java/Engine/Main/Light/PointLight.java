@@ -1,12 +1,17 @@
-package Engine.Main;
+package Engine.Main.Light;
+
+import Engine.Main.Entity;
+import org.joml.Vector3f;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  */
 
-import org.joml.Vector3f;
+/*
+ * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
+ */
 
-public class PointLight {
+public class PointLight extends Entity {
     /**
      * The color of the point light.
      */

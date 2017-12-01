@@ -5,6 +5,7 @@ package Engine.Main;
  */
 
 import Engine.System.Graphics.Texture;
+import Engine.TexturesManager;
 import org.joml.Vector4f;
 
 public class Material {
@@ -34,6 +35,7 @@ public class Material {
      * The texture associated to the material. This changes how the final color of fragments is computed.
      */
     private Texture texture;
+    private String textureName;
 
     public Material() {
         this.ambientColor = DEFAULT_COLOUR;
@@ -47,20 +49,32 @@ public class Material {
         this(colour, colour, colour, null, reflectance);
     }
 
-    public Material(Texture texture) {
-        this(DEFAULT_COLOUR, DEFAULT_COLOUR, DEFAULT_COLOUR, texture, 0);
+    public Material(String textureName) {
+        this(DEFAULT_COLOUR, DEFAULT_COLOUR, DEFAULT_COLOUR, textureName, 0);
     }
 
-    public Material(Texture texture, float reflectance) {
-        this(DEFAULT_COLOUR, DEFAULT_COLOUR, DEFAULT_COLOUR, texture, reflectance);
+    public Material(String textureName, float reflectance) {
+        this(DEFAULT_COLOUR, DEFAULT_COLOUR, DEFAULT_COLOUR, textureName, reflectance);
     }
 
-    public Material(Vector4f ambientColor, Vector4f diffuseColor, Vector4f specularColor, Texture texture, float reflectance) {
+    public Material(Vector4f ambientColor, Vector4f diffuseColor, Vector4f specularColor, String textureName, float reflectance) {
         this.ambientColor = ambientColor;
         this.diffuseColor = diffuseColor;
         this.specularColor = specularColor;
-        this.texture = texture;
+        this.textureName = textureName;
         this.reflectance = reflectance;
+    }
+
+    public void initialize() {
+        if(!TexturesManager.getInstance().getTextures().containsKey(textureName)) {
+            try {
+                TexturesManager.getInstance().addTexture(textureName, new Texture(textureName));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        this.texture = TexturesManager.getInstance().getTexture(textureName);
     }
 
     public Vector4f getAmbientColor() {

@@ -1,6 +1,7 @@
 package Engine.System.Graphics;
 
 import Engine.Main.Entity;
+import Engine.Main.Light.PointLight;
 import Engine.ShadersHandler;
 import Engine.System.BaseSystem;
 import Engine.System.Component.Component;
@@ -9,6 +10,8 @@ import Engine.TransformationUtils;
 import Engine.Utils;
 import Engine.Window;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import java.util.List;
 
@@ -37,6 +40,10 @@ public class GraphicsSystem extends BaseSystem {
     private Matrix4f viewMatrix;
 
     private Camera camera;
+
+    private PointLight pointLight;
+
+    private Vector3f ambientLight;
 
     private boolean isInitialized = false;
 
@@ -75,25 +82,28 @@ public class GraphicsSystem extends BaseSystem {
         Matrix4f viewMatrix = TransformationUtils.getViewMatrix(camera);
 
         for (Entity entity : entities) {
-            // Update the world matrix.
-            /*shadersHandler.setUniform("worldMatrix",
-                    TransformationUtils.getWorldMatrix(
-                        entity.getPosition(),
-                        entity.getRotation(),
-                        entity.getScale()));*/
-
             // Update the model-view matrix for the current entity.
             shadersHandler.setUniform("modelViewMatrix",
                     TransformationUtils.getModelViewMatrix(entity, viewMatrix));
 
+            PointLight currPointLight = new PointLight(pointLight);
+            Vector3f lightPos = currPointLight.getPosition();
+            Vector4f aux = new Vector4f(lightPos, 1);
+            aux.mul(viewMatrix);
+            lightPos.x = aux.x;
+            lightPos.y = aux.y;
+            lightPos.z = aux.z;
 
 
             shadersHandler.bind();
 
+            shadersHandler.setUniform("pointLight", currPointLight);
+            shadersHandler.setUniform("ambientLight", ambientLight);
+            shadersHandler.setUniform("specularPower", 10f);
+
             for (Component component : getLocalSystemComponentsFor(entity)) {
                 if(component instanceof Mesh3D) {
-                    shadersHandler.setUniform("color", ((Mesh3D) component).getColor());
-                    shadersHandler.setUniform("useColor", ((Mesh3D) component).isTextured() ? 0 : 1);
+                    shadersHandler.setUniform("material", ((Mesh3D) component).getMaterial());
                 }
 
                 component.initialize();
@@ -119,11 +129,14 @@ public class GraphicsSystem extends BaseSystem {
         shadersHandler.createUniform("projectionMatrix");
         shadersHandler.createUniform("modelViewMatrix");
         shadersHandler.createUniform("textureSampler");
-        shadersHandler.createUniform("color");
-        shadersHandler.createUniform("useColor");
 
         shadersHandler.setUniform("modelViewMatrix", new Matrix4f());
         shadersHandler.setUniform("textureSampler", 0);
+
+        shadersHandler.createUniform("specularPower");
+        shadersHandler.createUniform("ambientLight");
+        shadersHandler.createMaterialUniform("material");
+        shadersHandler.createPointLightUniform("pointLight");
     }
 
     public Camera getCamera() {
@@ -132,5 +145,13 @@ public class GraphicsSystem extends BaseSystem {
 
     public void setCamera(Camera camera) {
         this.camera = camera;
+    }
+
+    public void setPointLight(PointLight pointLight) {
+        this.pointLight = pointLight;
+    }
+
+    public void setAmbientLight(Vector3f ambientLight) {
+        this.ambientLight = ambientLight;
     }
 }

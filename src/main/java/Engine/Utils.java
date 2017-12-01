@@ -93,10 +93,6 @@ public class Utils {
             } else if(line.contains("active")) {
                 System.out.println(line.split(":")[1]);
                 //entity.setActive();
-            } else if(line.contains("vertices")) {
-                component.setVertices(Utils.getFloatValues(line));
-            } else if(line.contains("indices")) {
-                component.setIndices(Utils.getIntegerValues(line));
             }
         }
     	return component;
