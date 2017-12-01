@@ -2,7 +2,6 @@ package Engine.System.Physics;
 
 import Engine.System.BaseSystem;
 import Engine.System.Component.Component;
-import Engine.Window;
 
 /*
  * @author Gr�goire Boiron <gregoire.boiron@gmail.com>
@@ -21,7 +20,7 @@ public class PhysicsSystem extends BaseSystem {
     }
 
     @Override
-    public void initialize(Window window) throws Exception {
+    public void initialize() throws Exception {
 
     }
 }

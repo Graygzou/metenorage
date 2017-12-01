@@ -157,7 +157,7 @@ public class GameEngine implements Runnable {
         //gameEngine.addEntity(testEntity);
         addEntity(testTriangle);
 
-        this.graphicsSystem.initialize(window);
+        this.graphicsSystem.initialize();
     }
 
     /**

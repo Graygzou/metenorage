@@ -100,7 +100,7 @@ public class GraphicsSystem extends BaseSystem {
     }
 
     @Override
-    public void initialize(Window window) throws Exception {
+    public void initialize() throws Exception {
         shadersHandler = new ShadersHandler();
         shadersHandler.createVertexShader(Utils.readTextResource("Shader/basicShader.vs"));
         shadersHandler.createFragmentShader(Utils.readTextResource("Shader/basicShader.fs"));
