@@ -140,7 +140,9 @@ public class Window {
         isResized = resized;
     }
 
-
+    public long getWindowHandle() {
+        return windowHandle;
+    }
 
     public void update() {
         glfwSwapBuffers(windowHandle);

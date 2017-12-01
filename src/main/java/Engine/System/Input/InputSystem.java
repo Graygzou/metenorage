@@ -10,8 +10,11 @@ import Engine.Window;
 public class InputSystem extends BaseSystem {
     private Window window;
 
+    private MouseInput mouseInput;
+
     public InputSystem(Window window) {
         this.window = window;
+        this.mouseInput = new MouseInput(window);
     }
 
     @Override
