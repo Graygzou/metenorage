@@ -7,13 +7,12 @@ import Engine.System.Graphics.GraphicsComponent;
 import Engine.System.Logic.Component.TestComponent;
 import Engine.System.Logic.LogicComponent;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author : Matthieu Le Boucher
@@ -98,8 +97,6 @@ public class Utils {
                 component.setVertices(Utils.getFloatValues(line));
             } else if(line.contains("indices")) {
                 component.setIndices(Utils.getIntegerValues(line));
-            } else if(line.contains("colors")) {
-                component.setColors(Utils.getFloatValues(line));
             }
         }
     	return component;
@@ -146,4 +143,15 @@ public class Utils {
         return floatValues;
     }
 
+    public static List<String> readAllLines(String fileName) throws Exception {
+        List<String> list = new ArrayList<>();
+
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(Utils.class.getClass().getResourceAsStream(fileName)))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null)
+                list.add(line);
+        }
+
+        return list;
+    }
 }

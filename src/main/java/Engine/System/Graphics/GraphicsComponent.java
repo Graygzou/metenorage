@@ -16,6 +16,4 @@ public interface GraphicsComponent extends Component {
     void setVertices(float[] vertices);
 
     void setIndices(int[] indices);
-
-    void setColors(float[] colors);
 }

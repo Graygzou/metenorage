@@ -6,6 +6,7 @@ import Engine.System.Component.Messaging.Message;
 import Engine.System.Graphics.GraphicsComponent;
 import Engine.System.Graphics.Texture;
 import Engine.TexturesManager;
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -14,6 +15,7 @@ import org.lwjgl.opengl.GL30;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.Arrays;
 
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBindTexture;
@@ -27,30 +29,31 @@ import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
  * @author : Gregoire Boiron
  */
 public class Mesh3D extends BaseComponent implements GraphicsComponent {
-
     protected float[] vertices;
     protected int[] indices;
-    protected float[] colors;
     protected String textureName;
     protected float[] textureCoordinates;
+    protected float[] normals;
+
+    protected Vector3f meshColor = new Vector3f();
 
     private FloatBuffer verticesBuffer;
     private IntBuffer indicesBuffer;
-    private FloatBuffer colorsBuffer;
     private FloatBuffer textureCoordinatesBuffer;
+    private FloatBuffer normalsBuffer;
 
     private String meshURI;
     private Texture texture;
-  
+
     private int vboId;
     private int indexVboId;
-    private int colorsVboId;
     private int textureCoordinatesVboId;
+    private int normalsVboId;
     private int vaoId;
     protected int verticesCount;
     protected int indicesCount;
-    protected int colorsCount;
     protected int textureCoordinatesCount;
+    protected int normalsCount;
 
     public Mesh3D(Entity entity) {
         super(entity);
@@ -64,14 +67,7 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         // Todo: implement this logic.
     }
 
-    public Mesh3D(Entity entity, float[] vertices) {
-        super(entity);
-
-        this.vertices = vertices;
-        this.verticesCount = vertices.length;
-    }
-
-    public Mesh3D(Entity entity, float[] vertices, int[] indices) {
+    public Mesh3D(Entity entity, float[] vertices, int[] indices, float[] normals, float[] textureCoordinates) {
         super(entity);
 
         this.vertices = vertices;
@@ -79,38 +75,18 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
         this.indices = indices;
         this.indicesCount = indices.length;
-    }
 
-    public Mesh3D(Entity entity, float[] vertices, int[] indices, float[] colors) {
-        this(entity, vertices, indices);
-
-        this.colors = colors;
-        this.colorsCount = colors.length;
-    }
-
-
-    public Mesh3D(Entity entity, float[] vertices, int[] indices, float[] textureCoordinates, Texture texture) {
-        this(entity, vertices, indices);
+        this.normals = normals;
+        this.normalsCount = normals.length;
 
         this.textureCoordinates = textureCoordinates;
         this.textureCoordinatesCount = textureCoordinates.length;
-        this.texture = texture;
-    }
 
-    public Mesh3D(Entity entity, float[] vertices, int[] indices, float[] textureCoordinates, String textureName) {
-        this(entity, vertices, indices);
-
-        this.textureCoordinates = textureCoordinates;
-        this.textureCoordinatesCount = textureCoordinates.length;
-        this.textureName = textureName;
+        System.out.println("Indices: " + Arrays.toString(vertices));
     }
 
     public Texture getTexture() {
         return texture;
-    }
-
-    public void setTexture(Texture texture) {
-        this.texture = texture;
     }
 
     public void setVertices(float[] vertices) {
@@ -119,10 +95,6 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
     public void setIndices(int[] indices) {
         this.indices = indices;
-    }
-
-    public void setColors(float[] colors) {
-        this.colors = colors;
     }
 
     @Override
@@ -136,30 +108,33 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
     @Override
     public void render() {
-
         if(texture != null) {
             // Activate first texture unit
             glActiveTexture(GL_TEXTURE0);
             // Bind the texture
             glBindTexture(GL_TEXTURE_2D, texture.getId());
-            // Bind to the VAO
-            //GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-            GL30.glBindVertexArray(vaoId);
-            GL20.glEnableVertexAttribArray(0);
-            GL20.glEnableVertexAttribArray(1);
-
-            // Bind to the index VBO that has all the information about the order of the vertices.
-            GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indexVboId);
-
-            // Draw the vertices
-            GL11.glDrawElements(GL11.GL_TRIANGLES, this.indicesCount, GL11.GL_UNSIGNED_INT, 0);
-
-            // Restore state
-            GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-            GL20.glDisableVertexAttribArray(0);
-            GL20.glDisableVertexAttribArray(1);
-            GL30.glBindVertexArray(0);
         }
+        // Bind to the VAO
+        //GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+        GL30.glBindVertexArray(vaoId);
+        GL20.glEnableVertexAttribArray(0);
+        GL20.glEnableVertexAttribArray(1);
+        GL20.glEnableVertexAttribArray(2);
+
+        // Bind to the index VBO that has all the information about the order of the vertices.
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indexVboId);
+
+        // Draw the vertices
+        GL11.glDrawElements(GL11.GL_TRIANGLES, this.indicesCount, GL11.GL_UNSIGNED_INT, 0);
+
+        // Restore state
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+        GL20.glDisableVertexAttribArray(0);
+        GL20.glDisableVertexAttribArray(1);
+        GL20.glDisableVertexAttribArray(2);
+        GL30.glBindVertexArray(0);
+        glBindTexture(GL_TEXTURE_2D, 0);
+
     }
 
     @Override
@@ -167,14 +142,12 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         // Disable the VBO index from the VAO attributes list
         GL20.glDisableVertexAttribArray(0);
         GL20.glDisableVertexAttribArray(1);
+        GL20.glDisableVertexAttribArray(2);
+        glBindTexture(GL_TEXTURE_2D, 0);
 
         // Delete the VBO
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         GL15.glDeleteBuffers(vboId);
-
-        // Delete the color VBO
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-        GL15.glDeleteBuffers(colorsVboId);
 
         // Delete the index VBO
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -189,7 +162,6 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     public void initialize() {
         // Todo: parse and load mesh data stored in file.
 
-
         if(textureName != null) {
             try {
                 if(!TexturesManager.getInstance().getTextures().containsKey(textureName)) {
@@ -203,31 +175,30 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
             }
         }
 
-        verticesBuffer = BufferUtils.createFloatBuffer(verticesCount);
-        verticesBuffer.put(vertices).flip();
-
         // Create and bind VAO.
         this.vaoId = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(this.vaoId);
 
         // Create, bind and hydrate VBO.
         vboId = GL15.glGenBuffers();
+        verticesBuffer = BufferUtils.createFloatBuffer(verticesCount);
+        verticesBuffer.put(vertices).flip();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboId);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL_DYNAMIC_DRAW);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
 
         this.vboId = GL15.glGenBuffers();
         // Binds a named buffer object. (target<=specifiedEnum, bufferObjectName)
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, this.vboId);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL_DYNAMIC_DRAW);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
         // size 4 : BRGA for each vertex. So each vertex need 4 float (the last one for alpha parameter)
 
-        GL20.glVertexAttribPointer(0, 4, GL11.GL_FLOAT, false, 0, 0);
+        GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
         this.indexVboId = GL15.glGenBuffers();
         indicesBuffer = BufferUtils.createIntBuffer(indicesCount);
         indicesBuffer.put(indices).flip();
-      
+
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indexVboId);
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
 
@@ -242,16 +213,35 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
             GL15.glBufferData(GL15.GL_ARRAY_BUFFER, textureCoordinatesBuffer, GL_DYNAMIC_DRAW);
             GL20.glVertexAttribPointer(1, 2, GL11.GL_FLOAT, false, 0, 0);
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-        } else {
-            colorsVboId = GL15.glGenBuffers();
-            colorsBuffer = BufferUtils.createFloatBuffer(colorsCount);
-            colorsBuffer.put(colors).flip();
-            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, colorsVboId);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, colorsBuffer, GL_STATIC_DRAW);
-            GL20.glVertexAttribPointer(1, 4, GL11.GL_FLOAT, false, 0, 0);
+        }
+
+        if(normals != null) {
+            // Vertex normals VBO.
+            normalsVboId = GL15.glGenBuffers();
+            normalsBuffer = BufferUtils.createFloatBuffer(normalsCount);
+            normalsBuffer.put(normals).flip();
+            GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, normalsVboId);
+            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, normalsBuffer, GL_STATIC_DRAW);
+            GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, 0, 0);
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         }
 
         GL30.glBindVertexArray(0);
+    }
+
+    public void setTextureName(String name) {
+        this.textureName = name;
+    }
+
+    public Vector3f getColor() {
+        return meshColor;
+    }
+
+    public void setColor(Vector3f meshColor) {
+        this.meshColor = meshColor;
+    }
+
+    public boolean isTextured() {
+        return this.texture != null;
     }
 }

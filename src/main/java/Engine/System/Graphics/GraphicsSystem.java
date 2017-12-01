@@ -4,6 +4,7 @@ import Engine.Main.Entity;
 import Engine.ShadersHandler;
 import Engine.System.BaseSystem;
 import Engine.System.Component.Component;
+import Engine.System.Graphics.Component.Mesh3D;
 import Engine.TransformationUtils;
 import Engine.Utils;
 import Engine.Window;
@@ -85,9 +86,16 @@ public class GraphicsSystem extends BaseSystem {
             shadersHandler.setUniform("modelViewMatrix",
                     TransformationUtils.getModelViewMatrix(entity, viewMatrix));
 
+
+
             shadersHandler.bind();
 
             for (Component component : getLocalSystemComponentsFor(entity)) {
+                if(component instanceof Mesh3D) {
+                    shadersHandler.setUniform("color", ((Mesh3D) component).getColor());
+                    shadersHandler.setUniform("useColor", ((Mesh3D) component).isTextured() ? 0 : 1);
+                }
+
                 component.initialize();
                 component.apply();
             }
@@ -111,6 +119,8 @@ public class GraphicsSystem extends BaseSystem {
         shadersHandler.createUniform("projectionMatrix");
         shadersHandler.createUniform("modelViewMatrix");
         shadersHandler.createUniform("texture_sampler");
+        shadersHandler.createUniform("color");
+        shadersHandler.createUniform("useColor");
 
         shadersHandler.setUniform("modelViewMatrix", new Matrix4f());
         shadersHandler.setUniform("texture_sampler", 0);

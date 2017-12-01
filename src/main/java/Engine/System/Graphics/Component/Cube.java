@@ -35,17 +35,6 @@ public class Cube extends Mesh3D {
                 0.5f, -0.5f, 0.5f, 1f
         };
 
-        colors = new float[]{
-                0.5f, 0.0f, 0.0f, 1f,
-                0.0f, 0.5f, 0.0f, 1f,
-                0.0f, 0.0f, 0.5f, 1f,
-                0.0f, 0.5f, 0.5f, 1f,
-                0.5f, 0.0f, 0.0f, 1f,
-                0.0f, 0.5f, 0.0f, 1f,
-                0.0f, 0.0f, 0.5f, 1f,
-                0.0f, 0.5f, 0.5f, 1f
-        };
-
         textureCoordinates = new float[]{
                 0.0f, 0.0f,
                 0.0f, 0.5f,
@@ -86,7 +75,6 @@ public class Cube extends Mesh3D {
 
         this.verticesCount = vertices.length;
         this.indicesCount = indices.length;
-        this.colorsCount = colors.length;
         this.textureCoordinatesCount = textureCoordinates.length;
     }
 
