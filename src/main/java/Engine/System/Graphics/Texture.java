@@ -1,6 +1,7 @@
 package Engine.System.Graphics;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL13;
 
 import java.io.IOException;
@@ -39,8 +40,7 @@ public class Texture {
         try {
             decoder = new PNGDecoder(Texture.class.getResourceAsStream(fileName));
             // Load texture contents into a byte buffer
-            buf = ByteBuffer.allocateDirect(
-                    4 * decoder.getWidth() * decoder.getHeight());
+            buf = BufferUtils.createByteBuffer(4 * decoder.getWidth() * decoder.getHeight());
             decoder.decode(buf, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
             buf.flip();
         } catch (IOException e) {
