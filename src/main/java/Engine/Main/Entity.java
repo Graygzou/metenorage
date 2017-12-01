@@ -16,6 +16,8 @@ public class Entity {
      */
     public int uniqueID;
 
+    public String name;
+
     protected Vector3f position;
 
     protected Vector3f rotation;
@@ -26,6 +28,14 @@ public class Entity {
      * List of components attached to the entity.
      */
     private List<Component> components;
+
+    public Entity(String name) {
+        this.name = name;
+        this.components = new ArrayList<Component>();
+        this.position = new Vector3f();
+        this.rotation = new Vector3f();
+        this.scale = new Vector3f();
+    }
 
     public Entity() {
         this.position = new Vector3f();
@@ -105,5 +115,22 @@ public class Entity {
             position.z += (float) Math.cos(Math.toRadians(rotation.y - 90)) * offsetX;
         }
         position.y += offsetY;
+    }
+
+    public void movePosition(Vector3f offset) {
+        this.movePosition(offset.x, offset.y, offset.z);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return this.name != null ? this.name : super.toString();
     }
 }
