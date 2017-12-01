@@ -1,5 +1,8 @@
 #version 330
 
+const int MAX_POINT_LIGHTS = 5;
+const int MAX_SPOT_LIGHTS = 5;
+
 struct Attenuation
 {
     float constant;
@@ -16,7 +19,14 @@ struct PointLight
     Attenuation attenuation;
 };
 
-// Models a directional light, e.g. a spotlight.
+struct SpotLight
+{
+    PointLight pointLight;
+    vec3 coneDirection;
+    float cutOff;
+};
+
+// Models a directional light.
 struct DirectionalLight
 {
     vec3 color;
@@ -47,7 +57,8 @@ uniform vec3 ambientLight;
 uniform float specularPower;
 uniform Material material;
 
-uniform PointLight pointLight;
+uniform PointLight pointLights[MAX_POINT_LIGHTS];
+uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 uniform DirectionalLight directionalLight;
 
 uniform vec3 cameraPosition;
@@ -104,6 +115,24 @@ vec4 computePointLight(PointLight light, vec3 position, vec3 normal)
     return lightColor / attenuationInverse;
 }
 
+vec4 computeSpotLight(SpotLight light, vec3 position, vec3 normal)
+{
+    vec3 lightDirection = light.pointLight.position - position;
+    vec3 toLightDirection  = normalize(lightDirection);
+    vec3 fromLightDirection = -toLightDirection;
+    float spotAlpha = dot(fromLightDirection, normalize(light.coneDirection));
+
+    vec4 color = vec4(0, 0, 0, 0);
+
+    if (spotAlpha > light.cutOff)
+    {
+        color = computePointLight(light.pointLight, position, normal);
+        color *= (1.0 - (1.0 - spotAlpha) / (1.0 - light.cutOff));
+    }
+
+    return color;
+}
+
 vec4 computeDirectionalLight(DirectionalLight light, vec3 position, vec3 normal)
 {
     return computeLightColor(light.color, light.intensity, position, normalize(light.direction), normal);
@@ -113,8 +142,25 @@ void main()
 {
     setupColors(material, outTextureCoordinate);
 
-    vec4 diffuseSpecularComponent = computePointLight(pointLight, modelViewVertexPosition, modelViewVertexNormal);
-    diffuseSpecularComponent += computeDirectionalLight(directionalLight, modelViewVertexPosition, modelViewVertexNormal);
+    vec4 diffuseSpecularComponent = computeDirectionalLight(directionalLight, modelViewVertexPosition, modelViewVertexNormal);
+
+    for (int i = 0; i < MAX_POINT_LIGHTS; i++)
+    {
+        if (pointLights[i].intensity > 0)
+        {
+            diffuseSpecularComponent +=
+                computePointLight(pointLights[i], modelViewVertexPosition, modelViewVertexNormal);
+        }
+    }
+
+    for (int i = 0; i < MAX_SPOT_LIGHTS; i++)
+    {
+        if (spotLights[i].pointLight.intensity > 0)
+        {
+            diffuseSpecularComponent +=
+                computeSpotLight(spotLights[i], modelViewVertexPosition, modelViewVertexNormal);
+        }
+    }
 
     fragmentColor = ambientConstant * vec4(ambientLight, 1) + diffuseSpecularComponent;
 }
