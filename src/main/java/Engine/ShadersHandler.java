@@ -1,7 +1,8 @@
 package Engine;
 
-import Engine.Main.Material;
+import Engine.Main.Light.DirectionalLight;
 import Engine.Main.Light.PointLight;
+import Engine.Main.Material;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -135,6 +136,18 @@ public class ShadersHandler {
         createUniform(uniformName + ".specular");
         createUniform(uniformName + ".hasTexture");
         createUniform(uniformName + ".reflectance");
+    }
+
+    public void createDirectionalLightUniform(String uniformName) throws Exception {
+        createUniform(uniformName + ".colour");
+        createUniform(uniformName + ".direction");
+        createUniform(uniformName + ".intensity");
+    }
+
+    public void setUniform(String uniformName, DirectionalLight directionalLight) {
+        setUniform(uniformName + ".color", directionalLight.getColor() );
+        setUniform(uniformName + ".direction", directionalLight.getDirection());
+        setUniform(uniformName + ".intensity", directionalLight.getIntensity());
     }
 
     public void link() throws Exception {

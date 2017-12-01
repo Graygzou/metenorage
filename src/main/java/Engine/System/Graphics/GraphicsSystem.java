@@ -41,8 +41,6 @@ public class GraphicsSystem extends BaseSystem {
 
     private Camera camera;
 
-    private PointLight pointLight;
-
     private Vector3f ambientLight;
 
     private boolean isInitialized = false;
@@ -86,18 +84,19 @@ public class GraphicsSystem extends BaseSystem {
             shadersHandler.setUniform("modelViewMatrix",
                     TransformationUtils.getModelViewMatrix(entity, viewMatrix));
 
-            PointLight currPointLight = new PointLight(pointLight);
-            Vector3f lightPos = currPointLight.getPosition();
-            Vector4f aux = new Vector4f(lightPos, 1);
-            aux.mul(viewMatrix);
-            lightPos.x = aux.x;
-            lightPos.y = aux.y;
-            lightPos.z = aux.z;
-
-
             shadersHandler.bind();
 
-            shadersHandler.setUniform("pointLight", currPointLight);
+            if(entity instanceof PointLight) {
+                PointLight currentPointLight = new PointLight((PointLight) entity);
+                Vector3f lightPosition = currentPointLight.getPosition();
+                Vector4f viewPosition = new Vector4f(lightPosition, 1);
+                viewPosition.mul(viewMatrix);
+                lightPosition.x = viewPosition.x;
+                lightPosition.y = viewPosition.y;
+                lightPosition.z = viewPosition.z;
+                shadersHandler.setUniform("pointLight", currentPointLight);
+            }
+
             shadersHandler.setUniform("ambientLight", ambientLight);
             shadersHandler.setUniform("specularPower", 10f);
 
@@ -145,10 +144,6 @@ public class GraphicsSystem extends BaseSystem {
 
     public void setCamera(Camera camera) {
         this.camera = camera;
-    }
-
-    public void setPointLight(PointLight pointLight) {
-        this.pointLight = pointLight;
     }
 
     public void setAmbientLight(Vector3f ambientLight) {

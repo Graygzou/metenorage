@@ -7,7 +7,6 @@ package Engine;
 import Engine.Helper.Timer;
 import Engine.Main.Entity;
 import Engine.Main.Material;
-import Engine.Main.Light.PointLight;
 import Engine.System.Component.Messaging.MessageQueue;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.GraphicsSystem;
@@ -236,10 +235,6 @@ public class GameEngine implements Runnable {
             this.graphicsSystem.setCamera(camera);
 
         this.addEntity(camera);
-    }
-
-    public void setPointLight(PointLight pointLight) {
-        graphicsSystem.setPointLight(pointLight);
     }
 
     public void setAmbientLight(Vector3f ambientLight) {

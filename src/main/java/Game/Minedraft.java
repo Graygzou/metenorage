@@ -50,7 +50,7 @@ public class Minedraft {
             PointLight pointLight = new PointLight(lightColor, lightPosition, lightIntensity);
             pointLight.setAttenuation(new PointLight.Attenuation(0.0f, 0.0f, 1.0f));
 
-            gameEngine.setPointLight(pointLight);
+            gameEngine.addEntity(pointLight);
             gameEngine.setAmbientLight(ambientLight);
 
             // Set the main camera.
