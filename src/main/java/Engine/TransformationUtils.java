@@ -1,5 +1,6 @@
 package Engine;
 
+import Engine.Main.Entity;
 import Engine.System.Graphics.Camera;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -34,5 +35,20 @@ public class TransformationUtils {
         viewMatrix.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
 
         return viewMatrix;
+    }
+
+    public static Matrix4f getModelViewMatrix(Entity entity, Matrix4f viewMatrix) {
+        Matrix4f modelViewMatrix = new Matrix4f();
+        Vector3f rotation = entity.getRotation();
+
+        modelViewMatrix.identity().translate(entity.getPosition()).
+                rotateX((float) Math.toRadians(-rotation.x)).
+                rotateY((float) Math.toRadians(-rotation.y)).
+                rotateZ((float) Math.toRadians(-rotation.z)).
+                scale(entity.getScale());
+
+        Matrix4f currentView = new Matrix4f(viewMatrix);
+
+        return currentView.mul(modelViewMatrix);
     }
 }

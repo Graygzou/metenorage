@@ -35,6 +35,8 @@ public class GraphicsSystem extends BaseSystem {
 
     private Matrix4f viewMatrix;
 
+    private Camera camera;
+
     public GraphicsSystem(Window window) {
         this.window = window;
     }
@@ -64,11 +66,20 @@ public class GraphicsSystem extends BaseSystem {
             window.setResized(false);
         }
 
+        // Update the view matrix.
+        Matrix4f viewMatrix = TransformationUtils.getViewMatrix(camera);
+
         for (Entity entity : entities) {
-            shadersHandler.setUniform("worldMatrix", TransformationUtils.getWorldMatrix(
-                    entity.getPosition(),
-                    entity.getRotation(),
-                    entity.getScale()));
+            // Update the world matrix.
+            shadersHandler.setUniform("worldMatrix",
+                    TransformationUtils.getWorldMatrix(
+                        entity.getPosition(),
+                        entity.getRotation(),
+                        entity.getScale()));
+
+            // Update the model-view matrix for the current entity.
+            shadersHandler.setUniform("modelViewMatrix",
+                    TransformationUtils.getModelViewMatrix(entity, viewMatrix));
 
             shadersHandler.bind();
 
