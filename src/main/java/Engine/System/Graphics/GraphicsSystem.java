@@ -33,6 +33,8 @@ public class GraphicsSystem extends BaseSystem {
 
     private Matrix4f projectionMatrix;
 
+    private Matrix4f viewMatrix;
+
     public GraphicsSystem(Window window) {
         this.window = window;
     }
