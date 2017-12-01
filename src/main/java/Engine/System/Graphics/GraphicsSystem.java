@@ -39,6 +39,8 @@ public class GraphicsSystem extends BaseSystem {
 
     public GraphicsSystem(Window window) {
         this.window = window;
+
+        this.camera = new Camera();
     }
 
     public void resetProjectionMatrix() throws Exception {
@@ -105,10 +107,10 @@ public class GraphicsSystem extends BaseSystem {
         shadersHandler.link();
 
         shadersHandler.createUniform("projectionMatrix");
-        shadersHandler.createUniform("worldMatrix");
+        shadersHandler.createUniform("modelViewMatrix");
         shadersHandler.createUniform("texture_sampler");
 
-        shadersHandler.setUniform("worldMatrix", new Matrix4f());
+        shadersHandler.setUniform("modelViewMatrix", new Matrix4f());
         shadersHandler.setUniform("texture_sampler", 0);
     }
 }
