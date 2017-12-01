@@ -139,13 +139,13 @@ public class ShadersHandler {
     }
 
     public void createDirectionalLightUniform(String uniformName) throws Exception {
-        createUniform(uniformName + ".colour");
+        createUniform(uniformName + ".color");
         createUniform(uniformName + ".direction");
         createUniform(uniformName + ".intensity");
     }
 
     public void setUniform(String uniformName, DirectionalLight directionalLight) {
-        setUniform(uniformName + ".color", directionalLight.getColor() );
+        setUniform(uniformName + ".color", directionalLight.getColor());
         setUniform(uniformName + ".direction", directionalLight.getDirection());
         setUniform(uniformName + ".intensity", directionalLight.getIntensity());
     }

@@ -3,6 +3,7 @@ package Game;
 import Engine.GameEngine;
 import Engine.Helper.Loader.OBJLoader;
 import Engine.Main.Entity;
+import Engine.Main.Light.DirectionalLight;
 import Engine.Main.Material;
 import Engine.Main.Light.PointLight;
 import Engine.System.Graphics.Camera;
@@ -52,6 +53,15 @@ public class Minedraft {
 
             gameEngine.addEntity(pointLight);
             gameEngine.setAmbientLight(ambientLight);
+
+            lightPosition = new Vector3f(0, 1f, -2);
+            lightColor = new Vector3f(0, 0, 1);
+            double angle = Math.toRadians(-60);
+
+            DirectionalLight directionalLight = new DirectionalLight(lightColor, lightPosition, 2f);
+            directionalLight.getDirection().x = (float) Math.sin(angle);
+            directionalLight.getDirection().y = (float) Math.cos(angle);
+            gameEngine.addEntity(directionalLight);
 
             // Set the main camera.
             Camera mainCamera = new Camera();

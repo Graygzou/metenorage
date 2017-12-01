@@ -1,6 +1,7 @@
 package Engine.System.Graphics;
 
 import Engine.Main.Entity;
+import Engine.Main.Light.DirectionalLight;
 import Engine.Main.Light.PointLight;
 import Engine.ShadersHandler;
 import Engine.System.BaseSystem;
@@ -95,6 +96,12 @@ public class GraphicsSystem extends BaseSystem {
                 lightPosition.y = viewPosition.y;
                 lightPosition.z = viewPosition.z;
                 shadersHandler.setUniform("pointLight", currentPointLight);
+            } else if(entity instanceof DirectionalLight) {
+                DirectionalLight currentDirectionalLight = new DirectionalLight((DirectionalLight) entity);
+                Vector4f viewDirection = new Vector4f(currentDirectionalLight.getDirection(), 0);
+                viewDirection.mul(viewMatrix);
+                currentDirectionalLight.setDirection(new Vector3f(viewDirection.x, viewDirection.y, viewDirection.z));
+                shadersHandler.setUniform("directionalLight", currentDirectionalLight);
             }
 
             shadersHandler.setUniform("ambientLight", ambientLight);
@@ -136,6 +143,7 @@ public class GraphicsSystem extends BaseSystem {
         shadersHandler.createUniform("ambientLight");
         shadersHandler.createMaterialUniform("material");
         shadersHandler.createPointLightUniform("pointLight");
+        shadersHandler.createDirectionalLightUniform("directionalLight");
     }
 
     public Camera getCamera() {
