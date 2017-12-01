@@ -9,7 +9,7 @@ import Engine.Main.Entity;
 import Engine.System.Component.Messaging.MessageQueue;
 import Engine.System.Graphics.Component.Mesh3D;
 import Engine.System.Graphics.GraphicsSystem;
-import Engine.System.Graphics.Texture;
+import Engine.System.Input.InputSystem;
 import Engine.System.Logic.LogicSystem;
 import org.joml.Vector3f;
 
@@ -34,6 +34,8 @@ public class GameEngine implements Runnable {
     private LogicSystem logicSystem;
 
     private GraphicsSystem graphicsSystem;
+
+    private InputSystem inputSystem;
 
     public MessageQueue messageQueue;
 
@@ -76,7 +78,8 @@ public class GameEngine implements Runnable {
         window.initialize();
         timer.initialize();
 
-        Texture texture = new Texture("/Game/Textures/grassblock.png");
+        inputSystem = new InputSystem(window);
+
         Entity testEntity = new Entity();
 
         // Read from a json file to load Entity and Components attached
@@ -147,7 +150,7 @@ public class GameEngine implements Runnable {
         };
 
         Entity testTriangle = new Entity();
-        testTriangle.addComponent(new Mesh3D(testTriangle, positions, indices, textCoords, texture));
+        testTriangle.addComponent(new Mesh3D(testTriangle, positions, indices, textCoords, "/Game/Textures/grassblock.png"));
         testTriangle.setPosition(0, 0, -6f);
         testTriangle.setRotation(0, 0, 0);
         testTriangle.setScale(1f);
@@ -164,6 +167,9 @@ public class GameEngine implements Runnable {
      * Delegates the input handling to the game logic.
      */
     protected void handleInput() {
+        inputSystem.handleInput();
+
+
         float CAMERA_POS_STEP = 0.1f;
         graphicsSystem.getCamera().movePosition(CAMERA_POS_STEP, CAMERA_POS_STEP, 0);
 

@@ -48,6 +48,7 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     protected int indicesCount;
     protected int colorsCount;
     private int textureCoordinatesCount;
+    private String textureName;
 
     public Mesh3D(Entity entity) {
         super(entity);
@@ -92,6 +93,14 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         this.textureCoordinates = textureCoordinates;
         this.textureCoordinatesCount = textureCoordinates.length;
         this.texture = texture;
+    }
+
+    public Mesh3D(Entity entity, float[] vertices, int[] indices, float[] textureCoordinates, String textureName) {
+        this(entity, vertices, indices);
+
+        this.textureCoordinates = textureCoordinates;
+        this.textureCoordinatesCount = textureCoordinates.length;
+        this.textureName = textureName;
     }
 
     public Texture getTexture() {
@@ -177,6 +186,14 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     @Override
     public void initialize() {
         // Todo: parse and load mesh data stored in file.
+
+        if(textureName != null) {
+            try {
+                this.texture = new Texture(textureName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         verticesBuffer = BufferUtils.createFloatBuffer(verticesCount);
         verticesBuffer.put(vertices).flip();
