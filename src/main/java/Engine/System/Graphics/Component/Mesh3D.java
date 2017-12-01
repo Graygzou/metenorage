@@ -92,7 +92,7 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
     @Override
     public void render() {
-        if(material.getTexture() != null) {
+        if(material != null && material.getTexture() != null) {
             // Activate first texture unit
             glActiveTexture(GL_TEXTURE0);
             // Bind the texture

@@ -132,7 +132,8 @@ public class GraphicsSystem extends BaseSystem {
 
             for (Component component : getLocalSystemComponentsFor(entity)) {
                 if(component instanceof Mesh3D) {
-                    shadersHandler.setUniform("material", ((Mesh3D) component).getMaterial());
+                    if(((Mesh3D) component).getMaterial() != null)
+                        shadersHandler.setUniform("material", ((Mesh3D) component).getMaterial());
                 }
 
                 component.initialize();
