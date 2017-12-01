@@ -8,42 +8,33 @@ import Engine.Main.Entity;
  */
 public class Cube extends Mesh3D {
 
-    public Cube(Entity entity) {
+    private Cube(Entity entity) {
         super(entity);
 
         vertices = new float[]{
-                // VO
                 -0.5f, 0.5f, 0.5f, 1f,
-                // V1
                 -0.5f, -0.5f, 0.5f, 1f,
-                // V2
                 0.5f, -0.5f, 0.5f, 1f,
-                // V3
                 0.5f, 0.5f, 0.5f, 1f,
-                // V4
                 -0.5f, 0.5f, -0.5f, 1f,
-                // V5
                 0.5f, 0.5f, -0.5f, 1f,
-                // V6
                 -0.5f, -0.5f, -0.5f, 1f,
-                // V7
                 0.5f, -0.5f, -0.5f, 1f,
+                // Repeat vertices for texture coordinates.
+                -0.5f, 0.5f, -0.5f, 1f,
+                0.5f, 0.5f, -0.5f, 1f,
+                -0.5f, 0.5f, 0.5f, 1f,
+                0.5f, 0.5f, 0.5f, 1f,
+                0.5f, 0.5f, 0.5f, 1f,
+                0.5f, -0.5f, 0.5f, 1f,
+                -0.5f, 0.5f, 0.5f, 1f,
+                -0.5f, -0.5f, 0.5f, 1f,
+                -0.5f, -0.5f, -0.5f, 1f,
+                0.5f, -0.5f, -0.5f, 1f,
+                -0.5f, -0.5f, 0.5f, 1f,
+                0.5f, -0.5f, 0.5f, 1f
         };
 
-        indices = new int[]{
-                // Front face
-                0, 1, 3, 3, 1, 2,
-                // Top Face
-                4, 0, 3, 5, 4, 3,
-                // Right face
-                3, 2, 7, 5, 3, 7,
-                // Left face
-                6, 1, 0, 6, 0, 4,
-                // Bottom face
-                2, 1, 6, 2, 6, 7,
-                // Back face
-                7, 6, 4, 7, 4, 5,
-        };
         colors = new float[]{
                 0.5f, 0.0f, 0.0f, 1f,
                 0.0f, 0.5f, 0.0f, 1f,
@@ -52,11 +43,55 @@ public class Cube extends Mesh3D {
                 0.5f, 0.0f, 0.0f, 1f,
                 0.0f, 0.5f, 0.0f, 1f,
                 0.0f, 0.0f, 0.5f, 1f,
-                0.0f, 0.5f, 0.5f, 1f,
+                0.0f, 0.5f, 0.5f, 1f
+        };
+
+        textureCoordinates = new float[]{
+                0.0f, 0.0f,
+                0.0f, 0.5f,
+                0.5f, 0.5f,
+                0.5f, 0.0f,
+                0.0f, 0.0f,
+                0.5f, 0.0f,
+                0.0f, 0.5f,
+                0.5f, 0.5f,
+                0.0f, 0.5f,
+                0.5f, 0.5f,
+                0.0f, 1.0f,
+                0.5f, 1.0f,
+                0.0f, 0.0f,
+                0.0f, 0.5f,
+                0.5f, 0.0f,
+                0.5f, 0.5f,
+                0.5f, 0.0f,
+                1.0f, 0.0f,
+                0.5f, 0.5f,
+                1.0f, 0.5f
+        };
+
+        indices = new int[] {
+                // Front face
+                0, 1, 3, 3, 1, 2,
+                // Top Face
+                8, 10, 11, 9, 8, 11,
+                // Right face
+                12, 13, 7, 5, 12, 7,
+                // Left face
+                14, 15, 6, 4, 14, 6,
+                // Bottom face
+                16, 18, 19, 17, 16, 19,
+                // Back face
+                4, 6, 7, 5, 4, 7
         };
 
         this.verticesCount = vertices.length;
         this.indicesCount = indices.length;
         this.colorsCount = colors.length;
+        this.textureCoordinatesCount = textureCoordinates.length;
+    }
+
+    public Cube(Entity entity, String textureName) {
+        this(entity);
+        this.textureName = textureName;
     }
 }

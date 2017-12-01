@@ -5,6 +5,7 @@ import Engine.System.Component.BaseComponent;
 import Engine.System.Component.Messaging.Message;
 import Engine.System.Graphics.GraphicsComponent;
 import Engine.System.Graphics.Texture;
+import Engine.TexturesManager;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -18,6 +19,7 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
+import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 
 /**
@@ -29,7 +31,8 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     protected float[] vertices;
     protected int[] indices;
     protected float[] colors;
-    private float[] textureCoordinates;
+    protected String textureName;
+    protected float[] textureCoordinates;
 
     private FloatBuffer verticesBuffer;
     private IntBuffer indicesBuffer;
@@ -47,8 +50,7 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     protected int verticesCount;
     protected int indicesCount;
     protected int colorsCount;
-    private int textureCoordinatesCount;
-    private String textureName;
+    protected int textureCoordinatesCount;
 
     public Mesh3D(Entity entity) {
         super(entity);
@@ -141,7 +143,7 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
             // Bind the texture
             glBindTexture(GL_TEXTURE_2D, texture.getId());
             // Bind to the VAO
-            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+            //GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
             GL30.glBindVertexArray(vaoId);
             GL20.glEnableVertexAttribArray(0);
             GL20.glEnableVertexAttribArray(1);
@@ -187,9 +189,15 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     public void initialize() {
         // Todo: parse and load mesh data stored in file.
 
+
         if(textureName != null) {
             try {
-                this.texture = new Texture(textureName);
+                if(!TexturesManager.getInstance().getTextures().containsKey(textureName)) {
+                    this.texture = new Texture(textureName);
+                    TexturesManager.getInstance().addTexture(textureName, this.texture);
+                } else {
+                    this.texture = TexturesManager.getInstance().getTexture(textureName);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -205,12 +213,12 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         // Create, bind and hydrate VBO.
         vboId = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboId);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL_DYNAMIC_DRAW);
 
         this.vboId = GL15.glGenBuffers();
         // Binds a named buffer object. (target<=specifiedEnum, bufferObjectName)
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, this.vboId);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_DYNAMIC_DRAW);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL_DYNAMIC_DRAW);
         // size 4 : BRGA for each vertex. So each vertex need 4 float (the last one for alpha parameter)
 
         GL20.glVertexAttribPointer(0, 4, GL11.GL_FLOAT, false, 0, 0);
@@ -231,7 +239,7 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
             textureCoordinatesBuffer = BufferUtils.createFloatBuffer(textureCoordinatesCount);
             textureCoordinatesBuffer.put(textureCoordinates).flip();
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, textureCoordinatesVboId);
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, textureCoordinatesBuffer, GL_STATIC_DRAW);
+            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, textureCoordinatesBuffer, GL_DYNAMIC_DRAW);
             GL20.glVertexAttribPointer(1, 2, GL11.GL_FLOAT, false, 0, 0);
             GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         } else {
