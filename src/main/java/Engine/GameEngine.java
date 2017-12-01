@@ -7,7 +7,6 @@ package Engine;
 import Engine.Helper.Timer;
 import Engine.Main.Entity;
 import Engine.System.Component.Messaging.MessageQueue;
-import Engine.System.Graphics.Component.Mesh3D;
 import Engine.System.Graphics.GraphicsSystem;
 import Engine.System.Input.InputSystem;
 import Engine.System.Logic.LogicSystem;
@@ -80,85 +79,7 @@ public class GameEngine implements Runnable {
 
         inputSystem = new InputSystem(window);
 
-        Entity testEntity = new Entity();
 
-        // Read from a json file to load Entity and Components attached
-        // Utils.parser("Game/example.json", gameEngine);
-
-
-        // Create and active a component
-            /*TestComponent test = new TestComponent(testEntity);
-            test.setActiveState(true);*/
-
-        float[] positions = new float[] {
-                // VO
-                -0.5f,  0.5f,  0.5f, 1f,
-                // V1
-                -0.5f, -0.5f,  0.5f, 1f,
-                // V2
-                0.5f, -0.5f,  0.5f, 1f,
-                // V3
-                0.5f,  0.5f,  0.5f, 1f,
-                // V4
-                -0.5f,  0.5f, -0.5f, 1f,
-                // V5
-                0.5f,  0.5f, -0.5f, 1f,
-                // V6
-                -0.5f, -0.5f, -0.5f, 1f,
-                // V7
-                0.5f, -0.5f, -0.5f, 1f,
-        };
-        float[] colours = new float[]{
-                0.5f, 0.0f, 0.0f,
-                0.0f, 0.5f, 0.0f,
-                0.0f, 0.0f, 0.5f,
-                0.0f, 0.5f, 0.5f,
-                0.5f, 0.0f, 0.0f,
-                0.0f, 0.5f, 0.0f,
-                0.0f, 0.0f, 0.5f,
-                0.0f, 0.5f, 0.5f,
-        };
-        float[] textCoords = new float[]{
-                0.0f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.5f, 0.0f,
-                0.0f, 0.0f,
-                0.5f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.0f, 1.0f,
-                0.5f, 1.0f,
-                0.0f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.0f,
-                0.5f, 0.5f,
-                0.5f, 0.0f,
-                1.0f, 0.0f,
-                0.5f, 0.5f,
-                1.0f, 0.5f,
-        };
-        int[] indices = new int[] {
-                0, 1, 3, 3, 1, 2,
-                4, 0, 3, 5, 4, 3,
-                3, 2, 7, 5, 3, 7,
-                6, 1, 0, 6, 0, 4,
-                2, 1, 6, 2, 6, 7,
-                7, 6, 4, 7, 4, 5,
-        };
-
-        Entity testTriangle = new Entity();
-        testTriangle.addComponent(new Mesh3D(testTriangle, positions, indices, textCoords, "/Game/Textures/grassblock.png"));
-        testTriangle.setPosition(0, 0, -6f);
-        testTriangle.setRotation(0, 0, 0);
-        testTriangle.setScale(1f);
-
-        // Add the component to the entity
-        //testEntity.addComponent(test);
-        //gameEngine.addEntity(testEntity);
-        addEntity(testTriangle);
 
         this.graphicsSystem.initialize();
     }
@@ -291,7 +212,6 @@ public class GameEngine implements Runnable {
         try {
             // GameLogic gameLogic = new Game();
             GameEngine gameEngine = new GameEngine("Metenorage", 800, 600);
-
             gameEngine.start();
         } catch (Exception e) {
             e.printStackTrace();
