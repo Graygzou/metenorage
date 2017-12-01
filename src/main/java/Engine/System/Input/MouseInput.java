@@ -4,13 +4,15 @@ import Engine.Window;
 import org.joml.Vector2d;
 import org.joml.Vector2f;
 
+import java.awt.*;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  */
 
-public class MouseInput {
+public class MouseInput extends Component {
 
     private boolean cursorInWindow = false;
 
@@ -66,5 +68,21 @@ public class MouseInput {
 
     public boolean isRightButtonPressed() {
         return rightButtonPressed;
+    }
+
+    public boolean isCursorInWindow() {
+        return cursorInWindow;
+    }
+
+    public Vector2d getPreviousPosition() {
+        return previousPosition;
+    }
+
+    public Vector2d getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public Vector2f getDisplayVector() {
+        return displayVector;
     }
 }

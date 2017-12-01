@@ -1,11 +1,11 @@
 package Engine.System.Input.Component;
 
+import Engine.System.Input.InputComponent;
+
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  */
 
-import Engine.System.Input.InputComponent;
-
-public interface  MouseListener extends InputComponent {
+public interface KeyboardListener extends InputComponent {
 
 }
