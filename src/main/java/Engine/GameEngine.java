@@ -7,15 +7,13 @@ package Engine;
 import Engine.Helper.Timer;
 import Engine.Main.Entity;
 import Engine.System.Component.Messaging.MessageQueue;
+import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.GraphicsSystem;
 import Engine.System.Input.InputSystem;
 import Engine.System.Logic.LogicSystem;
-import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.lwjgl.glfw.GLFW.*;
 
 public class GameEngine implements Runnable {
     private float timePerUpdate = 1f / 50;
@@ -43,11 +41,13 @@ public class GameEngine implements Runnable {
 
         this.window = new Window(windowTitle, windowWidth, windowHeight, true);
         this.timer = new Timer();
+        this.messageQueue = new MessageQueue();
 
         // Systems setup.
         this.logicSystem = new LogicSystem();
         this.graphicsSystem = new GraphicsSystem(this.window);
-        this.messageQueue = new MessageQueue();
+        this.inputSystem = new InputSystem(window, messageQueue);
+
 
         this.entities = new ArrayList<>();
     }
@@ -77,10 +77,7 @@ public class GameEngine implements Runnable {
         window.initialize();
         timer.initialize();
 
-        inputSystem = new InputSystem(window);
-
-
-
+        this.inputSystem.initialize();
         this.graphicsSystem.initialize();
     }
 
@@ -88,10 +85,9 @@ public class GameEngine implements Runnable {
      * Delegates the input handling to the game logic.
      */
     protected void handleInput() {
-        inputSystem.handleInput();
+        inputSystem.iterate(entities);
 
-
-        float CAMERA_POS_STEP = 0.1f;
+        /*float CAMERA_POS_STEP = 0.1f;
         graphicsSystem.getCamera().movePosition(CAMERA_POS_STEP, CAMERA_POS_STEP, 0);
 
         // Todo: implement this logic.
@@ -135,15 +131,15 @@ public class GameEngine implements Runnable {
             entity.setScale(scale);
 
             // Update rotation angle
-            /*
+            *//*
             float rotation = entity.getRotation().x + 1.5f;
             if (rotation > 360) {
                 rotation = 0;
             }
 
             entity.setRotation(rotation, rotation, rotation);
-            */
-        }
+            *//*
+        }*/
     }
 
     /**
@@ -208,17 +204,6 @@ public class GameEngine implements Runnable {
         }
     }
 
-    public static void main(String[] args) {
-        try {
-            // GameLogic gameLogic = new Game();
-            GameEngine gameEngine = new GameEngine("Metenorage", 800, 600);
-            gameEngine.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
-    }
-
     public void setUpdatesPerSecond(int updatesPerSecond) {
         this.timePerUpdate = 1f / updatesPerSecond;
     }
@@ -229,5 +214,12 @@ public class GameEngine implements Runnable {
 
     public void addEntity(Entity entity) {
         this.entities.add(entity);
+    }
+
+    public void setCamera(Camera camera) {
+        if(this.graphicsSystem != null)
+            this.graphicsSystem.setCamera(camera);
+
+        this.addEntity(camera);
     }
 }

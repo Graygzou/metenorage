@@ -87,15 +87,8 @@ public class GraphicsSystem extends BaseSystem {
 
             shadersHandler.bind();
 
-            if(!isInitialized) {
-                for (Component component : getLocalSystemComponentsFor(entity)) {
-                    component.initialize();
-                }
-
-                isInitialized = true;
-            }
-
             for (Component component : getLocalSystemComponentsFor(entity)) {
+                component.initialize();
                 component.apply();
             }
 
