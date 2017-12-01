@@ -2,6 +2,7 @@ package Engine.System.Logic.Component;
 
 import Engine.Main.Entity;
 import Engine.System.Component.BaseComponent;
+import Engine.System.Component.Messaging.Message;
 import Engine.System.Logic.LogicComponent;
 
 /*
@@ -26,6 +27,11 @@ public class TestComponent extends BaseComponent implements LogicComponent {
             System.out.println("Hello from TestComponent! :)");
             hasBeenApplied = true;
         }
+    }
+
+    @Override
+    public void onMessage(Message message) {
+
     }
 
     @Override

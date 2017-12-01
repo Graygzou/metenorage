@@ -1,5 +1,6 @@
 package Engine.System.Physics.Component;
 import Engine.Main.Entity;
+import Engine.System.Component.Messaging.Message;
 import Engine.System.Physics.BasePhysicsComponent;
 
 /*
@@ -20,6 +21,11 @@ public class TestPhysicsComponent extends BasePhysicsComponent {
             System.out.println("This can be a Collider or a Rigidbody!");
             hasBeenApplied = true;
         }
+    }
+
+    @Override
+    public void onMessage(Message message) {
+
     }
 
     @Override

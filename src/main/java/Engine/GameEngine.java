@@ -6,9 +6,12 @@ package Engine;
 
 import Engine.Helper.Timer;
 import Engine.Main.Entity;
-import Engine.System.Graphics.Component.Mesh3D;
+import Engine.System.Component.Messaging.MessageQueue;
+import Engine.System.Graphics.Component.Cube;
+import Engine.System.Graphics.Component.Plane;
 import Engine.System.Graphics.GraphicsSystem;
 import Engine.System.Graphics.Texture;
+import Engine.System.Logic.Component.TestComponent;
 import Engine.System.Logic.LogicSystem;
 import org.joml.Vector3f;
 
@@ -34,15 +37,18 @@ public class GameEngine implements Runnable {
 
     private GraphicsSystem graphicsSystem;
 
+    public MessageQueue messageQueue;
+
     public GameEngine(String windowTitle, int windowWidth, int windowHeight) {
         this.gameLoopThread = new Thread(this);
 
-        this.window = new Window(windowTitle, windowWidth, windowHeight, false);
+        this.window = new Window(windowTitle, windowWidth, windowHeight, true);
         this.timer = new Timer();
 
         // Systems setup.
         this.logicSystem = new LogicSystem();
         this.graphicsSystem = new GraphicsSystem(this.window);
+        this.messageQueue = new MessageQueue();
 
         this.entities = new ArrayList<>();
     }
@@ -116,44 +122,29 @@ public class GameEngine implements Runnable {
                 0.0f, 0.5f,
                 0.5f, 0.5f,
                 0.5f, 0.0f,
-
                 0.0f, 0.0f,
                 0.5f, 0.0f,
                 0.0f, 0.5f,
                 0.5f, 0.5f,
-
-                // For text coords in top face
                 0.0f, 0.5f,
                 0.5f, 0.5f,
                 0.0f, 1.0f,
                 0.5f, 1.0f,
-
-                // For text coords in right face
                 0.0f, 0.0f,
                 0.0f, 0.5f,
-
-                // For text coords in left face
                 0.5f, 0.0f,
                 0.5f, 0.5f,
-
-                // For text coords in bottom face
                 0.5f, 0.0f,
                 1.0f, 0.0f,
                 0.5f, 0.5f,
                 1.0f, 0.5f,
         };
         int[] indices = new int[] {
-                // Front face
                 0, 1, 3, 3, 1, 2,
-                // Top Face
                 4, 0, 3, 5, 4, 3,
-                // Right face
                 3, 2, 7, 5, 3, 7,
-                // Left face
                 6, 1, 0, 6, 0, 4,
-                // Bottom face
                 2, 1, 6, 2, 6, 7,
-                // Back face
                 7, 6, 4, 7, 4, 5,
         };
 
@@ -216,12 +207,14 @@ public class GameEngine implements Runnable {
             entity.setScale(scale);
 
             // Update rotation angle
+            /*
             float rotation = entity.getRotation().x + 1.5f;
             if (rotation > 360) {
                 rotation = 0;
             }
 
             entity.setRotation(rotation, rotation, rotation);
+            */
         }
     }
 
@@ -232,6 +225,7 @@ public class GameEngine implements Runnable {
     protected void update(float timeStep) {
         // Todo: implement this logic.
         logicSystem.iterate(entities);
+        messageQueue.dispatch();
     }
 
     /**
@@ -254,7 +248,7 @@ public class GameEngine implements Runnable {
         double previousLoopTime = Timer.getTime();
         double timeSteps = 0;
 
-        while (true) {
+        while (!window.windowShouldClose()) {
             // Keep track of the elapsed time and time steps.
             double currentLoopStartTime = Timer.getTime();
             double elapsedTime = currentLoopStartTime - previousLoopTime;
@@ -290,8 +284,6 @@ public class GameEngine implements Runnable {
         try {
             // GameLogic gameLogic = new Game();
             GameEngine gameEngine = new GameEngine("Metenorage", 800, 600);
-
-
 
             gameEngine.start();
         } catch (Exception e) {

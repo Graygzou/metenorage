@@ -2,6 +2,7 @@ package Engine;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
+ * @author Grégoire Boiron
  */
 
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -78,6 +79,11 @@ public class Window {
             }
         });
 
+        // Call when the user try to close the windows
+        //glfwSetWindowCloseCallback(windowHandle, (window) -> {
+        //    glfwSetWindowShouldClose(window, true);
+        //});
+
         // Get the resolution of the primary monitor.
         GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
@@ -88,6 +94,7 @@ public class Window {
                 (vidmode.height() - height) / 2
         );
 
+
         // Make the OpenGL context current.
         glfwMakeContextCurrent(windowHandle);
 
@@ -97,6 +104,7 @@ public class Window {
         GL.createCapabilities();
 
         glClearColor(0.2f, 0.0f, 0.0f, 1.0f);
+
         glEnable(GL_DEPTH_TEST);
     }
 

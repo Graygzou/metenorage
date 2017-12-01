@@ -2,6 +2,7 @@ package Engine.System.Graphics.Component;
 
 import Engine.Main.Entity;
 import Engine.System.Component.BaseComponent;
+import Engine.System.Component.Messaging.Message;
 import Engine.System.Graphics.GraphicsComponent;
 import Engine.System.Graphics.Texture;
 import org.lwjgl.BufferUtils;
@@ -21,8 +22,10 @@ import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 
 /**
  * @author : Matthieu Le Boucher
+ * @author : Gregoire Boiron
  */
 public class Mesh3D extends BaseComponent implements GraphicsComponent {
+
     private float[] vertices;
     private int[] indices;
     private float[] colors;
@@ -35,7 +38,7 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
     private String meshURI;
     private Texture texture;
-
+  
     private int vboId;
     private int indexVboId;
     private int colorsVboId;
@@ -45,6 +48,10 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     private int indicesCount;
     private int colorsCount;
     private int textureCoordinatesCount;
+
+    public Mesh3D(Entity entity) {
+        super(entity);
+    }
 
     public Mesh3D(Entity entity, String meshURI) {
         super(entity);
@@ -78,6 +85,7 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         this.colorsCount = colors.length;
     }
 
+
     public Mesh3D(Entity entity, float[] vertices, int[] indices, float[] textureCoordinates, Texture texture) {
         this(entity, vertices, indices);
 
@@ -92,6 +100,17 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
     public void setTexture(Texture texture) {
         this.texture = texture;
+
+    public void setVertices(float[] vertices) {
+        this.vertices = vertices;
+    }
+
+    public void setIndices(int[] indices) {
+        this.indices = indices;
+    }
+
+    public void setColors(float[] colors) {
+        this.colors = colors;
     }
 
     @Override
@@ -100,7 +119,12 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     }
 
     @Override
+    public void onMessage(Message message) {
+    }
+
+    @Override
     public void render() {
+
         if(texture != null) {
             // Activate first texture unit
             glActiveTexture(GL_TEXTURE0);
@@ -153,23 +177,31 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     public void initialize() {
         // Todo: parse and load mesh data stored in file.
 
-        verticesBuffer = BufferUtils.createFloatBuffer(vertices.length);
+        verticesBuffer = BufferUtils.createFloatBuffer(verticesCount);
         verticesBuffer.put(vertices).flip();
 
         // Create and bind VAO.
         this.vaoId = GL30.glGenVertexArrays();
-        GL30.glBindVertexArray(vaoId);
+        GL30.glBindVertexArray(this.vaoId);
 
         // Create, bind and hydrate VBO.
         vboId = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboId);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
+
+        this.vboId = GL15.glGenBuffers();
+        // Binds a named buffer object. (target<=specifiedEnum, bufferObjectName)
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, this.vboId);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_DYNAMIC_DRAW);
+        // size 4 : BRGA for each vertex. So each vertex need 4 float (the last one for alpha parameter)
+
         GL20.glVertexAttribPointer(0, 4, GL11.GL_FLOAT, false, 0, 0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
-        indexVboId = GL15.glGenBuffers();
+        this.indexVboId = GL15.glGenBuffers();
         indicesBuffer = BufferUtils.createIntBuffer(indicesCount);
         indicesBuffer.put(indices).flip();
+      
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indexVboId);
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
 
