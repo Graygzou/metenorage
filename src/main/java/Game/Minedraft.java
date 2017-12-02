@@ -7,9 +7,10 @@ import Engine.Main.Light.DirectionalLight;
 import Engine.Main.Light.SpotLight;
 import Engine.Main.Material;
 import Engine.Main.Light.PointLight;
+import Engine.Main.Sound;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.Component.Mesh3D;
-import Engine.System.Sound.SoundSystem;
+import Engine.System.Sound.Component.Source;
 import Game.Input.CameraFollow;
 import org.joml.Vector3f;
 
@@ -24,6 +25,10 @@ public class Minedraft {
         try {
             GameEngine gameEngine = new GameEngine("Minedraft", 800, 600);
 
+            // Create a game sound
+            Sound son = new Sound("./resources/Game/Sounds/sonTest.wav");
+            gameEngine.addSound(son);
+
             // Create materials.
             Material material = new Material("/Game/Textures/grassblock.png", 1f);
             gameEngine.addMaterial(material);
@@ -31,10 +36,18 @@ public class Minedraft {
             int gridWidth = 6, gridHeight = 6;
             Mesh3D cubeMesh = OBJLoader.loadMesh("/Game/Models/cube.obj");
             cubeMesh.setMaterial(material);
+            Source sourceAudioFAMILY = null;
 
             for (float i = 0; i < gridWidth; i++) {
                 for (float j = 0; j < gridHeight; j++) {
                     Entity block = new Entity("Block (" + i + ", " + j + ")");
+
+                    if (i == 0 && j == 0) {
+                        // Create a new Audio Source
+                        sourceAudioFAMILY = new Source(block, son);
+                        block.addComponent(sourceAudioFAMILY);
+                    }
+
 
                     cubeMesh.setEntity(block);
                     block.addComponent(cubeMesh);
@@ -44,6 +57,8 @@ public class Minedraft {
                     gameEngine.addEntity(block);
                 }
             }
+
+
 
             // Set lighting.
             Vector3f ambientLight = new Vector3f(0.3f, 0.3f, 0.3f);

@@ -2,22 +2,26 @@ package Engine;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
+ * @author Noemy Artigouha
  */
 
 import Engine.Helper.Timer;
 import Engine.Main.Entity;
 import Engine.Main.Material;
+import Engine.Main.Sound;
 import Engine.System.Component.Messaging.MessageQueue;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.GraphicsSystem;
 import Engine.System.Input.InputSystem;
 import Engine.System.Logic.LogicSystem;
 import Engine.System.Sound.SoundSystem;
-import Engine.System.Sound.Source;
+import Engine.System.Sound.Component.Source;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.lwjgl.openal.AL10.alDeleteBuffers;
 
 public class GameEngine implements Runnable {
     private float timePerUpdate = 1f / 50;
@@ -33,6 +37,8 @@ public class GameEngine implements Runnable {
     private List<Entity> entities;
 
     private List<Material> materials;
+
+    private List<Sound> sounds;
 
     private LogicSystem logicSystem;
 
@@ -57,9 +63,9 @@ public class GameEngine implements Runnable {
         this.inputSystem = new InputSystem(window, messageQueue);
         this.soundSystem = new SoundSystem();
 
-
         this.entities = new ArrayList<>();
         this.materials = new ArrayList<>();
+        this.sounds = new ArrayList<>();
     }
 
     public void start() {
@@ -176,8 +182,21 @@ public class GameEngine implements Runnable {
         graphicsSystem.iterate(entities);
     }
 
+    /**
+     * Delegates the control of the sounds to the sound system.
+     */
+    protected void playSounds() {
+        soundSystem.iterate(entities);
+    }
+
     private void cleanUp() {
-        graphicsSystem.cleanUp();
+        // TODO REMETTRE :
+        // this.graphicsSystem.cleanUp();
+        // Clean up song from the engine
+        for (Sound s : this.sounds) {
+            alDeleteBuffers(s.getId());
+        }
+        this.soundSystem.cleanUp();
     }
 
     /**
@@ -187,12 +206,6 @@ public class GameEngine implements Runnable {
         double previousLoopTime = Timer.getTime();
         double timeSteps = 0;
 
-        //Sound
-        this.soundSystem.setListenerData(0,0,0);
-        int buffer = this.soundSystem.loadSound("/Game/Sounds/sonTest.wav");
-        //int buffer = this.soundSystem.loadSound("http://www.khjh.kh.edu.tw/mewawa/flash/music/tiger2.wav");
-        Source source = new Source();
-        source.play(buffer);
         while (!window.windowShouldClose()) {
             // Keep track of the elapsed time and time steps.
             double currentLoopStartTime = Timer.getTime();
@@ -204,14 +217,14 @@ public class GameEngine implements Runnable {
 
             while (timeSteps >= timePerUpdate) {
                 update((float) timeSteps);
+                playSounds();
                 timeSteps -= timePerUpdate;
             }
-
             render();
             synchronizeRenderer(currentLoopStartTime);
         }
-        source.delete();
-        this.soundSystem.cleanUp();
+
+        cleanUp();
     }
 
     /**
@@ -243,6 +256,8 @@ public class GameEngine implements Runnable {
     public void addMaterial(Material material) {
         this.materials.add(material);
     }
+
+    public void addSound(Sound sound) { this.sounds.add(sound); }
 
     public void setCamera(Camera camera) {
         if(this.graphicsSystem != null)
