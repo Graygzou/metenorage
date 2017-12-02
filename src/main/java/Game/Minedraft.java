@@ -9,6 +9,7 @@ import Engine.Main.Material;
 import Engine.Main.Light.PointLight;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.Component.Mesh3D;
+import Engine.System.Sound.SoundSystem;
 import Game.Input.CameraFollow;
 import org.joml.Vector3f;
 
@@ -88,6 +89,7 @@ public class Minedraft {
             gameEngine.setCamera(mainCamera);
 
             gameEngine.start();
+
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(-1);

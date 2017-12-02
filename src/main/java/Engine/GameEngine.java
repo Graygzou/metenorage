@@ -12,6 +12,8 @@ import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.GraphicsSystem;
 import Engine.System.Input.InputSystem;
 import Engine.System.Logic.LogicSystem;
+import Engine.System.Sound.SoundSystem;
+import Engine.System.Sound.Source;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
@@ -38,6 +40,8 @@ public class GameEngine implements Runnable {
 
     private InputSystem inputSystem;
 
+    private SoundSystem soundSystem;
+
     public MessageQueue messageQueue;
 
     public GameEngine(String windowTitle, int windowWidth, int windowHeight) {
@@ -51,6 +55,7 @@ public class GameEngine implements Runnable {
         this.logicSystem = new LogicSystem();
         this.graphicsSystem = new GraphicsSystem(this.window);
         this.inputSystem = new InputSystem(window, messageQueue);
+        this.soundSystem = new SoundSystem();
 
 
         this.entities = new ArrayList<>();
@@ -88,6 +93,7 @@ public class GameEngine implements Runnable {
 
         this.inputSystem.initialize();
         this.graphicsSystem.initialize();
+        this.soundSystem.initialize();
     }
 
     /**
@@ -181,6 +187,12 @@ public class GameEngine implements Runnable {
         double previousLoopTime = Timer.getTime();
         double timeSteps = 0;
 
+        //Sound
+        this.soundSystem.setListenerData(0,0,0);
+        int buffer = this.soundSystem.loadSound("/Game/Sounds/sonTest.wav");
+        //int buffer = this.soundSystem.loadSound("http://www.khjh.kh.edu.tw/mewawa/flash/music/tiger2.wav");
+        Source source = new Source();
+        source.play(buffer);
         while (!window.windowShouldClose()) {
             // Keep track of the elapsed time and time steps.
             double currentLoopStartTime = Timer.getTime();
@@ -198,6 +210,8 @@ public class GameEngine implements Runnable {
             render();
             synchronizeRenderer(currentLoopStartTime);
         }
+        source.delete();
+        this.soundSystem.cleanUp();
     }
 
     /**
