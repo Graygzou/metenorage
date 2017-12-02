@@ -13,17 +13,26 @@ import java.io.File;
 
 /**
  * @author Noemy Artigouha
+ * @author Gregoire Boiron
  */
 
 public class Sound {
 
     //Path of the audio sound
-    private final String pathSound;
+    private String pathSound;
 
     // ID of the sound
     private int id;
 
-    public Sound(String path) {
+    private String name;
+
+    public Sound() {
+        this.name = "";
+        this.pathSound = "";
+    }
+
+    public Sound(String name, String path) {
+        this.name = name;
         this.pathSound = path;
         loadSound();
     }
@@ -48,5 +57,7 @@ public class Sound {
     public int getId() {
         return this.id;
     }
+    public void setPathSound(String pathSound) { this.pathSound = pathSound; }
+    public void setName(String name) { this.name = name; }
 
 }

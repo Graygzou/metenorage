@@ -17,7 +17,7 @@ public class Window {
     /**
      * The title displayed at the top of the window.
      */
-    private final String title;
+    private String title;
 
     /**
      * The width, in pixels, of the window.
@@ -131,6 +131,12 @@ public class Window {
     public int getHeight() {
         return height;
     }
+
+    public void setWidth(int width) { this.width = width; }
+
+    public void setHeight(int height) { this.height = height; }
+
+    public void setTitle(String title) { this.title = title; }
 
     public boolean isResized() {
         return isResized;

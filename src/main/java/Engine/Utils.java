@@ -1,6 +1,7 @@
 package Engine;
 
 import Engine.Main.Entity;
+import Engine.Main.Sound;
 import Engine.System.Component.Component;
 import Engine.System.Graphics.Component.Mesh3D;
 import Engine.System.Graphics.GraphicsComponent;
@@ -28,8 +29,13 @@ public class Utils {
     		throw new IOException("the file in "+ path +" doesn't exist.");
     	}
     }
-    
-    
+
+    /**
+     * Method used to load a game configuration into the engine
+     * @param filename : file that contains the configuration
+     * @param gameEngine : the gameEngine that will load the game
+     * @return ??
+     */
     public static String parser(String filename, GameEngine gameEngine) {
     	java.nio.file.Path path = Paths.get("./resources/", filename);
     	try {
@@ -39,10 +45,21 @@ public class Utils {
 			
             String line;
             while ((line = reader.readLine()) != null) {
-            	String toto = line;
-            	if(line.trim().contains("Entity")) {
+            	switch(line.trim().split(":")[0].replaceAll("\"","")) {
+                    case "Sounds":
+                        createSounds(reader, gameEngine);
+                        break;
+                    case "Textures":
+                        break;
+                    case "Elements":
+                        break;
+                    case "Game":
+                        break;
+                }
+                /*
+            	if(line.trim().contains("Windows")) {
             		gameEngine.addEntity(createEntity(reader));
-            	}
+            	} else*/
             }
 
             reader.close();
@@ -57,6 +74,24 @@ public class Utils {
         }
     	
 		return filename;
+    }
+
+    private static void createSounds(BufferedReader reader, GameEngine gameEngine) throws IOException {
+        Sound currentSound = new Sound();
+        String line;
+        while (!(line = reader.readLine().replaceAll("\\s+","")).contains("}")) {
+            String[] temp = line.trim().split(":");
+
+            switch(temp[0].replaceAll("\"","")) {
+                case "Name":
+                    currentSound.setName(temp[1].replaceAll("\"","").replaceAll(",",""));
+                    break;
+                case "Path":
+                    currentSound.setPathSound(temp[1].replaceAll("\"","").replaceAll(",",""));
+                    break;
+            }
+        }
+        gameEngine.addSound(currentSound);
     }
     
     private static Entity createEntity(BufferedReader reader) throws IOException {
