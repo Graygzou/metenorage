@@ -16,7 +16,7 @@ import org.joml.Vector3f;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
- *
+ * @author Noemy Artigouha
  * This is a simplistic implementation of the game Minecraft.
  */
 

@@ -11,6 +11,10 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import java.io.File;
 
+/**
+ * @author Noemy Artigouha
+ */
+
 public class Sound {
 
     //Path of the audio sound

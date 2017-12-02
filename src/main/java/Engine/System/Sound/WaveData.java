@@ -137,8 +137,7 @@ public class WaveData {
      * @param ais AudioInputStream to read from
      * @return WaveData containing data, or null if a failure occured
      */
-    public static WaveData create(AudioInputStream ais)
-    {
+    public static WaveData create(AudioInputStream ais) {
         //get format of data
         AudioFormat audioformat = ais.getFormat();
 
