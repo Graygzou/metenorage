@@ -16,6 +16,8 @@ import com.bulletphysics.dynamics.DynamicsWorld;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.constraintsolver.ConstraintSolver;
 import com.bulletphysics.dynamics.constraintsolver.SequentialImpulseConstraintSolver;
+import com.bulletphysics.linearmath.MotionState;
+import com.bulletphysics.linearmath.Transform;
 
 import javax.vecmath.Vector3f;
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ import java.util.Set;
  */
 
 public class PhysicsSystem extends BaseSystem {
+    private float simulationTimeStep;
     /**
      * Instance of the physical world.
      */
@@ -38,7 +41,7 @@ public class PhysicsSystem extends BaseSystem {
     /**
      * Stores all the rigid bodies that exist within the world.
      */
-    private Set<RigidBody> rigidBodies = new HashSet<>();
+    private Set<RigidBodyComponent> rigidBodiesComponents = new HashSet<>();
 
 	@Override
     public Class<? extends Component> getRecognizedInterface() {
@@ -48,6 +51,19 @@ public class PhysicsSystem extends BaseSystem {
     @Override
     public void cleanUp() {
 
+    }
+
+    public void iterate(List<Entity> entities, float timeStep) {
+        System.out.println("PhysicsSystem: simulating with timestep: " + timeStep);
+        dynamicsWorld.stepSimulation(timeStep);
+
+        for (RigidBodyComponent rigidBodyComponent : rigidBodiesComponents) {
+            MotionState motionState = rigidBodyComponent.getRigidBody().getMotionState();
+            Transform worldTransform = new Transform();
+            motionState.getWorldTransform(worldTransform);
+            rigidBodyComponent.getEntity().setPosition(worldTransform.origin.x, worldTransform.origin.y, worldTransform.origin.z);
+            System.out.println("Entity " + rigidBodyComponent.getEntity() + " moved to " + rigidBodyComponent.getEntity().getPosition());
+        }
     }
 
     @Override
@@ -61,6 +77,10 @@ public class PhysicsSystem extends BaseSystem {
         dynamicsWorld = new DiscreteDynamicsWorld(collisionDispatcher, broadphase, constraintSolver,
                 collisionConfiguration);
         dynamicsWorld.setGravity(new Vector3f(0, -9.81f, 0));
+
+        for (RigidBodyComponent rigidBodyComponent : rigidBodiesComponents) {
+            dynamicsWorld.addRigidBody(rigidBodyComponent.getRigidBody());
+        }
     }
 
     public void addEntity(Entity entity) {
@@ -75,7 +95,12 @@ public class PhysicsSystem extends BaseSystem {
             component.initialize();
 
             if(component instanceof BoxRigidBodyComponent || component instanceof SphereRigidBodyComponent) {
-                rigidBodies.add(((RigidBodyComponent) component).getRigidBody());
+                RigidBody rigidBody = ((RigidBodyComponent) component).getRigidBody();
+
+                rigidBodiesComponents.add((RigidBodyComponent) component);
+
+                if(dynamicsWorld != null)
+                    dynamicsWorld.addRigidBody(rigidBody);
             }
         }
     }
@@ -86,9 +111,22 @@ public class PhysicsSystem extends BaseSystem {
 
             for(Component component : getLocalSystemComponentsFor(entity)) {
                 if(component instanceof BoxRigidBodyComponent || component instanceof SphereRigidBodyComponent) {
-                    rigidBodies.remove(((RigidBodyComponent) component).getRigidBody());
+                    RigidBody rigidBody = ((RigidBodyComponent) component).getRigidBody();
+
+                    rigidBodiesComponents.remove(rigidBody);
+
+                    if(dynamicsWorld != null)
+                        dynamicsWorld.removeRigidBody(rigidBody);
                 }
             }
         }
+    }
+
+    public float getSimulationTimeStep() {
+        return simulationTimeStep;
+    }
+
+    public void setSimulationTimeStep(float simulationTimeStep) {
+        this.simulationTimeStep = simulationTimeStep;
     }
 }

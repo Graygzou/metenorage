@@ -120,6 +120,7 @@ public class GameEngine implements Runnable {
     protected void update(float timeStep) {
         // Todo: implement this logic.
         logicSystem.iterate(entities);
+        physicsSystem.iterate(entities, timeStep);
         messageQueue.dispatch();
     }
 
