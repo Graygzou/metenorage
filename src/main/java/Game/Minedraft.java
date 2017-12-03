@@ -10,7 +10,7 @@ import Engine.Main.Material;
 import Engine.Main.Sound;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.Component.Mesh3D;
-import Engine.System.Physics.Component.BoxRigidBodyComponent;
+import Engine.System.Physics.Component.SphereRigidBodyComponent;
 import Engine.System.Sound.Component.Source;
 import Engine.Utils;
 import Game.Input.CameraFollow;
@@ -23,6 +23,8 @@ import org.joml.Vector3f;
  */
 
 public class Minedraft {
+    static int BED_ROCK_DEPTH = -2;
+
     public static void main(String[] args) {
         try {
             boolean testParser = false;
@@ -35,12 +37,14 @@ public class Minedraft {
                 gameEngine.addSound(son);
 
                 // Create materials.
-                Material material = new Material("/Game/Textures/grassblock.png", 1f);
-                gameEngine.addMaterial(material);
+                Material grassMaterial = new Material("/Game/Textures/grassblock.png", 1f);
+                Material bedRockMaterial = new Material("/Game/Textures/bedrock.png", 1f);
+                gameEngine.addMaterial(grassMaterial);
+                gameEngine.addMaterial(bedRockMaterial);
 
                 int gridWidth = 6, gridHeight = 6;
                 Mesh3D cubeMesh = OBJLoader.loadMesh("/Game/Models/cube.obj");
-                cubeMesh.setMaterial(material);
+                cubeMesh.setMaterial(bedRockMaterial);
                 Source sourceAudioFAMILY = null;
 
                 for (float i = 0; i < gridWidth; i++) {
@@ -50,19 +54,39 @@ public class Minedraft {
                         if (i == 0 && j == 0) {
                             // Create a new Audio Source
                             sourceAudioFAMILY = new Source(block, son);
-                            block.addComponent(sourceAudioFAMILY);
+                            //block.addComponent(sourceAudioFAMILY);
                         }
 
                         cubeMesh.setEntity(block);
                         block.addComponent(cubeMesh);
 
-                        block.addComponent(new BoxRigidBodyComponent(block, 5));
+                        block.addComponent(new SphereRigidBodyComponent(block, 0, 0.5f));
 
-                        block.setPosition(i, 0, -2f - j);
+                        block.setPosition(i, BED_ROCK_DEPTH, -2f - j);
                         block.setScale(0.5f);
                         gameEngine.addEntity(block);
                     }
                 }
+
+                // Grass blocks
+                cubeMesh = OBJLoader.loadMesh("/Game/Models/cube.obj");
+                cubeMesh.setMaterial(grassMaterial);
+                Entity block = new Entity("My block");
+                cubeMesh.setEntity(block);
+                block.addComponent(cubeMesh);
+                block.addComponent(new SphereRigidBodyComponent(block, 1, 0.5f));
+                block.setPosition(3, 0, -2f - 2);
+                block.setScale(0.5f);
+                gameEngine.addEntity(block);
+
+                block = new Entity("My block");
+                cubeMesh.setEntity(block);
+                block.addComponent(cubeMesh);
+                block.addComponent(new SphereRigidBodyComponent(block, 1, 0.5f));
+                block.setPosition(3f, 1f, -2f - 2);
+                block.setScale(0.5f);
+                gameEngine.addEntity(block);
+
 
 
                 // Set lighting.

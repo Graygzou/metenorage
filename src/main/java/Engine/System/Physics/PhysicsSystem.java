@@ -19,6 +19,7 @@ import com.bulletphysics.dynamics.constraintsolver.SequentialImpulseConstraintSo
 import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 
+import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -54,7 +55,6 @@ public class PhysicsSystem extends BaseSystem {
     }
 
     public void iterate(List<Entity> entities, float timeStep) {
-        System.out.println("PhysicsSystem: simulating with timestep: " + timeStep);
         dynamicsWorld.stepSimulation(timeStep);
 
         for (RigidBodyComponent rigidBodyComponent : rigidBodiesComponents) {
@@ -62,7 +62,9 @@ public class PhysicsSystem extends BaseSystem {
             Transform worldTransform = new Transform();
             motionState.getWorldTransform(worldTransform);
             rigidBodyComponent.getEntity().setPosition(worldTransform.origin.x, worldTransform.origin.y, worldTransform.origin.z);
-            System.out.println("Entity " + rigidBodyComponent.getEntity() + " moved to " + rigidBodyComponent.getEntity().getPosition());
+            Quat4f rotation = new Quat4f();
+            worldTransform.getRotation(rotation);
+            rigidBodyComponent.getEntity().setRotation(rotation.x, rotation.y, rotation.z);
         }
     }
 

@@ -12,6 +12,7 @@ public class SphereRigidBodyComponent extends RigidBodyComponent {
 
     public SphereRigidBodyComponent(Entity entity, float mass, float radius) {
         super(entity, mass);
+        this.collisionShape = new SphereShape(radius);
 
         this.radius = radius;
     }
@@ -28,6 +29,5 @@ public class SphereRigidBodyComponent extends RigidBodyComponent {
     @Override
     public void initialize() {
         super.initialize();
-        this.collisionShape = new SphereShape(radius);
     }
 }
