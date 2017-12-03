@@ -6,7 +6,7 @@ import Engine.System.Component.Messaging.Message;
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  */
 
-public abstract class BoxRigidBodyComponent extends RigidBodyComponent {
+public class BoxRigidBodyComponent extends RigidBodyComponent {
     public BoxRigidBodyComponent(Entity entity, float mass) {
         super(entity, mass);
 
@@ -24,6 +24,6 @@ public abstract class BoxRigidBodyComponent extends RigidBodyComponent {
 
     @Override
     public void initialize() {
-
+        super.initialize();
     }
 }

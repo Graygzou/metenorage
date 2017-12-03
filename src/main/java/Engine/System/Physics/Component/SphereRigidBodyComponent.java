@@ -7,7 +7,7 @@ import com.bulletphysics.collision.shapes.SphereShape;
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  */
 
-public abstract class SphereRigidBodyComponent extends RigidBodyComponent {
+public class SphereRigidBodyComponent extends RigidBodyComponent {
     float radius;
 
     public SphereRigidBodyComponent(Entity entity, float mass, float radius) {

@@ -33,7 +33,7 @@ public class PhysicsSystem extends BaseSystem {
      */
     private DynamicsWorld dynamicsWorld;
 
-    private List<Entity> trackedEntities;
+    private List<Entity> trackedEntities = new ArrayList<>();
 
     /**
      * Stores all the rigid bodies that exist within the world.
@@ -52,8 +52,6 @@ public class PhysicsSystem extends BaseSystem {
 
     @Override
     public void initialize() throws Exception {
-	    trackedEntities = new ArrayList<>();
-
         BroadphaseInterface broadphase = new DbvtBroadphase();
         CollisionConfiguration collisionConfiguration = new DefaultCollisionConfiguration();
         CollisionDispatcher collisionDispatcher = new CollisionDispatcher(collisionConfiguration);
@@ -63,7 +61,6 @@ public class PhysicsSystem extends BaseSystem {
         dynamicsWorld = new DiscreteDynamicsWorld(collisionDispatcher, broadphase, constraintSolver,
                 collisionConfiguration);
         dynamicsWorld.setGravity(new Vector3f(0, -9.81f, 0));
-
     }
 
     public void addEntity(Entity entity) {

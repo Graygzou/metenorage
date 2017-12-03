@@ -14,6 +14,7 @@ import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.GraphicsSystem;
 import Engine.System.Input.InputSystem;
 import Engine.System.Logic.LogicSystem;
+import Engine.System.Physics.PhysicsSystem;
 import Engine.System.Sound.SoundSystem;
 import org.joml.Vector3f;
 
@@ -41,6 +42,8 @@ public class GameEngine implements Runnable {
 
     private LogicSystem logicSystem;
 
+    private PhysicsSystem physicsSystem;
+
     private GraphicsSystem graphicsSystem;
 
     private InputSystem inputSystem;
@@ -59,6 +62,7 @@ public class GameEngine implements Runnable {
         // Systems setup.
         this.logicSystem = new LogicSystem();
         this.graphicsSystem = new GraphicsSystem(this.window);
+        this.physicsSystem = new PhysicsSystem();
         this.inputSystem = new InputSystem(window, messageQueue);
         this.soundSystem = new SoundSystem();
 
@@ -98,6 +102,7 @@ public class GameEngine implements Runnable {
 
         this.inputSystem.initialize();
         this.graphicsSystem.initialize();
+        this.physicsSystem.initialize();
         this.soundSystem.initialize();
     }
 
@@ -195,6 +200,8 @@ public class GameEngine implements Runnable {
 
     public void addEntity(Entity entity) {
         this.entities.add(entity);
+
+        this.physicsSystem.addEntity(entity);
         System.out.println("Added entity " + entity);
     }
 

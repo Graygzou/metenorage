@@ -2,7 +2,6 @@ package Engine.System.Physics.Component;
 import Engine.Main.Entity;
 import Engine.System.Component.Messaging.Message;
 import Engine.System.Physics.BasePhysicsComponent;
-import com.bulletphysics.collision.dispatch.CollisionObject;
 import com.bulletphysics.collision.shapes.CollisionShape;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.RigidBodyConstructionInfo;

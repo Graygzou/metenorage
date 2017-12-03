@@ -4,18 +4,17 @@ import Engine.GameEngine;
 import Engine.Helper.Loader.OBJLoader;
 import Engine.Main.Entity;
 import Engine.Main.Light.DirectionalLight;
+import Engine.Main.Light.PointLight;
 import Engine.Main.Light.SpotLight;
 import Engine.Main.Material;
-import Engine.Main.Light.PointLight;
 import Engine.Main.Sound;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.Component.Mesh3D;
+import Engine.System.Physics.Component.BoxRigidBodyComponent;
 import Engine.System.Sound.Component.Source;
 import Engine.Utils;
 import Game.Input.CameraFollow;
 import org.joml.Vector3f;
-
-import javax.rmi.CORBA.Util;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
@@ -54,9 +53,10 @@ public class Minedraft {
                             block.addComponent(sourceAudioFAMILY);
                         }
 
-
                         cubeMesh.setEntity(block);
                         block.addComponent(cubeMesh);
+
+                        block.addComponent(new BoxRigidBodyComponent(block, 5));
 
                         block.setPosition(i, 0, -2f - j);
                         block.setScale(0.5f);
