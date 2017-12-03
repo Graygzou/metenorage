@@ -10,10 +10,10 @@ import Engine.Main.Material;
 import Engine.Main.Sound;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.Component.Mesh3D;
-import Engine.System.Physics.Component.SphereRigidBodyComponent;
+import Engine.System.Physics.Component.BoxRigidBodyComponent;
 import Engine.System.Sound.Component.Source;
 import Engine.Utils;
-import Game.Input.CameraFollow;
+import Game.Input.CameraKeyboard;
 import org.joml.Vector3f;
 
 /*
@@ -42,7 +42,7 @@ public class Minedraft {
                 gameEngine.addMaterial(grassMaterial);
                 gameEngine.addMaterial(bedRockMaterial);
 
-                int gridWidth = 6, gridHeight = 6;
+                int gridWidth = 8, gridHeight = 8;
                 Mesh3D cubeMesh = OBJLoader.loadMesh("/Game/Models/cube.obj");
                 cubeMesh.setMaterial(bedRockMaterial);
                 Source sourceAudioFAMILY = null;
@@ -60,7 +60,7 @@ public class Minedraft {
                         cubeMesh.setEntity(block);
                         block.addComponent(cubeMesh);
 
-                        block.addComponent(new SphereRigidBodyComponent(block, 0, 0.5f));
+                        block.addComponent(new BoxRigidBodyComponent(block, 0, 0.5f,0.5f,0.5f));
 
                         block.setPosition(i, BED_ROCK_DEPTH, -2f - j);
                         block.setScale(0.5f);
@@ -74,7 +74,7 @@ public class Minedraft {
                 Entity block = new Entity("My block");
                 cubeMesh.setEntity(block);
                 block.addComponent(cubeMesh);
-                block.addComponent(new SphereRigidBodyComponent(block, 1, 0.5f));
+                block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f,0.5f,0.5f));
                 block.setPosition(3, 0, -2f - 2);
                 block.setScale(0.5f);
                 gameEngine.addEntity(block);
@@ -82,12 +82,10 @@ public class Minedraft {
                 block = new Entity("My block");
                 cubeMesh.setEntity(block);
                 block.addComponent(cubeMesh);
-                block.addComponent(new SphereRigidBodyComponent(block, 1, 0.5f));
-                block.setPosition(3f, 1f, -2f - 2);
+                block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f,0.5f,0.5f));
+                block.setPosition(3.8f, 1f, -2f - 2);
                 block.setScale(0.5f);
                 gameEngine.addEntity(block);
-
-
 
                 // Set lighting.
                 Vector3f ambientLight = new Vector3f(0.3f, 0.3f, 0.3f);
@@ -129,7 +127,7 @@ public class Minedraft {
                 // Set the main camera.
                 Camera mainCamera = new Camera();
                 mainCamera.setName("Caméra principale");
-                mainCamera.addComponent(new CameraFollow(mainCamera));
+                mainCamera.addComponent(new CameraKeyboard(mainCamera));
                 gameEngine.setCamera(mainCamera);
 
                 gameEngine.start();

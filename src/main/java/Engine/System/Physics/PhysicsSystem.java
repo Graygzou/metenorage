@@ -1,5 +1,6 @@
 package Engine.System.Physics;
 
+import Engine.Helper.QuaternionHelper;
 import Engine.Main.Entity;
 import Engine.System.BaseSystem;
 import Engine.System.Component.Component;
@@ -64,7 +65,7 @@ public class PhysicsSystem extends BaseSystem {
             rigidBodyComponent.getEntity().setPosition(worldTransform.origin.x, worldTransform.origin.y, worldTransform.origin.z);
             Quat4f rotation = new Quat4f();
             worldTransform.getRotation(rotation);
-            rigidBodyComponent.getEntity().setRotation(rotation.x, rotation.y, rotation.z);
+            rigidBodyComponent.getEntity().rotate(QuaternionHelper.getPitch(rotation), QuaternionHelper.getRoll(rotation), QuaternionHelper.getYaw(rotation));
         }
     }
 
