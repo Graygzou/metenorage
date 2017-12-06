@@ -7,7 +7,7 @@ import Engine.System.Logic.LogicComponent;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
- * @author Gr�goire Boiron <gregoire.boiron@gmail.com>
+ * @author Gregoire Boiron <gregoire.boiron@gmail.com>
  */
 
 public class TestComponent extends BaseComponent implements LogicComponent {
