@@ -14,6 +14,8 @@ import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.GraphicsSystem;
 import Engine.System.Input.InputSystem;
 import Engine.System.Logic.LogicSystem;
+import Engine.System.Physics.PhysicsSystem;
+import Engine.System.Scripting.ScriptingSystem;
 import Engine.System.Sound.SoundSystem;
 import org.joml.Vector3f;
 
