@@ -14,6 +14,7 @@ import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.GraphicsSystem;
 import Engine.System.Input.InputSystem;
 import Engine.System.Logic.LogicSystem;
+import Engine.System.Scripting.ScriptingSystem;
 import Engine.System.Sound.SoundSystem;
 import org.joml.Vector3f;
 
@@ -47,6 +48,8 @@ public class GameEngine implements Runnable {
 
     private SoundSystem soundSystem;
 
+    private ScriptingSystem scriptingSystem;
+
     public MessageQueue messageQueue;
 
     public GameEngine(String windowTitle, int windowWidth, int windowHeight) {
@@ -61,6 +64,7 @@ public class GameEngine implements Runnable {
         this.graphicsSystem = new GraphicsSystem(this.window);
         this.inputSystem = new InputSystem(window, messageQueue);
         this.soundSystem = new SoundSystem();
+        this.scriptingSystem = new ScriptingSystem();
 
         this.entities = new ArrayList<>();
         this.materials = new ArrayList<>();
@@ -134,6 +138,13 @@ public class GameEngine implements Runnable {
         soundSystem.iterate(entities);
     }
 
+    /**
+     * Delegates the control of the sounds to the sound system.
+     */
+    protected void executeScripts() {
+        scriptingSystem.iterate(entities);
+    }
+
     private void cleanUp() {
         // TODO REMETTRE :
         // this.graphicsSystem.cleanUp();
@@ -163,6 +174,7 @@ public class GameEngine implements Runnable {
             while (timeSteps >= timePerUpdate) {
                 update((float) timeSteps);
                 playSounds();
+                executeScripts();
                 timeSteps -= timePerUpdate;
             }
             render();

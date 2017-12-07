@@ -1,6 +1,8 @@
 package Engine.System.Scripting;
 
-public interface ScriptingComponent {
+import Engine.System.Component.Component;
+
+public interface ScriptingComponent extends Component {
 
     void awake();
 

@@ -1,19 +1,14 @@
 package Engine.System.Sound;
 
 import Engine.Main.Entity;
-import Engine.Main.Sound;
 import Engine.System.BaseSystem;
 import Engine.System.Component.Component;
-import Engine.System.Sound.Component.Source;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.ALC;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import static org.lwjgl.openal.AL10.alDeleteBuffers;
 import static org.lwjgl.openal.ALC10.*;
 
 /**

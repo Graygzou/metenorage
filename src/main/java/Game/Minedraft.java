@@ -4,18 +4,17 @@ import Engine.GameEngine;
 import Engine.Helper.Loader.OBJLoader;
 import Engine.Main.Entity;
 import Engine.Main.Light.DirectionalLight;
+import Engine.Main.Light.PointLight;
 import Engine.Main.Light.SpotLight;
 import Engine.Main.Material;
-import Engine.Main.Light.PointLight;
 import Engine.Main.Sound;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.Component.Mesh3D;
+import Engine.System.Scripting.Component.Script;
 import Engine.System.Sound.Component.Source;
 import Engine.Utils;
 import Game.Input.CameraFollow;
 import org.joml.Vector3f;
-
-import javax.rmi.CORBA.Util;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
@@ -52,6 +51,11 @@ public class Minedraft {
                             // Create a new Audio Source
                             sourceAudioFAMILY = new Source(block, son);
                             block.addComponent(sourceAudioFAMILY);
+
+                            // Add a script to that block to active the song
+                            Script script = new Script(block, "./resources/Game/Scripts/ScriptTest.java");
+                            // uncomment + push to annoy peoples.
+                            // block.addComponent(script);
                         }
 
 

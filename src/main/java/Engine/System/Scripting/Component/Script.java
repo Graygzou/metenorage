@@ -20,8 +20,9 @@ public class Script extends BaseComponent implements ScriptingComponent {
 
     private Method[] methods;
 
-    public Script(Entity entity) {
+    public Script(Entity entity, String classPath) {
         super(entity);
+        this.classPath = classPath;
     }
 
     @Override
@@ -35,19 +36,19 @@ public class Script extends BaseComponent implements ScriptingComponent {
     public void initialize() {
         try {
             // Get the actual class that contains the script
-            this.scriptClass = Class.forName(this.classPath);
+            this.scriptClass = Class.forName("Game.Scripts.ScriptTest");
 
             // Get all the methods of the class to be able to retrieve knowns one.
             methods = this.scriptClass.getMethods();
 
+            this.awake();
+
+            if(isActive()) {
+                this.start();
+            }
+
         } catch(ClassNotFoundException e) {
             System.out.println("The class located at " + classPath + " cannot be found.");
-        }
-
-        this.awake();
-
-        if(isActive()) {
-            this.start();
         }
     }
 
@@ -63,16 +64,12 @@ public class Script extends BaseComponent implements ScriptingComponent {
 
     @Override
     public void start() {
-        // SHOULD BE TESTED
         try {
             // Find the start() method
-            Class[] cArg = new Class[1];
-            cArg[0] = Long.class;
             Method startMethod = this.scriptClass.getMethod("start", null);
             System.out.println("method = " + startMethod.toString());
 
             // Invoke the start method
-            scriptClass.newInstance();
             // Not usefull startMethod.setAccessible(true);
             Object o = startMethod.invoke(this.scriptClass.newInstance(), null);
 
