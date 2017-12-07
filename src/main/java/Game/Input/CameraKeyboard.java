@@ -1,5 +1,10 @@
 package Game.Input;
 
+/*
+ * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
+ */
+
+
 import Engine.Main.Entity;
 import Engine.System.Component.BaseComponent;
 import Engine.System.Component.Messaging.Message;
@@ -13,15 +18,11 @@ import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-/*
- * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
- */
-
-public class CameraFollow extends BaseComponent implements MouseListener, KeyboardListener, InputComponent {
+public class CameraKeyboard extends BaseComponent implements MouseListener, KeyboardListener, InputComponent {
     private static float MOUSE_SENSITIVITY = 0.1f;
     private static float CAMERA_STEP = 0.1f;
 
-    public CameraFollow(Entity entity) {
+    public CameraKeyboard(Entity entity) {
         super(entity);
     }
 
