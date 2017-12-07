@@ -41,11 +41,15 @@ public class GameEngine implements Runnable {
 
     private LogicSystem logicSystem;
 
+    private PhysicsSystem physicsSystem;
+
     private GraphicsSystem graphicsSystem;
 
     private InputSystem inputSystem;
 
     private SoundSystem soundSystem;
+
+    private ScriptingSystem scriptingSystem;
 
     public MessageQueue messageQueue;
 
@@ -59,8 +63,10 @@ public class GameEngine implements Runnable {
         // Systems setup.
         this.logicSystem = new LogicSystem();
         this.graphicsSystem = new GraphicsSystem(this.window);
+        this.physicsSystem = new PhysicsSystem();
         this.inputSystem = new InputSystem(window, messageQueue);
         this.soundSystem = new SoundSystem();
+        this.scriptingSystem = new ScriptingSystem();
 
         this.entities = new ArrayList<>();
         this.materials = new ArrayList<>();
@@ -95,6 +101,7 @@ public class GameEngine implements Runnable {
 
         this.inputSystem.initialize();
         this.graphicsSystem.initialize();
+        this.physicsSystem.initialize();
         this.soundSystem.initialize();
     }
 
@@ -129,6 +136,13 @@ public class GameEngine implements Runnable {
         soundSystem.iterate(entities);
     }
 
+    /**
+     * Delegates the control of the sounds to the sound system.
+     */
+    protected void executeScripts() {
+        scriptingSystem.iterate(entities);
+    }
+
     private void cleanUp() {
         // TODO REMETTRE :
         // this.graphicsSystem.cleanUp();
@@ -158,6 +172,7 @@ public class GameEngine implements Runnable {
             while (timeSteps >= timePerUpdate) {
                 update((float) timeSteps);
                 playSounds();
+                executeScripts();
                 timeSteps -= timePerUpdate;
             }
             render();
@@ -190,6 +205,8 @@ public class GameEngine implements Runnable {
 
     public void addEntity(Entity entity) {
         this.entities.add(entity);
+
+        this.physicsSystem.addEntity(entity);
     }
 
     public void addMaterial(Material material) {

@@ -4,18 +4,18 @@ import Engine.GameEngine;
 import Engine.Helper.Loader.OBJLoader;
 import Engine.Main.Entity;
 import Engine.Main.Light.DirectionalLight;
+import Engine.Main.Light.PointLight;
 import Engine.Main.Light.SpotLight;
 import Engine.Main.Material;
-import Engine.Main.Light.PointLight;
 import Engine.Main.Sound;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.Component.Mesh3D;
+import Engine.System.Scripting.Component.Script;
+import Engine.System.Physics.Component.BoxRigidBodyComponent;
 import Engine.System.Sound.Component.Source;
 import Engine.Utils;
-import Game.Input.CameraFollow;
+import Game.Input.CameraKeyboard;
 import org.joml.Vector3f;
-
-import javax.rmi.CORBA.Util;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
@@ -24,6 +24,8 @@ import javax.rmi.CORBA.Util;
  */
 
 public class Minedraft {
+    static int BED_ROCK_DEPTH = -2;
+
     public static void main(String[] args) {
         try {
             boolean testParser = false;
@@ -36,12 +38,14 @@ public class Minedraft {
                 gameEngine.addSound(son);
 
                 // Create materials.
-                Material material = new Material("/Game/Textures/grassblock.png", 1f);
-                gameEngine.addMaterial(material);
+                Material grassMaterial = new Material("/Game/Textures/grassblock.png", 1f);
+                Material bedRockMaterial = new Material("/Game/Textures/bedrock.png", 1f);
+                gameEngine.addMaterial(grassMaterial);
+                gameEngine.addMaterial(bedRockMaterial);
 
-                int gridWidth = 6, gridHeight = 6;
+                int gridWidth = 8, gridHeight = 8;
                 Mesh3D cubeMesh = OBJLoader.loadMesh("/Game/Models/cube.obj");
-                cubeMesh.setMaterial(material);
+                cubeMesh.setMaterial(bedRockMaterial);
                 Source sourceAudioFAMILY = null;
 
                 for (float i = 0; i < gridWidth; i++) {
@@ -51,19 +55,43 @@ public class Minedraft {
                         if (i == 0 && j == 0) {
                             // Create a new Audio Source
                             sourceAudioFAMILY = new Source(block, son);
-                            block.addComponent(sourceAudioFAMILY);
-                        }
+                            //block.addComponent(sourceAudioFAMILY);
 
+                            // Add a script to that block to active the song
+                            Script script = new Script(block, "./resources/Game/Scripts/ScriptTest.java");
+                            // uncomment + push to annoy peoples.
+                            // block.addComponent(script);
+                        }
 
                         cubeMesh.setEntity(block);
                         block.addComponent(cubeMesh);
 
-                        block.setPosition(i, 0, -2f - j);
+                        block.addComponent(new BoxRigidBodyComponent(block, 0, 0.5f,0.5f,0.5f));
+
+                        block.setPosition(i, BED_ROCK_DEPTH, -2f - j);
                         block.setScale(0.5f);
                         gameEngine.addEntity(block);
                     }
                 }
 
+                // Grass blocks
+                cubeMesh = OBJLoader.loadMesh("/Game/Models/cube.obj");
+                cubeMesh.setMaterial(grassMaterial);
+                Entity block = new Entity("My block");
+                cubeMesh.setEntity(block);
+                block.addComponent(cubeMesh);
+                block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f,0.5f,0.5f));
+                block.setPosition(3, 0, -2f - 2);
+                block.setScale(0.5f);
+                gameEngine.addEntity(block);
+
+                block = new Entity("My block");
+                cubeMesh.setEntity(block);
+                block.addComponent(cubeMesh);
+                block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f,0.5f,0.5f));
+                block.setPosition(3.8f, 1f, -2f - 2);
+                block.setScale(0.5f);
+                gameEngine.addEntity(block);
 
                 // Set lighting.
                 Vector3f ambientLight = new Vector3f(0.3f, 0.3f, 0.3f);
@@ -105,7 +133,7 @@ public class Minedraft {
                 // Set the main camera.
                 Camera mainCamera = new Camera();
                 mainCamera.setName("Caméra principale");
-                mainCamera.addComponent(new CameraFollow(mainCamera));
+                mainCamera.addComponent(new CameraKeyboard(mainCamera));
                 gameEngine.setCamera(mainCamera);
 
                 gameEngine.start();
