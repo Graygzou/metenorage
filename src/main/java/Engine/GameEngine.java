@@ -108,6 +108,7 @@ public class GameEngine implements Runnable {
         this.graphicsSystem.initialize();
         this.physicsSystem.initialize();
         this.soundSystem.initialize();
+        this.scriptingSystem.initialize();
     }
 
     /**

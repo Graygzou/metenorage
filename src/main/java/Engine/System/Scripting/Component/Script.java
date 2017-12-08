@@ -7,6 +7,7 @@ import Engine.System.Scripting.ScriptingComponent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 /*
  * @author Gregoire Boiron
@@ -28,14 +29,16 @@ public class Script extends BaseComponent implements ScriptingComponent {
     @Override
     public void apply() {
         this.update();
-
-        // Should call fixedUpdate() too in a particular case.
+        // TODO call fixedUpdate() too in a particular case.
     }
 
     @Override
     public void initialize() {
         try {
-            // Get the actual class that contains the script
+            // Get the actual class that contains the
+            ClassLoader classLoader = Script.class.getClassLoader();
+
+            //this.scriptClass = Class.forName("Game.Scripts.ScriptTest");
             this.scriptClass = Class.forName("Game.Scripts.ScriptTest");
 
             // Get all the methods of the class to be able to retrieve knowns one.
@@ -59,39 +62,46 @@ public class Script extends BaseComponent implements ScriptingComponent {
 
     @Override
     public void awake() {
-        // TODO
+        this.callSpecificVoidFunction("awake", null, null);
     }
 
     @Override
     public void start() {
-        try {
-            // Find the start() method
-            Method startMethod = this.scriptClass.getMethod("start", null);
-            System.out.println("method = " + startMethod.toString());
-
-            // Invoke the start method
-            // Not usefull startMethod.setAccessible(true);
-            Object o = startMethod.invoke(this.scriptClass.newInstance(), null);
-
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-
+        this.callSpecificVoidFunction("start", null, null);
     }
 
     @Override
     public void update() {
-        //TODO
+        this.callSpecificVoidFunction("update", null, null);
     }
 
     @Override
     public void fixedUpdate() {
-        //TODO
+        this.callSpecificVoidFunction("fixedUpdate", null, null);
     }
+
+    private void callSpecificVoidFunction(String name, Class<?>[] parameterTypesArray, List<Object> arguments) {
+        try {
+            // Find the method
+            Method currentMethod = this.scriptClass.getMethod(name, parameterTypesArray);
+
+            // Invoke the method
+            if (arguments != null) {
+                currentMethod.invoke(this.scriptClass.newInstance(), arguments);
+            } else {
+                currentMethod.invoke(this.scriptClass.newInstance());
+            }
+
+        } catch (InstantiationException e) {
+            System.out.println("Exception : Method" + name +" cannot be instantiate.");
+        } catch (IllegalAccessException e) {
+            System.out.println("Exception : Method" + name +" cannot be access.");
+        } catch (InvocationTargetException e) {
+            System.out.println("Exception : Method" + name +" cannot be called.");
+        } catch (NoSuchMethodException e) {
+            System.out.println("Exception : Method" + name +" cannot be found.");
+        }
+    }
+
+    // TODO make a template for non-void method ?
 }

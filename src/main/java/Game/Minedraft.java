@@ -60,7 +60,7 @@ public class Minedraft {
                             // Add a script to that block to active the song
                             Script script = new Script(block, "./resources/Game/Scripts/ScriptTest.java");
                             // uncomment + push to annoy peoples.
-                            // block.addComponent(script);
+                            block.addComponent(script);
                         }
 
                         cubeMesh.setEntity(block);
