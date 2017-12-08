@@ -1,9 +1,11 @@
 package Game.Scripts;
 
-public class ScriptTest {
+import Engine.System.Scripting.BaseScript;
+
+public class ScriptTest extends BaseScript {
 
     public void awake() {
-        System.out.println("Methode Awake called !!");
+        //getComponent(Source).play();
     }
 
     public void start() {
@@ -11,7 +13,7 @@ public class ScriptTest {
     }
 
     public void update() {
-        System.out.println("Methode Update called !!");
+        //System.out.println("Methode Update called !!");
     }
 
 }
