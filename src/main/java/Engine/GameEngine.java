@@ -8,6 +8,7 @@ package Engine;
 import Engine.Helper.Timer;
 import Engine.Main.Entity;
 import Engine.Main.Material;
+import Engine.Main.ScriptFile;
 import Engine.Main.Sound;
 import Engine.System.Component.Messaging.MessageQueue;
 import Engine.System.Graphics.Camera;
@@ -25,32 +26,28 @@ import java.util.List;
 import static org.lwjgl.openal.AL10.alDeleteBuffers;
 
 public class GameEngine implements Runnable {
-    private float timePerUpdate = 1f / 50;
-
-    private float timePerRendering = 1f / 30;
-
-    private final Thread gameLoopThread;
 
     private Window window;
 
     private Timer timer;
 
+    private final Thread gameLoopThread;
+
+    private float timePerUpdate = 1f / 50;
+    private float timePerRendering = 1f / 30;
+
+    // Resources
     private List<Entity> entities;
-
     private List<Material> materials;
-
     private List<Sound> sounds;
+    private List<ScriptFile> scripts;
 
+    // Systems
     private LogicSystem logicSystem;
-
     private PhysicsSystem physicsSystem;
-
     private GraphicsSystem graphicsSystem;
-
     private InputSystem inputSystem;
-
     private SoundSystem soundSystem;
-
     private ScriptingSystem scriptingSystem;
 
     public MessageQueue messageQueue;
@@ -70,9 +67,11 @@ public class GameEngine implements Runnable {
         this.soundSystem = new SoundSystem();
         this.scriptingSystem = new ScriptingSystem();
 
+        // Resources setup.
         this.entities = new ArrayList<>();
         this.materials = new ArrayList<>();
         this.sounds = new ArrayList<>();
+        this.scripts = new ArrayList<>();
     }
 
     public void start() {
@@ -217,6 +216,8 @@ public class GameEngine implements Runnable {
     }
 
     public void addSound(Sound sound) { this.sounds.add(sound); }
+
+    public void addScript(ScriptFile script) { this.scripts.add(script); }
 
     public void setCamera(Camera camera) {
         if(this.graphicsSystem != null)

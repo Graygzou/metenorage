@@ -7,11 +7,12 @@ import Engine.Main.Light.DirectionalLight;
 import Engine.Main.Light.PointLight;
 import Engine.Main.Light.SpotLight;
 import Engine.Main.Material;
+import Engine.Main.ScriptFile;
 import Engine.Main.Sound;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.Component.Mesh3D;
-import Engine.System.Scripting.Component.Script;
 import Engine.System.Physics.Component.BoxRigidBodyComponent;
+import Engine.System.Scripting.Component.Script;
 import Engine.System.Sound.Component.Source;
 import Engine.Utils;
 import Game.Input.CameraKeyboard;
@@ -37,6 +38,9 @@ public class Minedraft {
                 Sound son = new Sound("Test", "./resources/Game/Sounds/sonTest.wav");
                 gameEngine.addSound(son);
 
+                ScriptFile script = new ScriptFile("ScriptTest");
+                gameEngine.addScript(script);
+
                 // Create materials.
                 Material grassMaterial = new Material("/Game/Textures/grassblock.png", 1f);
                 Material bedRockMaterial = new Material("/Game/Textures/bedrock.png", 1f);
@@ -57,10 +61,8 @@ public class Minedraft {
                             sourceAudioFAMILY = new Source(block, son);
                             //block.addComponent(sourceAudioFAMILY);
 
-                            // Add a script to that block to active the song
-                            Script script = new Script(block, "./resources/Game/Scripts/ScriptTest.java");
-                            // uncomment + push to annoy peoples.
-                            block.addComponent(script);
+                            Script script1 = new Script(block, script);
+                            block.addComponent(script1);
                         }
 
                         cubeMesh.setEntity(block);
