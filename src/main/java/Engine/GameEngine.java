@@ -14,8 +14,8 @@ import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.GraphicsSystem;
 import Engine.System.Input.InputSystem;
 import Engine.System.Logic.LogicSystem;
-import Engine.System.Scripting.ScriptingSystem;
 import Engine.System.Physics.PhysicsSystem;
+import Engine.System.Scripting.ScriptingSystem;
 import Engine.System.Sound.SoundSystem;
 import org.joml.Vector3f;
 
@@ -94,9 +94,6 @@ public class GameEngine implements Runnable {
     }
 
     private void initialize() throws Exception {
-        // Todo: implement this logic.
-        // e.g. initialize the renderer (when we'll have one. (:).
-
         window.initialize();
         timer.initialize();
 
@@ -112,28 +109,25 @@ public class GameEngine implements Runnable {
     }
 
     /**
-     * Delegates the input handling to the game logic.
+     * Delegates the input handling to the input handling system.
      */
     protected void handleInput() {
         inputSystem.iterate(entities);
     }
 
     /**
-     * Delegates the update to the game logic.
+     * Delegates the update to the game logic system and physics system.
      * @param timeStep The theoretical time step between each update.
      */
     protected void update(float timeStep) {
-        // Todo: implement this logic.
         logicSystem.iterate(entities);
-        physicsSystem.iterate(entities, timeStep);
         messageQueue.dispatch();
     }
 
     /**
-     * Delegates the rendering to the game logic, and then updates the window.
+     * Delegates the rendering to the graphics system, and then updates the window.
      */
     protected void render() {
-        // Todo: implement this logic.
         window.update();
         graphicsSystem.iterate(entities);
     }
@@ -216,7 +210,6 @@ public class GameEngine implements Runnable {
         this.entities.add(entity);
 
         this.physicsSystem.addEntity(entity);
-        System.out.println("Added entity " + entity);
     }
 
     public void addMaterial(Material material) {
