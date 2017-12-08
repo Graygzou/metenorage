@@ -6,7 +6,6 @@ import Engine.System.Component.BaseComponent;
 import Engine.System.Component.Messaging.Message;
 import Engine.System.Sound.SoundComponent;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 import org.lwjgl.openal.AL10;
 
 /**
@@ -27,6 +26,7 @@ public class Source extends BaseComponent implements SoundComponent {
 
     public Source(Entity entity, Sound sound) {
         super(entity);
+        super.setActiveState(false);
         // Initialize parameters
         this.sound = sound;
         this.volume = 100f;

@@ -54,9 +54,8 @@ public class SoundSystem extends BaseSystem {
             // For the audio components
             for (Component component : getLocalSystemComponentsFor(entity)) {
                 // Active them
-                double r = Math.random();
-                if(r <= 0.005) {
-                    component.initialize();
+                component.initialize();
+                if(component.isActive()) {
                     component.apply();
                 }
             }

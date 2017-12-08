@@ -12,15 +12,16 @@ import Engine.Main.Sound;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.Component.Mesh3D;
 import Engine.System.Physics.Component.BoxRigidBodyComponent;
-import Engine.System.Scripting.Component.Script;
+import Engine.System.Scripting.Script;
 import Engine.System.Sound.Component.Source;
 import Engine.Utils;
 import Game.Input.CameraKeyboard;
 import org.joml.Vector3f;
 
-/*
+/**
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  * @author Noemy Artigouha
+ * @author Grégoire Boiron
  * This is a simplistic implementation of the game Minecraft.
  */
 
@@ -59,7 +60,7 @@ public class Minedraft {
                         if (i == 0 && j == 0) {
                             // Create a new Audio Source
                             sourceAudioFAMILY = new Source(block, son);
-                            //block.addComponent(sourceAudioFAMILY);
+                            block.addComponent(sourceAudioFAMILY);
 
                             Script script1 = new Script(block, script);
                             block.addComponent(script1);

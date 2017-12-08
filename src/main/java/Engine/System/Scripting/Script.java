@@ -1,12 +1,11 @@
-package Engine.System.Scripting.Component;
+package Engine.System.Scripting;
 
 import Engine.Main.Entity;
 import Engine.Main.ScriptFile;
 import Engine.System.Component.BaseComponent;
 import Engine.System.Component.Messaging.Message;
-import Engine.System.Scripting.ScriptingComponent;
 
-/*
+/**
  * @author Gregoire Boiron
  */
 public class Script extends BaseComponent implements ScriptingComponent {
@@ -18,6 +17,7 @@ public class Script extends BaseComponent implements ScriptingComponent {
     public Script(Entity entity, ScriptFile script) {
         super(entity);
         this.script = script;
+        this.script.loadClass(entity);
     }
 
     @Override

@@ -7,6 +7,9 @@ import Engine.System.Component.Component;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author Grégoire Boiron
+ */
 public class ScriptingSystem extends BaseSystem {
 
     private List<Entity> notStartedEntities;

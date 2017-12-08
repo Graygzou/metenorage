@@ -1,8 +1,9 @@
 package Engine;
 
-/*
+/**
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  * @author Noemy Artigouha
+ * @author Grégoire Boiron
  */
 
 import Engine.Helper.Timer;

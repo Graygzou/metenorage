@@ -13,6 +13,10 @@ public interface Component {
 
     Entity getEntity();
 
+    boolean isActive();
+
+    void setActiveState(boolean state);
+
     void apply();
 
     void initialize();
