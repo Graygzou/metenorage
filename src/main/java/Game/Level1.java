@@ -36,10 +36,12 @@ public class Level1 {
                 //gameEngine.addScript(script);
 
                 // Create materials.
-                Material playerMaterial = new Material("/Game/Textures/blue.png", 1f);
-                Material groundMaterial = new Material("/Game/Textures/block.png", 1f);
+                Material playerMaterial = new Material("/Game/Textures/feathers.png", 1f);
+                Material groundMaterial = new Material("/Game/Textures/leaf.png", 1f);
+                Material groundSolutionMaterial = new Material("/Game/Textures/block.png", 1f);
                 gameEngine.addMaterial(playerMaterial);
                 gameEngine.addMaterial(groundMaterial);
+                gameEngine.addMaterial(groundSolutionMaterial);
 
 
                 // Player block
@@ -103,14 +105,45 @@ public class Level1 {
                     gameEngine.addEntity(block);
                 }
 
-                for(int i = 0; i < 3; i++) {
+                for(int i = 0; i < 6; i++) {
                     block = new Entity("My block");
                     cubeMesh.setEntity(block);
                     block.addComponent(cubeMesh);
                     block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
-                    block.setPosition(7.5f, 0f-i, -7.5f+i*2);
+                    if(i == 4) {
+                        block.setPosition(7.5f, 0f-i+1, -7.5f+i*2-1);
+                    } if(i == 5) {
+                        block.setPosition(7.5f, 0f-i+1, -7.5f+i*2-1);
+                    } else {
+                        block.setPosition(7.5f, 0f-i, -7.5f+i*2);
+                    }
                     block.setScale(0.5f);
                     gameEngine.addEntity(block);
+
+                    block = new Entity("My block");
+                    cubeMesh.setEntity(block);
+                    block.addComponent(cubeMesh);
+                    block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
+                    if(i < 3) {
+                        block.setPosition(7.5f, -4f, 3f+i*0.7f);
+                    } else {
+                        block.setPosition(9.5f-i, -4f, 2.5f+i);
+                    }
+                    block.setScale(0.35f);
+                    gameEngine.addEntity(block);
+                }
+                cubeMesh = OBJLoader.loadMesh("/Game/Models/cube.obj");
+                cubeMesh.setMaterial(groundSolutionMaterial);
+                for(int i = 0; i < 2; i++) {
+                    for (int j = 0; j < 2; j++) {
+                        block = new Entity("My block");
+                        cubeMesh.setEntity(block);
+                        block.addComponent(cubeMesh);
+                        block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
+                        block.setPosition(4f+i, -3.5f, 9f+j);
+                        block.setScale(0.5f);
+                        gameEngine.addEntity(block);
+                    }
                 }
 
 
