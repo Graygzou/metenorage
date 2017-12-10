@@ -16,9 +16,10 @@ import org.joml.Vector3f;
 
 /**
  * @author Noemy Artigouha
+ * @author Matthieu Le Boucher
  */
 
-public class Level1 {
+public class FindYouWay {
     static int BED_ROCK_DEPTH = -2;
 
     public static void main(String[] args) {
