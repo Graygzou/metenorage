@@ -124,8 +124,7 @@ public class GameEngine implements Runnable {
      */
     protected void update(float timeStep) {
         logicSystem.iterate(entities);
-        // TODO : debug this part here
-        //messageQueue.dispatch();
+        messageQueue.dispatch();
     }
 
     /**
@@ -178,10 +177,12 @@ public class GameEngine implements Runnable {
 
             while (timeSteps >= timePerUpdate) {
                 update((float) timeSteps);
-                playSounds();
-                executeScripts();
                 timeSteps -= timePerUpdate;
             }
+
+            playSounds();
+            executeScripts();
+
             render();
             synchronizeRenderer(currentLoopStartTime);
         }

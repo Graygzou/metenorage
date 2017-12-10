@@ -38,7 +38,9 @@ public class MessageQueue {
         iterator = this.queue.iterator();
         Message message;
         while (iterator.hasNext()){
-            message = this.queue.poll();
+            message = (Message)iterator.next();
+            // Remove the element from the queue
+            this.queue.poll();
             int receiverID = message.getReceiver();
             // Find the component that have this ID
             Component receiver = GameEngine.componentManager.getComponentFromID(receiverID);

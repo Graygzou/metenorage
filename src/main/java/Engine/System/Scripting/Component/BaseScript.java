@@ -60,12 +60,10 @@ public abstract class BaseScript extends BaseComponent {
      *
      * @param componentID id of the component we want to play
      */
-    protected void activeComponent(int componentID, String command, Class<? extends Component> data) {
-        Message<Class<? extends Component>> message =
-                new Message<>(this.getID(),
-                              componentID,
-                              command,
-                              data);
+    protected void callMethodComponent(int componentID, String command, Object data) {
+        // Create the message
+        Message<Object> message = new Message<>(this.getID(), componentID, command, data);
+        // Send the message to the messageQueue
         GameEngine.messageQueue.add(message);
     }
 

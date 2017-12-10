@@ -10,6 +10,7 @@ import org.lwjgl.openal.AL10;
 
 /**
  * @author Noemy Artigouha
+ * @author Gregoire Boiron
  */
 
 public class Source extends BaseComponent implements SoundComponent {
@@ -36,24 +37,32 @@ public class Source extends BaseComponent implements SoundComponent {
         this.position = entity.getPosition();
     }
 
+    public void setVelocity(final Vector3f velocity) {
+        this.setVelocity(velocity.x, velocity.y, velocity.z);
+    }
+
     public void setVelocity(final float x, final float y, final float z) {
-        this.velocity = new Vector3f(x, y, z);
+        AL10.alSource3f(sourceId, AL10.AL_VELOCITY, x, y, z);
     }
 
     public void setLooping(final boolean loop) {
-        this.isLooping = loop;
+        AL10.alSourcei(sourceId, AL10.AL_LOOPING, loop ? AL10.AL_TRUE : AL10.AL_FALSE);
     }
 
     public void setVolume(final float volume) {
-        this.volume = volume;
+        AL10.alSourcef(sourceId, AL10.AL_GAIN, this.volume);
     }
 
     public void setPitch(final float pitch) {
-        this.pitch = pitch;
+        AL10.alSourcef(sourceId, AL10.AL_PITCH, this.pitch);
+    }
+
+    public void setPosition(final Vector3f position) {
+        this.setPosition(position.x, position.y, position.z);
     }
 
     public void setPosition(final float x, final float y, final float z) {
-        this.position = new Vector3f(x, y, z);
+        AL10.alSource3f(sourceId, AL10.AL_POSITION, x, y, z);
     }
 
     @Override
@@ -67,15 +76,15 @@ public class Source extends BaseComponent implements SoundComponent {
         sourceId = AL10.alGenSources();
 
         // Set the looping
-        AL10.alSourcei(sourceId, AL10.AL_LOOPING, this.isLooping ? AL10.AL_TRUE : AL10.AL_FALSE);
+        this.setLooping(this.isLooping);
         // Set the velocity
-        AL10.alSource3f(sourceId, AL10.AL_VELOCITY, this.velocity.x, this.velocity.y, this.velocity.z);
+        this.setVelocity(this.velocity);
         // Set the volume
-        AL10.alSourcef(sourceId, AL10.AL_GAIN, this.volume);
+        this.setVolume(this.volume);
         // Set the pitch
-        AL10.alSourcef(sourceId, AL10.AL_PITCH, this.pitch);
+        this.setPitch(this.pitch);
         // Set the position
-        AL10.alSource3f(sourceId, AL10.AL_POSITION, this.position.x, this.position.y, this.position.z);
+        this.setPosition(this.position);
         // Stop all the current songs
         stop();
     }
@@ -84,11 +93,18 @@ public class Source extends BaseComponent implements SoundComponent {
     public void onMessage(Message message) {
         switch (message.getInstruction()) {
             case "play":
-                System.out.println("Methode play called");
                 play();
                 break;
             case "stop":
                 stop();
+                break;
+            case "setLooping":
+                try {
+                    setLooping((boolean)message.getData());
+                } catch (ClassCastException exception) {
+                    System.out.println("Data must be of type boolean for setLooping.");
+                    exception.printStackTrace();
+                }
                 break;
         }
     }
