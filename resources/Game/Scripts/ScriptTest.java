@@ -18,13 +18,22 @@ public class ScriptTest extends BaseScript {
 
     public void awake() {
         //getComponent(Source).play();
+
+        /*
         List<Component> l = this.getEntity().getComponents();
         for(Component comp : l) {
             if(comp instanceof Source) {
                 Source s = (Source) comp;
                 s.play();
             }
-        }
+        }*/
+
+        // Get the Component we're interested in
+        List<Integer> componentIDs = getComponents(Source.class);
+
+        // Call a specific method on this component with his id.
+        activeComponent(componentIDs.get(0), "play", null);
+
     }
 
     public void start() {

@@ -1,5 +1,6 @@
 package Engine.Main;
 
+import Engine.GameEngine;
 import Engine.System.Component.Component;
 import org.joml.Vector3f;
 
@@ -47,10 +48,13 @@ public class Entity {
     public void addComponent(Component component) {
         component.setEntity(this);
         this.components.add(component);
+        // Register the component for access th
+        GameEngine.componentManager.registerComponent(component);
     }
 
     public void removeComponent(Component component) {
         this.components.remove(component);
+        GameEngine.componentManager.removeComponent(component);
     }
 
     public List<Component> getComponents() {

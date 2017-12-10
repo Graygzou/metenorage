@@ -82,7 +82,15 @@ public class Source extends BaseComponent implements SoundComponent {
 
     @Override
     public void onMessage(Message message) {
-        // TODO LATER...
+        switch (message.getInstruction()) {
+            case "play":
+                System.out.println("Methode play called");
+                play();
+                break;
+            case "stop":
+                stop();
+                break;
+        }
     }
 
     public void play() {

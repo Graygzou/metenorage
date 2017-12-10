@@ -1,16 +1,14 @@
 package Engine.System.Component.Messaging;
 
-import Engine.System.Component.Component;
-
-
 /**
  * @author Florian VIDAL <florianvidals@gmail.com>
+ * @author Grégoire Boiron <gregoire.boiron@gmail.com>
  */
 
 public class Message<T> {
 
-    private Component sender;
-    private Component receiver;
+    private Integer IDsender;
+    private Integer IDreceiver;
     private String instruction;
     private T data;
 
@@ -27,19 +25,19 @@ public class Message<T> {
      * @param instruction Which instruction should be executed by the receiver
      * @param data        The data needed (or not) by the receiver in order to execute the instruction
      */
-    public Message(Component sender, Component receiver, String instruction, T data) {
-        this.sender = sender;
-        this.receiver = receiver;
+    public Message(Integer sender, Integer receiver, String instruction, T data) {
+        this.IDsender = sender;
+        this.IDreceiver = receiver;
         this.instruction = instruction;
         this.data = data;
     }
 
-    public Component getSender() {
-        return sender;
+    public Integer getSender() {
+        return IDsender;
     }
 
-    public Component getReceiver() {
-        return receiver;
+    public Integer getReceiver() {
+        return IDreceiver;
     }
 
     public String getInstruction() {

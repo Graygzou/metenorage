@@ -11,6 +11,7 @@ import Engine.Main.Entity;
 import Engine.Main.Material;
 import Engine.Main.ScriptFile;
 import Engine.Main.Sound;
+import Engine.System.Component.ComponentManager;
 import Engine.System.Component.Messaging.MessageQueue;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.GraphicsSystem;
@@ -51,7 +52,8 @@ public class GameEngine implements Runnable {
     private SoundSystem soundSystem;
     private ScriptingSystem scriptingSystem;
 
-    public MessageQueue messageQueue;
+    public static MessageQueue messageQueue;
+    public static ComponentManager componentManager;
 
     public GameEngine(String windowTitle, int windowWidth, int windowHeight) {
         this.gameLoopThread = new Thread(this);
@@ -59,6 +61,7 @@ public class GameEngine implements Runnable {
         this.window = new Window(windowTitle, windowWidth, windowHeight, true);
         this.timer = new Timer();
         this.messageQueue = new MessageQueue();
+        this.componentManager = new ComponentManager();
 
         // Systems setup.
         this.logicSystem = new LogicSystem();
@@ -121,7 +124,8 @@ public class GameEngine implements Runnable {
      */
     protected void update(float timeStep) {
         logicSystem.iterate(entities);
-        messageQueue.dispatch();
+        // TODO : debug this part here
+        //messageQueue.dispatch();
     }
 
     /**

@@ -49,11 +49,11 @@ public class InputSystem extends BaseSystem {
         for(Entity entity : entities) {
             for(Component component : getLocalSystemComponentsFor(entity)) {
                 if(MouseListener.class.isAssignableFrom(component.getClass())) {
-                    component.onMessage(new Message(null, component, "mouseEvent", this.mouseInput));
+                    component.onMessage(new Message(null, component.getID(), "mouseEvent", this.mouseInput));
                 }
 
                 if (KeyboardListener.class.isAssignableFrom(component.getClass())) {
-                    component.onMessage(new Message(null, component, "keyboardEvent", window));
+                    component.onMessage(new Message(null, component.getID(), "keyboardEvent", window));
                 }
             }
         }

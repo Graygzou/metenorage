@@ -1,5 +1,6 @@
 package Engine.System.Component.Messaging;
 
+import Engine.GameEngine;
 import Engine.System.Component.Component;
 
 import java.util.ArrayDeque;
@@ -7,6 +8,7 @@ import java.util.Iterator;
 
 /**
  * @author Florian VIDAL <florianvidals@gmail.com>
+ * @author Gregoire Boiron <gregoire.boiron@gmail.com>
  */
 
 public class MessageQueue {
@@ -37,7 +39,9 @@ public class MessageQueue {
         Message message;
         while (iterator.hasNext()){
             message = this.queue.poll();
-            Component receiver = message.getReceiver();
+            int receiverID = message.getReceiver();
+            // Find the component that have this ID
+            Component receiver = GameEngine.componentManager.getComponentFromID(receiverID);
             if (receiver != null){
                 receiver.onMessage(message);
             }

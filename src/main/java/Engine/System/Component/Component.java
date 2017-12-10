@@ -17,6 +17,8 @@ public interface Component {
 
     void setActiveState(boolean state);
 
+    int getID();
+
     void apply();
 
     void initialize();
