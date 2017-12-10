@@ -31,7 +31,7 @@ public class TestComponent extends BaseComponent implements LogicComponent {
 
     @Override
     public void onMessage(Message message) {
-
+        // nothing here
     }
 
     @Override

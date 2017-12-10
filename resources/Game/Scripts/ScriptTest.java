@@ -1,5 +1,7 @@
 package Game.Scripts;
 
+import Engine.Main.Material;
+import Engine.System.Graphics.Component.Mesh3D;
 import Engine.System.Scripting.Callback;
 import Engine.System.Scripting.BaseScript;
 import Engine.System.Sound.Component.Source;
@@ -29,6 +31,10 @@ public class ScriptTest extends BaseScript {
         };
 
         callReturnMethodComponent(componentIDs.get(0), "isPlaying", null, callback);
+
+        List<Integer> componentIDs2 = getComponents(Mesh3D.class);
+
+        callMethodComponent(componentIDs2.get(0), "setMaterial", new Material("/Game/Textures/grassblock.png", 1f));
 
     }
 

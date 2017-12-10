@@ -1,5 +1,6 @@
 package Engine.System.Graphics.Component;
 
+import Engine.GameEngine;
 import Engine.Main.Entity;
 import Engine.Main.Material;
 import Engine.System.Component.BaseComponent;
@@ -88,6 +89,41 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
     @Override
     public void onMessage(Message message) {
+        Object[] returnValues = null;
+        Message<Object[]> returnMessage;
+        try {
+            switch (message.getInstruction()) {
+                case "render":
+                    this.render();
+                    break;
+                case "cleanUp":
+                    this.cleanUp();
+                    break;
+                case "isTextured()":
+                    // Create a new message to send the return value to the scriptingSystem
+                    returnValues =  new Object[]{Boolean.class, isTextured()};
+                    returnMessage = new Message<>(getID(), message.getSender(), "return", returnValues);
+                    // Send it
+                    GameEngine.messageQueue.add(returnMessage);
+                    break;
+                case "getMaterial":
+                    // Create a new message to send the return value to the scriptingSystem
+                    returnValues = new Object[]{Material.class, getMaterial()};
+                    returnMessage = new Message<>(getID(), message.getSender(), "return", returnValues);
+                    // Send it
+                    GameEngine.messageQueue.add(returnMessage);
+                    break;
+                case "setMaterial":
+                    setMaterial((Material)message.getData());
+                    break;
+                default:
+                    System.out.println(message.getInstruction() + ": Corresponding method can't be found");
+                    break;
+            }
+        } catch (ClassCastException exception) {
+            System.out.println("Data sent can't be converted into the right type.");
+            exception.printStackTrace();
+        }
     }
 
     @Override
