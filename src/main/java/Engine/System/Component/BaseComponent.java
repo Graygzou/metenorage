@@ -30,8 +30,9 @@ public abstract class BaseComponent implements Component {
     public BaseComponent(Entity entity) {
         this.entity = entity;
         this.active = true;
-        // Create a ramdom ID for the component.
-        this.ID = BaseComponent.currentIDNumber++;
+        // Create a "ramdom" ID for the component.
+        this.ID = BaseComponent.currentIDNumber;
+        BaseComponent.currentIDNumber++;
     }
 
     public Entity getEntity() {

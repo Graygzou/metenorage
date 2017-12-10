@@ -1,11 +1,10 @@
 package Engine.Main;
 
-import Engine.System.Scripting.Component.BaseScript;
+import Engine.System.Scripting.BaseScript;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
 
 /**
  * @author Grégoire Boiron
@@ -23,9 +22,6 @@ public class ScriptFile {
 
     //Path of the script
     private String canonicalNameScript;
-
-    // Entity that contains the script
-    private Entity entity;
 
     public ScriptFile() {
         this.canonicalNameScript = "";
@@ -54,12 +50,13 @@ public class ScriptFile {
         }
     }
 
-    public void loadClass(Entity entity) {
-        this.entity = entity;
+    public void loadClass(Entity entity, int scriptID) {
         try {
-            Constructor ctor = this.scriptClass.getDeclaredConstructor(Entity.class);
+            Constructor ctor = this.scriptClass.getDeclaredConstructor();
             ctor.setAccessible(true);
-                this.actualScriptClass = (BaseScript)ctor.newInstance(this.entity);
+            this.actualScriptClass = (BaseScript)ctor.newInstance();
+            this.actualScriptClass.setEntity(entity);
+            this.actualScriptClass.setScriptID(scriptID);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -69,10 +66,9 @@ public class ScriptFile {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-
     }
 
-    public void callSpecificVoidFunction(String name, Class<?>[] parameterTypesArray, List<Object> arguments) {
+    public void callSpecificVoidFunction(String name, Class<?>[] parameterTypesArray, Object[] arguments) {
         try {
             // Find the method
             Method currentMethod = this.scriptClass.getMethod(name, parameterTypesArray);

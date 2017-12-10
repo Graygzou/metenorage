@@ -1,8 +1,7 @@
 package Game.Scripts;
 
-import Engine.Main.Entity;
-import Engine.System.Component.Component;
-import Engine.System.Scripting.Component.BaseScript;
+import Engine.System.Scripting.Callback;
+import Engine.System.Scripting.BaseScript;
 import Engine.System.Sound.Component.Source;
 
 import java.util.List;
@@ -12,10 +11,6 @@ import java.util.List;
  */
 public class ScriptTest extends BaseScript {
 
-    public ScriptTest(Entity entity) {
-        super(entity);
-    }
-
     public void awake() {
 
         // Get the Component we're interested in
@@ -23,8 +18,17 @@ public class ScriptTest extends BaseScript {
 
         //callMethodComponent(componentIDs.get(0), "setLooping", true);
 
-        // Call a specific method on this component with his id.
-        callMethodComponent(componentIDs.get(0), "play", null);
+        Callback callback = new Callback() {
+            @Override
+            public void call(Object result) {
+                if(!(boolean)result) {
+                    // Call a specific method on this component with his id.
+                    callMethodComponent(componentIDs.get(0), "play", null);
+                }
+            }
+        };
+
+        callReturnMethodComponent(componentIDs.get(0), "isPlaying", null, callback);
 
     }
 

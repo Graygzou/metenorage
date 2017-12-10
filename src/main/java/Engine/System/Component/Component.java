@@ -3,9 +3,10 @@ package Engine.System.Component;
 import Engine.Main.Entity;
 import Engine.System.Component.Messaging.Message;
 
-/*
+/**
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  * @author Florian Vidal       <florianvidals@gmail.com>
+ * @author Gregoire Boiron     <gregoire.boiron@gmail.com>
  */
 
 public interface Component {

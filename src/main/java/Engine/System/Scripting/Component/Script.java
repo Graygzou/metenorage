@@ -1,9 +1,10 @@
-package Engine.System.Scripting;
+package Engine.System.Scripting.Component;
 
 import Engine.Main.Entity;
 import Engine.Main.ScriptFile;
 import Engine.System.Component.BaseComponent;
 import Engine.System.Component.Messaging.Message;
+import Engine.System.Scripting.ScriptingComponent;
 
 /**
  * @author Gregoire Boiron
@@ -17,7 +18,7 @@ public class Script extends BaseComponent implements ScriptingComponent {
     public Script(Entity entity, ScriptFile script) {
         super(entity);
         this.script = script;
-        this.script.loadClass(entity);
+        this.script.loadClass(entity, this.getID());
     }
 
     @Override
@@ -36,7 +37,13 @@ public class Script extends BaseComponent implements ScriptingComponent {
     }
 
     @Override
-    public void onMessage(Message message) { }
+    public void onMessage(Message message) {
+        // relay the message to his scriptFile
+        Class<?>[] parameterTypes = {Message.class};
+        Object[] arguments = new Object[1];
+        arguments[0] = message;
+        this.script.callSpecificVoidFunction("onMessage", parameterTypes, arguments);
+    }
 
     @Override
     public void awake() {
@@ -64,5 +71,4 @@ public class Script extends BaseComponent implements ScriptingComponent {
 
     public void OnEnable() { this.script.callSpecificVoidFunction("OnEnable", null, null); }
 
-    // TODO make a template for non-void method ?
 }

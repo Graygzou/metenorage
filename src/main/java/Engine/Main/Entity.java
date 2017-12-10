@@ -48,7 +48,7 @@ public class Entity {
     public void addComponent(Component component) {
         component.setEntity(this);
         this.components.add(component);
-        // Register the component for access th
+        // Register the component to access it through messaging queue
         GameEngine.componentManager.registerComponent(component);
     }
 

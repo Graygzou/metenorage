@@ -1,5 +1,6 @@
 package Engine.System.Sound.Component;
 
+import Engine.GameEngine;
 import Engine.Main.Entity;
 import Engine.Main.Sound;
 import Engine.System.Component.BaseComponent;
@@ -91,21 +92,48 @@ public class Source extends BaseComponent implements SoundComponent {
 
     @Override
     public void onMessage(Message message) {
-        switch (message.getInstruction()) {
-            case "play":
-                play();
-                break;
-            case "stop":
-                stop();
-                break;
-            case "setLooping":
-                try {
+        try {
+            switch (message.getInstruction()) {
+                case "play":
+                    play();
+                    break;
+                case "stop":
+                    stop();
+                    break;
+                case "pause":
+                    pause();
+                    break;
+                case "setLooping":
                     setLooping((boolean)message.getData());
-                } catch (ClassCastException exception) {
-                    System.out.println("Data must be of type boolean for setLooping.");
-                    exception.printStackTrace();
-                }
-                break;
+                    break;
+                case "setVelocity":
+                    setLooping((boolean)message.getData());
+                    break;
+                case "setVolume":
+                    setVolume((float)message.getData());
+                    break;
+                case "setPitch":
+                    setPitch((float)message.getData());
+                    break;
+                case "setPosition":
+                    setPosition((Vector3f)message.getData());
+                    break;
+                case "isPlaying":
+                    System.out.println("Received ! Send again !");
+                    // Create a new message to send the return value to the scriptingSystem
+                    Object[] returnValues = {Boolean.class, isPlaying()};
+                    Message<Object[]> returnMessage =
+                            new Message<>(getID(), message.getSender(), "return", returnValues);
+                    // Send it
+                    GameEngine.messageQueue.add(returnMessage);
+                    break;
+                default:
+                    System.out.println(message.getInstruction() + ": Corresponding method can't be found");
+                    break;
+            }
+        } catch (ClassCastException exception) {
+            System.out.println("Data sent can't be converted into the right type.");
+            exception.printStackTrace();
         }
     }
 
