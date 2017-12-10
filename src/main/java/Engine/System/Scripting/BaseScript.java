@@ -28,23 +28,13 @@ public abstract class BaseScript {
         this.waitingQueue = new HashMap<>();
     }
 
-    public void setEntity(Entity entity) {
+    private void setEntity(Entity entity) {
         this.entity = entity;
     }
 
-    public void setScriptID(int ID) {
+    private void setScriptID(int ID) {
         this.scriptID = ID;
     }
-
-    // Define those methods here empty to not let the user
-    // define them in his script.
-    public void awake() {}
-
-    public void start() {}
-
-    public void update() {}
-
-    public void fixedUpdate() {}
 
     public void onMessage(Message message) {
         try {
@@ -66,8 +56,9 @@ public abstract class BaseScript {
     }
 
     /**
-     * Get a specific ID from a component
-     * @return
+     * Let the user get IDs from Components he's looking for
+     * @param type component type we're looking for.
+     * @return List of IDs.
      */
     protected List<Integer> getComponents(Class<? extends Component> type) {
         List<Integer> results = new ArrayList<>();
@@ -81,8 +72,10 @@ public abstract class BaseScript {
     }
 
     /**
-     *
-     * @param componentID id of the component we want to play
+     * Let the script call a function without return statement
+     * @param componentID Component we want to use.
+     * @param command function we want to call.
+     * @param data arguments sent.
      */
     protected void callMethodComponent(int componentID, String command, Object data) {
         // Create the message
@@ -92,8 +85,11 @@ public abstract class BaseScript {
     }
 
     /**
-     *
-     * @param componentID id of the component we want to play
+     * Let the script call a function with a return statement
+     * @param componentID Component we want to use.
+     * @param command function we want to call.
+     * @param data arguments sent.
+     * @param callback will be execute once the function return the value.
      */
     protected void callReturnMethodComponent(Integer componentID, String command, Object data, Callback callback) {
         // Method 1 : Hardcore

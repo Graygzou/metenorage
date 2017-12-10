@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 public class ScriptFile {
 
     // actual script class
-    private Class<? extends BaseScript> scriptClass;
+    private Class<BaseScript> scriptClass;
 
     // actual script class
     private BaseScript actualScriptClass;
@@ -38,11 +38,11 @@ public class ScriptFile {
      */
     public void loadScript(String name) {
         try {
-            this.scriptClass = (Class<? extends BaseScript>)Class.forName("Game.Scripts." + name);
+            this.scriptClass = (Class<BaseScript>)Class.forName("Game.Scripts." + name);
             this.canonicalNameScript = this.scriptClass.getCanonicalName();
 
             // Get all the methods of the class to be able to retrieve knowns one.
-            methods = this.scriptClass.getMethods();
+            methods = this.scriptClass.getSuperclass().getDeclaredMethods();
 
         } catch (ClassNotFoundException e) {
             System.out.println("The class located at Game.Scripts." + name + " cannot be found.");
@@ -52,11 +52,20 @@ public class ScriptFile {
 
     public void loadClass(Entity entity, int scriptID) {
         try {
+            // Create new instance of the BaseScript
             Constructor ctor = this.scriptClass.getDeclaredConstructor();
             ctor.setAccessible(true);
-            this.actualScriptClass = (BaseScript)ctor.newInstance();
-            this.actualScriptClass.setEntity(entity);
-            this.actualScriptClass.setScriptID(scriptID);
+            this.actualScriptClass = (BaseScript) ctor.newInstance();
+
+            // Set the entity of the BaseScript
+            Method setEntityMethod = this.scriptClass.getSuperclass().getDeclaredMethod("setEntity", Entity.class);
+            setEntityMethod.setAccessible(true);
+            setEntityMethod.invoke(this.actualScriptClass, entity);
+
+            // Do the same for the ID
+            Method setScriptIDMethod = this.scriptClass.getSuperclass().getDeclaredMethod("setScriptID", int.class);
+            setScriptIDMethod.setAccessible(true);
+            setScriptIDMethod.invoke(this.actualScriptClass, scriptID);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

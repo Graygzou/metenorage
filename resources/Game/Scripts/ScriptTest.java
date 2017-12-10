@@ -6,7 +6,7 @@ import Engine.System.Sound.Component.Source;
 
 import java.util.List;
 
-/*
+/**
  * @author Grégoire Boiron
  */
 public class ScriptTest extends BaseScript {
@@ -21,10 +21,10 @@ public class ScriptTest extends BaseScript {
         Callback callback = new Callback() {
             @Override
             public void call(Object result) {
-                if(!(boolean)result) {
-                    // Call a specific method on this component with his id.
-                    callMethodComponent(componentIDs.get(0), "play", null);
-                }
+            if(!(boolean)result) {
+                // Call a specific method on this component with his id.
+                callMethodComponent(componentIDs.get(0), "play", null);
+            }
             }
         };
 
