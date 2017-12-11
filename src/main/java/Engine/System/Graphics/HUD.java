@@ -8,10 +8,10 @@ import Engine.System.Graphics.Component.Text2D;
 
 public interface HUD {
     // Todo: make this more general than just text.
-    Text2D[] hudMeshes();
+    Text2D[] getHUDMeshes();
 
     default void cleanup() {
-        for (Text2D textMesh : hudMeshes()) {
+        for (Text2D textMesh : getHUDMeshes()) {
             textMesh.cleanUp();
         }
     }

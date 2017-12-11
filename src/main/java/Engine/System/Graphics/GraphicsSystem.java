@@ -8,6 +8,7 @@ import Engine.ShadersHandler;
 import Engine.System.BaseSystem;
 import Engine.System.Component.Component;
 import Engine.System.Graphics.Component.Mesh3D;
+import Engine.System.Graphics.Component.Text2D;
 import Engine.TransformationUtils;
 import Engine.Utils;
 import Engine.Window;
@@ -24,7 +25,9 @@ import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  */
 public class GraphicsSystem extends BaseSystem {
-    private ShadersHandler shadersHandler;
+    private ShadersHandler basicShadersHandler;
+
+    private ShadersHandler hudShadersHandler;
 
     private Window window;
 
@@ -51,6 +54,8 @@ public class GraphicsSystem extends BaseSystem {
 
     private boolean isInitialized = false;
 
+    private HUD hud;
+
     public GraphicsSystem(Window window) {
         this.window = window;
 
@@ -62,7 +67,7 @@ public class GraphicsSystem extends BaseSystem {
         projectionMatrix = new Matrix4f().perspective(FOV, aspectRatio,
                 Z_NEAR, Z_FAR);
         System.out.println("Projection matrix reset with aspect ratio: " + aspectRatio + " to:\n" + projectionMatrix);
-        shadersHandler.setUniform("projectionMatrix", projectionMatrix);
+        basicShadersHandler.setUniform("projectionMatrix", projectionMatrix);
     }
 
     @Override
@@ -89,10 +94,10 @@ public class GraphicsSystem extends BaseSystem {
 
         for (Entity entity : entities) {
             // Update the model-view matrix for the current entity.
-            shadersHandler.setUniform("modelViewMatrix",
+            basicShadersHandler.setUniform("modelViewMatrix",
                     TransformationUtils.getModelViewMatrix(entity, viewMatrix));
 
-            shadersHandler.bind();
+            basicShadersHandler.bind();
 
             if(entity instanceof PointLight && currentPointLightIndex < MAX_POINT_LIGHTS) {
                 PointLight currentPointLight = new PointLight((PointLight) entity);
@@ -102,14 +107,14 @@ public class GraphicsSystem extends BaseSystem {
                 lightPosition.x = viewPosition.x;
                 lightPosition.y = viewPosition.y;
                 lightPosition.z = viewPosition.z;
-                shadersHandler.setUniform("pointLights", currentPointLight, currentPointLightIndex);
+                basicShadersHandler.setUniform("pointLights", currentPointLight, currentPointLightIndex);
                 currentPointLightIndex++;
             } else if(entity instanceof DirectionalLight) {
                 DirectionalLight currentDirectionalLight = new DirectionalLight((DirectionalLight) entity);
                 Vector4f viewDirection = new Vector4f(currentDirectionalLight.getDirection(), 0);
                 viewDirection.mul(viewMatrix);
                 currentDirectionalLight.setDirection(new Vector3f(viewDirection.x, viewDirection.y, viewDirection.z));
-                shadersHandler.setUniform("directionalLight", currentDirectionalLight);
+                basicShadersHandler.setUniform("directionalLight", currentDirectionalLight);
             } else if(entity instanceof SpotLight && currentSpotLightIndex < MAX_SPOT_LIGHTS) {
                 SpotLight currentSpotLight = new SpotLight((SpotLight) entity);
                 Vector4f viewDirection = new Vector4f(currentSpotLight.getConeDirection(), 0);
@@ -123,24 +128,24 @@ public class GraphicsSystem extends BaseSystem {
                 lightPosition.y = aux.y;
                 lightPosition.z = aux.z;
 
-                shadersHandler.setUniform("spotLights", currentSpotLight, currentSpotLightIndex);
+                basicShadersHandler.setUniform("spotLights", currentSpotLight, currentSpotLightIndex);
                 currentSpotLightIndex++;
             }
 
-            shadersHandler.setUniform("ambientLight", ambientLight);
-            shadersHandler.setUniform("specularPower", 10f);
+            basicShadersHandler.setUniform("ambientLight", ambientLight);
+            basicShadersHandler.setUniform("specularPower", 10f);
 
             for (Component component : getLocalSystemComponentsFor(entity)) {
                 if(component instanceof Mesh3D) {
                     if(((Mesh3D) component).getMaterial() != null)
-                        shadersHandler.setUniform("material", ((Mesh3D) component).getMaterial());
+                        basicShadersHandler.setUniform("material", ((Mesh3D) component).getMaterial());
                 }
 
                 component.initialize();
                 component.apply();
             }
 
-            shadersHandler.unbind();
+            basicShadersHandler.unbind();
         }
     }
 
@@ -151,24 +156,58 @@ public class GraphicsSystem extends BaseSystem {
 
     @Override
     public void initialize() throws Exception {
-        shadersHandler = new ShadersHandler();
-        shadersHandler.createVertexShader(Utils.readTextResource("Shader/basicShader.vs"));
-        shadersHandler.createFragmentShader(Utils.readTextResource("Shader/basicShader.fs"));
-        shadersHandler.link();
+        basicShadersHandler = new ShadersHandler();
+        basicShadersHandler.createVertexShader(Utils.readTextResource("Shader/basicShader.vs"));
+        basicShadersHandler.createFragmentShader(Utils.readTextResource("Shader/basicShader.fs"));
+        basicShadersHandler.link();
 
-        shadersHandler.createUniform("projectionMatrix");
-        shadersHandler.createUniform("modelViewMatrix");
-        shadersHandler.createUniform("textureSampler");
+        basicShadersHandler.createUniform("projectionMatrix");
+        basicShadersHandler.createUniform("modelViewMatrix");
+        basicShadersHandler.createUniform("textureSampler");
 
-        shadersHandler.setUniform("modelViewMatrix", new Matrix4f());
-        shadersHandler.setUniform("textureSampler", 0);
+        basicShadersHandler.setUniform("modelViewMatrix", new Matrix4f());
+        basicShadersHandler.setUniform("textureSampler", 0);
 
-        shadersHandler.createUniform("specularPower");
-        shadersHandler.createUniform("ambientLight");
-        shadersHandler.createMaterialUniform("material");
-        shadersHandler.createPointLightListUniform("pointLights", MAX_POINT_LIGHTS);
-        shadersHandler.createSpotLightListUniform("spotLights", MAX_SPOT_LIGHTS);
-        shadersHandler.createDirectionalLightUniform("directionalLight");
+        basicShadersHandler.createUniform("specularPower");
+        basicShadersHandler.createUniform("ambientLight");
+        basicShadersHandler.createMaterialUniform("material");
+        basicShadersHandler.createPointLightListUniform("pointLights", MAX_POINT_LIGHTS);
+        basicShadersHandler.createSpotLightListUniform("spotLights", MAX_SPOT_LIGHTS);
+        basicShadersHandler.createDirectionalLightUniform("directionalLight");
+
+        // HUD shaders.
+
+    }
+
+    private void setupHudShader() throws Exception {
+        hudShadersHandler = new ShadersHandler();
+        hudShadersHandler.createVertexShader(Utils.readTextResource("/Shader/hudShader.vs"));
+        hudShadersHandler.createFragmentShader(Utils.readTextResource("/Shader/hudShader.fs"));
+        hudShadersHandler.link();
+
+        hudShadersHandler.createUniform("projectionModelMatrix");
+        hudShadersHandler.createUniform("color");
+    }
+
+    private void renderHud(HUD hud) {
+        hudShadersHandler.bind();
+
+        Matrix4f orthogonalMatrix = TransformationUtils
+                .getOrthogonalProjectionMatrix(0, window.getWidth(), window.getHeight(), 0);
+        for (Text2D text : hud.getHUDMeshes()) {
+            // Set ortohtaphic and model matrix for this HUD item
+            Matrix4f projModelMatrix = TransformationUtils
+                    .getOrthogonalModelProjectionModelMatrix(text.getEntity(), orthogonalMatrix);
+
+            // Set the uniforms.
+            hudShadersHandler.setUniform("projectionModelMatrix", projModelMatrix);
+            hudShadersHandler.setUniform("color", text.getMaterial().getAmbientColor());
+
+            // Render the mesh for this HUD item.
+            text.render();
+        }
+
+        hudShadersHandler.unbind();
     }
 
     public Camera getCamera() {
@@ -181,5 +220,9 @@ public class GraphicsSystem extends BaseSystem {
 
     public void setAmbientLight(Vector3f ambientLight) {
         this.ambientLight = ambientLight;
+    }
+
+    public void setHUD(HUD hud) {
+        this.hud = hud;
     }
 }
