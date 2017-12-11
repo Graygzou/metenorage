@@ -39,8 +39,10 @@ public class FindYouWay {
                 // Create materials.
                 Material playerMaterial = new Material("/Game/Textures/feathers.png", 1f);
                 Material groundMaterial = new Material("/Game/Textures/block.png", 1f);
+                Material healthMaterial = new Material("/Game/Textures/heart.png", 1f);
                 gameEngine.addMaterial(playerMaterial);
                 gameEngine.addMaterial(groundMaterial);
+                gameEngine.addMaterial(healthMaterial);
 
 
                 // Player block
@@ -102,6 +104,26 @@ public class FindYouWay {
                     block.setPosition(5.5f+i, 0f, -8.5f);
                     block.setScale(0.5f);
                     gameEngine.addEntity(block);
+
+                    //bonus heart blocks
+                    if(i == 2) {
+                        block = new Entity("My block");
+                        cubeMesh.setEntity(block);
+                        block.addComponent(cubeMesh);
+                        block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
+                        block.setPosition(9.15f+i, -0.15f, -8.5f);
+                        block.setScale(0.5f);
+                        gameEngine.addEntity(block);
+                    } else {
+                        block = new Entity("My block");
+                        cubeMesh.setEntity(block);
+                        block.addComponent(cubeMesh);
+                        block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
+                        block.setPosition(9f+i*1.3f, 0f, -8.5f);
+                        block.setScale(0.35f);
+                        gameEngine.addEntity(block);
+                    }
+
                 }
 
                 for(int i = 0; i < 6; i++) {
@@ -131,7 +153,7 @@ public class FindYouWay {
                     block.setScale(0.35f);
                     gameEngine.addEntity(block);
                 }
-
+                //final point
                 for(int i = 0; i < 2; i++) {
                     for (int j = 0; j < 2; j++) {
                         block = new Entity("My block");
@@ -143,6 +165,17 @@ public class FindYouWay {
                         gameEngine.addEntity(block);
                     }
                 }
+
+                // bonus heart element
+                cubeMesh = OBJLoader.loadMesh("/Game/Models/cube.obj");
+                cubeMesh.setMaterial(healthMaterial);
+                block = new Entity("My block");
+                cubeMesh.setEntity(block);
+                block.addComponent(cubeMesh);
+                block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
+                block.setPosition(11.2f, 0.7f, -8.5f);
+                block.setScale(0.2f);
+                gameEngine.addEntity(block);
 
 
                 // Set lighting.
