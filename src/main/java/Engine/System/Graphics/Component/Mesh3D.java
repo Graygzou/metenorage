@@ -246,4 +246,36 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     public void setMaterial(Material material) {
         this.material = material;
     }
+
+    protected float[] getNormals() {
+        return normals;
+    }
+
+    protected void setNormals(float[] normals) {
+        this.normals = normals;
+    }
+
+    protected float[] getVertices() {
+        return vertices;
+    }
+
+    protected void setVertices(float[] vertices) {
+        this.vertices = vertices;
+    }
+
+    protected int[] getIndices() {
+        return indices;
+    }
+
+    protected void setIndices(int[] indices) {
+        this.indices = indices;
+    }
+
+    protected float[] getTextureCoordinates() {
+        return textureCoordinates;
+    }
+
+    protected void setTextureCoordinates(float[] textureCoordinates) {
+        this.textureCoordinates = textureCoordinates;
+    }
 }

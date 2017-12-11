@@ -15,10 +15,14 @@ import static org.lwjgl.opengl.GL30.glGenerateMipmap;
  */
 public class Texture {
 
-    private final int id;
+    private int id;
+
+    private int width;
+
+    private int height;
 
     public Texture(String fileName) throws Exception {
-        this(loadTexture(fileName));
+        this.loadTexture(fileName);
     }
 
     public Texture(int id) {
@@ -33,12 +37,16 @@ public class Texture {
         return id;
     }
 
-    private static int loadTexture(String fileName) {
+    private int loadTexture(String fileName) {
         // Load Texture file
         ByteBuffer buf = null;
         PNGDecoder decoder = null;
         try {
             decoder = new PNGDecoder(Texture.class.getResourceAsStream(fileName));
+
+            this.width = decoder.getWidth();
+            this.height = decoder.getHeight();
+
             // Load texture contents into a byte buffer
             buf = BufferUtils.createByteBuffer(4 * decoder.getWidth() * decoder.getHeight());
             decoder.decode(buf, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
@@ -71,5 +79,13 @@ public class Texture {
 
     public void cleanup() {
         glDeleteTextures(id);
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }

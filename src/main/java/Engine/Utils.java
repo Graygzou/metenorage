@@ -185,4 +185,15 @@ public class Utils {
 
         return list;
     }
+
+    public static float[] toFloatArray(List<Float> floatList) {
+        float[] floatArray = new float[floatList.size()];
+        int i = 0;
+
+        for (Float f : floatList) {
+            floatArray[i++] = (f != null ? f : Float.NaN); // Or whatever default you want.
+        }
+
+        return floatArray;
+    }
 }
