@@ -15,6 +15,7 @@ import Engine.System.Component.ComponentManager;
 import Engine.System.Component.Messaging.MessageQueue;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.GraphicsSystem;
+import Engine.System.Graphics.HUD;
 import Engine.System.Input.InputSystem;
 import Engine.System.Logic.LogicSystem;
 import Engine.System.Physics.PhysicsSystem;
@@ -234,5 +235,10 @@ public class GameEngine implements Runnable {
 
     public void setAmbientLight(Vector3f ambientLight) {
         graphicsSystem.setAmbientLight(ambientLight);
+    }
+
+    public void setHUD(HUD hud) {
+        if(this.graphicsSystem != null)
+            this.graphicsSystem.setHUD(hud);
     }
 }
