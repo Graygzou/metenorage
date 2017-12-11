@@ -25,7 +25,6 @@ import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 
 /**
  * @author : Matthieu Le Boucher
- * @author : Gregoire Boiron
  */
 public class Mesh3D extends BaseComponent implements GraphicsComponent {
     protected float[] vertices;
