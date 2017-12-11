@@ -49,12 +49,8 @@ public class Text2D extends Mesh3D implements GraphicsComponent {
             Material fontMaterial = new Material(fontName);
             this.setMaterial(fontMaterial);
 
-            System.out.println("Set material");
-
             this.numColumns = numColumns;
             this.numRows = numRows;
-
-            this.configureMeshInformation();
 
             this.chararacters = text.getBytes(Charset.forName("ISO-8859-1"));
             this.charactersAmount = chararacters.length;
@@ -65,7 +61,7 @@ public class Text2D extends Mesh3D implements GraphicsComponent {
 
     private void configureMeshInformation() {
         List<Float> positions = new ArrayList<>();
-        List<Float> textureCoordinqtes = new ArrayList<>();
+        List<Float> textureCoordinates = new ArrayList<>();
         float[] normals   = new float[0];
         List<Integer> indices   = new ArrayList<>();
 
@@ -81,8 +77,8 @@ public class Text2D extends Mesh3D implements GraphicsComponent {
             positions.add((float) i * tileWidth); // x.
             positions.add(0.0f); // y.
             positions.add(Z_POSITION); // z.
-            textureCoordinqtes.add((float) currentColumn / (float) numColumns);
-            textureCoordinqtes.add((float) currentRow / (float) numRows);
+            textureCoordinates.add((float) currentColumn / (float) numColumns);
+            textureCoordinates.add((float) currentRow / (float) numRows);
             indices.add(i * VERTICES_PER_QUAD);
 
             // Left-bottom vertex.
@@ -90,8 +86,8 @@ public class Text2D extends Mesh3D implements GraphicsComponent {
             positions.add((float) i * tileWidth); // x.
             positions.add(tileHeight); // y.
             positions.add(Z_POSITION); // z.
-            textureCoordinqtes.add((float) currentColumn / (float) numColumns);
-            textureCoordinqtes.add((float) (currentRow + 1) / (float) numRows);
+            textureCoordinates.add((float) currentColumn / (float) numColumns);
+            textureCoordinates.add((float) (currentRow + 1) / (float) numRows);
             indices.add(i * VERTICES_PER_QUAD + 1);
 
             // Right-bottom vertex.
@@ -99,8 +95,8 @@ public class Text2D extends Mesh3D implements GraphicsComponent {
             positions.add((float)i*tileWidth + tileWidth); // x.
             positions.add(tileHeight); // y.
             positions.add(Z_POSITION); // z.
-            textureCoordinqtes.add((float) (currentColumn + 1) / (float) numColumns);
-            textureCoordinqtes.add((float) (currentRow + 1) / (float)numRows );
+            textureCoordinates.add((float) (currentColumn + 1) / (float) numColumns);
+            textureCoordinates.add((float) (currentRow + 1) / (float)numRows );
             indices.add(i * VERTICES_PER_QUAD + 2);
 
             // Right-top vertex.
@@ -108,8 +104,8 @@ public class Text2D extends Mesh3D implements GraphicsComponent {
             positions.add((float) i * tileWidth + tileWidth); // x.
             positions.add(0.0f); // y.
             positions.add(Z_POSITION); // z.
-            textureCoordinqtes.add((float)(currentColumn + 1)/ (float) numColumns);
-            textureCoordinqtes.add((float)currentRow / (float)numRows );
+            textureCoordinates.add((float)(currentColumn + 1)/ (float) numColumns);
+            textureCoordinates.add((float)currentRow / (float)numRows );
             indices.add(i*VERTICES_PER_QUAD + 3);
 
             // Add indices for left top and bottom right vertices
@@ -118,8 +114,9 @@ public class Text2D extends Mesh3D implements GraphicsComponent {
         }
 
         this.setVertices(Utils.toFloatArray(positions));
-        this.setTextureCoordinates(Utils.toFloatArray(textureCoordinqtes));
+        this.setTextureCoordinates(Utils.toFloatArray(textureCoordinates));
         this.setIndices(indices.stream().mapToInt(i->i).toArray());
+        this.setNormals(normals);
     }
 
     public String getText() {
@@ -137,17 +134,19 @@ public class Text2D extends Mesh3D implements GraphicsComponent {
 
     @Override
     public void apply() {
-
+        super.apply();
     }
 
     @Override
     public void initialize() {
-        super.initialize();
-
         this.getMaterial().initialize();
 
         this.tileWidth = (float) this.getMaterial().getTexture().getWidth() / (float) numColumns;
         this.tileHeight = (float) this.getMaterial().getTexture().getHeight() / (float) numRows;
+
+        this.configureMeshInformation();
+
+        super.initialize();
     }
 
     @Override
@@ -162,6 +161,12 @@ public class Text2D extends Mesh3D implements GraphicsComponent {
 
     @Override
     public void render() {
+        super.render();
+    }
 
+    public String toString() {
+        return "Text '" + text + "' at position " + getEntity().getPosition() + ". Characters: " + chararacters + " " +
+                "(num: " + charactersAmount + "), texture #" + getMaterial().getTexture().getId() + " " +
+                "(" + numRows + "x" + numColumns + "), tiles are " + tileWidth + "x" + tileHeight;
     }
 }

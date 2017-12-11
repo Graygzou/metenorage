@@ -188,6 +188,7 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         // Create, bind and hydrate VBO.
         vboId = GL15.glGenBuffers();
         verticesBuffer = BufferUtils.createFloatBuffer(verticesCount);
+
         verticesBuffer.put(vertices).flip();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboId);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
@@ -253,6 +254,7 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
     protected void setNormals(float[] normals) {
         this.normals = normals;
+        this.normalsCount = normals.length;
     }
 
     protected float[] getVertices() {
@@ -260,7 +262,10 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     }
 
     protected void setVertices(float[] vertices) {
+        this.verticesCount = vertices.length;
         this.vertices = vertices;
+
+        System.out.println("Set verticesCount = " + this.verticesCount);
     }
 
     protected int[] getIndices() {
@@ -269,6 +274,7 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
     protected void setIndices(int[] indices) {
         this.indices = indices;
+        this.indicesCount = indices.length;
     }
 
     protected float[] getTextureCoordinates() {
@@ -277,5 +283,6 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
 
     protected void setTextureCoordinates(float[] textureCoordinates) {
         this.textureCoordinates = textureCoordinates;
+        this.textureCoordinatesCount = textureCoordinates.length;
     }
 }
