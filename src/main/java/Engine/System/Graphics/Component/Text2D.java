@@ -8,8 +8,8 @@ import Engine.Main.Entity;
 import Engine.Main.Material;
 import Engine.System.Component.Messaging.Message;
 import Engine.System.Graphics.GraphicsComponent;
-import Engine.System.Graphics.Texture;
 import Engine.Utils;
+import org.joml.Vector4f;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -36,32 +36,31 @@ public class Text2D extends Mesh3D implements GraphicsComponent {
 
     private int charactersAmount;
 
-    private Texture fontTexture;
-
     public Text2D(Entity entity) {
         super(entity);
     }
 
-    public Text2D(Entity entity, String fontName, String text, int numColumns, int numRows) {
+    public Text2D(Entity entity, String text, String fontName, int numColumns, int numRows) {
         super(entity);
 
         this.fontName = fontName;
         this.text = text;
         try {
-            this.setMaterial(new Material(fontName));
+            Material fontMaterial = new Material(fontName);
+            this.setMaterial(fontMaterial);
+
+            System.out.println("Set material");
+
+            this.numColumns = numColumns;
+            this.numRows = numRows;
+
+            this.configureMeshInformation();
+
+            this.chararacters = text.getBytes(Charset.forName("ISO-8859-1"));
+            this.charactersAmount = chararacters.length;
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        this.numColumns = numColumns;
-        this.numRows = numRows;
-
-        this.tileWidth = (float) this.fontTexture.getWidth() / (float) numColumns;
-        this.tileHeight = (float) this.fontTexture.getHeight() / (float) numRows;
-
-        this.chararacters = text.getBytes(Charset.forName("ISO-8859-1"));
-        this.charactersAmount = chararacters.length;
-        this.configureMeshInformation();
     }
 
     private void configureMeshInformation() {
@@ -132,6 +131,10 @@ public class Text2D extends Mesh3D implements GraphicsComponent {
         this.configureMeshInformation();
     }
 
+    public void setTextColor(Vector4f color) {
+        this.getMaterial().setAmbientColor(color);
+    }
+
     @Override
     public void apply() {
 
@@ -139,7 +142,12 @@ public class Text2D extends Mesh3D implements GraphicsComponent {
 
     @Override
     public void initialize() {
+        super.initialize();
 
+        this.getMaterial().initialize();
+
+        this.tileWidth = (float) this.getMaterial().getTexture().getWidth() / (float) numColumns;
+        this.tileHeight = (float) this.getMaterial().getTexture().getHeight() / (float) numRows;
     }
 
     @Override

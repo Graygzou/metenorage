@@ -22,7 +22,7 @@ public class TextualHUD implements HUD {
 
     public TextualHUD(String characters) throws Exception {
         this.statusText = new Text2D(new Entity(), characters, FONT_TEXTURE, FONT_COLUMNS, FONT_ROWS);
-        this.statusText.getMaterial().setAmbientColor(new Vector4f(1, 1, 1, 1));
+        this.statusText.setTextColor(new Vector4f(1, 1, 1, 1));
         textMeshes = new Text2D[]{statusText};
     }
 

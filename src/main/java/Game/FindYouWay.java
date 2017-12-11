@@ -7,6 +7,7 @@ import Engine.Main.Light.DirectionalLight;
 import Engine.Main.Light.PointLight;
 import Engine.Main.Light.SpotLight;
 import Engine.Main.Material;
+import Engine.Main.TextualHUD;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.Component.Mesh3D;
 import Engine.System.Physics.Component.BoxRigidBodyComponent;
@@ -36,6 +37,10 @@ public class FindYouWay {
                 //ScriptFile script = new ScriptFile("ScriptTest");
                 //gameEngine.addScript(script);
 
+                // Create the HUD.
+                TextualHUD hud = new TextualHUD("Hello world!");
+                gameEngine.setHUD(hud);
+
                 // Create materials.
                 Material playerMaterial = new Material("/Game/Textures/feathers.png", 1f);
                 Material groundMaterial = new Material("/Game/Textures/leaf.png", 1f);
@@ -43,7 +48,6 @@ public class FindYouWay {
                 gameEngine.addMaterial(playerMaterial);
                 gameEngine.addMaterial(groundMaterial);
                 gameEngine.addMaterial(groundSolutionMaterial);
-
 
                 // Player block
                 Mesh3D cubeMesh = OBJLoader.loadMesh("/Game/Models/cube.obj");

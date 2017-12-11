@@ -38,6 +38,7 @@ public class Texture {
     }
 
     private int loadTexture(String fileName) {
+        System.out.println("Loading texture " + fileName);
         // Load Texture file
         ByteBuffer buf = null;
         PNGDecoder decoder = null;
@@ -54,8 +55,6 @@ public class Texture {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        System.out.println("Buffer flipped.");
 
         // Create a new OpenGL texture
         int textureId = glGenTextures();

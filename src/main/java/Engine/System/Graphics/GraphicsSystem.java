@@ -145,6 +145,9 @@ public class GraphicsSystem extends BaseSystem {
                 component.apply();
             }
 
+            if(this.hud != null)
+                renderHud(this.hud);
+
             basicShadersHandler.unbind();
         }
     }
@@ -176,7 +179,7 @@ public class GraphicsSystem extends BaseSystem {
         basicShadersHandler.createDirectionalLightUniform("directionalLight");
 
         // HUD shaders.
-
+        setupHudShader();
     }
 
     private void setupHudShader() throws Exception {
@@ -195,6 +198,8 @@ public class GraphicsSystem extends BaseSystem {
         Matrix4f orthogonalMatrix = TransformationUtils
                 .getOrthogonalProjectionMatrix(0, window.getWidth(), window.getHeight(), 0);
         for (Text2D text : hud.getHUDMeshes()) {
+            text.initialize();
+
             // Set ortohtaphic and model matrix for this HUD item
             Matrix4f projModelMatrix = TransformationUtils
                     .getOrthogonalModelProjectionModelMatrix(text.getEntity(), orthogonalMatrix);
