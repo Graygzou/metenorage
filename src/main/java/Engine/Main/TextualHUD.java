@@ -30,6 +30,7 @@ public class TextualHUD implements HUD {
         this.statusText.setText(statusText);
     }
 
+    @Override
     public void updateSize(Window window) {
         this.statusText.getEntity().setPosition(10f, window.getHeight() - 50f, 0);
     }
