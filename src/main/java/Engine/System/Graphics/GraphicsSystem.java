@@ -83,6 +83,10 @@ public class GraphicsSystem extends BaseSystem {
             } catch (Exception e) {
                 System.out.println("GraphicsEngine: could not reset projection matrix.");
             }
+
+            if(this.hud != null)
+                this.hud.updateSize(this.window);
+
             glViewport(0, 0, window.getWidth(), window.getHeight());
             window.setResized(false);
         }
@@ -145,11 +149,11 @@ public class GraphicsSystem extends BaseSystem {
                 component.apply();
             }
 
-            if(this.hud != null)
-                renderHud(this.hud);
-
             basicShadersHandler.unbind();
         }
+
+        if(this.hud != null)
+            renderHud(this.hud);
     }
 
     @Override
@@ -209,6 +213,7 @@ public class GraphicsSystem extends BaseSystem {
             hudShadersHandler.setUniform("color", text.getMaterial().getAmbientColor());
 
             // Render the mesh for this HUD item.
+            System.out.println("Rendering text " + text.getText() + " at " + text.getEntity().getPosition());
             text.render();
         }
 

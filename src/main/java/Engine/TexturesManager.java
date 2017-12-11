@@ -34,7 +34,7 @@ public class TexturesManager {
     }
 
     public void addTexture(String name, Texture object) {
-        System.out.println("TextureManager: added " + name);
+        System.out.println("TextureManager: added " + name + " #" + object.getId());
         this.textures.put(name, object);
     }
 }

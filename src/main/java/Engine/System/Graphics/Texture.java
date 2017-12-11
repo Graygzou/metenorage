@@ -22,7 +22,7 @@ public class Texture {
     private int height;
 
     public Texture(String fileName) throws Exception {
-        this.loadTexture(fileName);
+        this.id = this.loadTexture(fileName);
     }
 
     public Texture(int id) {

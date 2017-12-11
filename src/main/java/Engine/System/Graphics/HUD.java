@@ -5,6 +5,7 @@ package Engine.System.Graphics;
  */
 
 import Engine.System.Graphics.Component.Text2D;
+import Engine.Window;
 
 public interface HUD {
     // Todo: make this more general than just text.
@@ -15,4 +16,6 @@ public interface HUD {
             textMesh.cleanUp();
         }
     }
+
+    void updateSize(Window window);
 }
