@@ -38,11 +38,9 @@ public class FindYouWay {
 
                 // Create materials.
                 Material playerMaterial = new Material("/Game/Textures/feathers.png", 1f);
-                Material groundMaterial = new Material("/Game/Textures/leaf.png", 1f);
-                Material groundSolutionMaterial = new Material("/Game/Textures/block.png", 1f);
+                Material groundMaterial = new Material("/Game/Textures/block.png", 1f);
                 gameEngine.addMaterial(playerMaterial);
                 gameEngine.addMaterial(groundMaterial);
-                gameEngine.addMaterial(groundSolutionMaterial);
 
 
                 // Player block
@@ -133,8 +131,7 @@ public class FindYouWay {
                     block.setScale(0.35f);
                     gameEngine.addEntity(block);
                 }
-                cubeMesh = OBJLoader.loadMesh("/Game/Models/cube.obj");
-                cubeMesh.setMaterial(groundSolutionMaterial);
+
                 for(int i = 0; i < 2; i++) {
                     for (int j = 0; j < 2; j++) {
                         block = new Entity("My block");
