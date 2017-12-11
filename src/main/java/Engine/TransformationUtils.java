@@ -51,4 +51,24 @@ public class TransformationUtils {
 
         return currentView.mul(modelViewMatrix);
     }
+
+    public static Matrix4f getOrthogonalProjectionMatrix(float left, float right, float bottom, float top) {
+        Matrix4f orthogonalMatrix = new Matrix4f();
+        orthogonalMatrix.identity();
+        orthogonalMatrix.setOrtho2D(left, right, bottom, top);
+        return orthogonalMatrix;
+    }
+
+    public static Matrix4f getOrthogonalModelProjectionModelMatrix(Entity entity, Matrix4f orthoMatrix) {
+        Vector3f rotation = entity.getRotation();
+        Matrix4f modelMatrix = new Matrix4f();
+        modelMatrix.identity().translate(entity.getPosition()).
+                rotateX((float) Math.toRadians(-rotation.x)).
+                rotateY((float) Math.toRadians(-rotation.y)).
+                rotateZ((float) Math.toRadians(-rotation.z)).
+                scale(entity.getScale());
+        Matrix4f orthoMatrixCurr = new Matrix4f(orthoMatrix);
+        orthoMatrixCurr.mul(modelMatrix);
+        return orthoMatrixCurr;
+    }
 }
