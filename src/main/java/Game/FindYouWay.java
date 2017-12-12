@@ -7,10 +7,13 @@ import Engine.Main.Light.DirectionalLight;
 import Engine.Main.Light.PointLight;
 import Engine.Main.Light.SpotLight;
 import Engine.Main.Material;
+import Engine.Main.ScriptFile;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.Component.Mesh3D;
 import Engine.System.Physics.Component.BoxRigidBodyComponent;
+import Engine.System.Scripting.Component.Script;
 import Engine.Utils;
+import Game.Input.CameraKeyboard;
 import Game.Input.EntityKeyboard;
 import org.joml.Vector3f;
 
@@ -29,6 +32,8 @@ public class FindYouWay {
             if(!testParser) {
                 GameEngine gameEngine = new GameEngine("FindYourWay", 800, 600);
 
+                ScriptFile script = new ScriptFile("ScriptRotateHealth");
+                gameEngine.addScript(script);
                 // Create a game sound
                 //Sound son = new Sound("Test", "./resources/Game/Sounds/sonTest.wav");
                 //gameEngine.addSound(son);
@@ -174,6 +179,7 @@ public class FindYouWay {
                 cubeMesh.setEntity(block);
                 block.addComponent(cubeMesh);
                 block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
+                block.addComponent(new Script(block, script));
                 block.getTransform().setPosition(11.2f, 0.7f, -8.5f);
                 block.getTransform().setScale(0.2f);
                 gameEngine.addEntity(block);
@@ -224,6 +230,7 @@ public class FindYouWay {
                         blockPlayer.getTransform().getRotation().y, blockPlayer.getTransform().getRotation().z);
                 Camera mainCamera = new Camera(cameraPosition,cameraRotation);
                 mainCamera.setName("Caméra principale");
+                mainCamera.addComponent(new CameraKeyboard(mainCamera));
                 gameEngine.setCamera(mainCamera);
 
                 blockPlayer.addComponent(new EntityKeyboard(blockPlayer));

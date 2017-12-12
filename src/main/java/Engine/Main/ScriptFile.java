@@ -90,11 +90,11 @@ public class ScriptFile {
             }
 
         } catch (IllegalAccessException e) {
-            System.out.println("Exception : Method" + name +" cannot be access.");
+            System.out.println("Exception : Method " + name +" cannot be access.");
         } catch (InvocationTargetException e) {
-            System.out.println("Exception : Method" + name +" cannot be called.");
+            System.out.println("Exception : Method " + name +" cannot be called.");
         } catch (NoSuchMethodException e) {
-            System.out.println("Exception : Method" + name +" cannot be found.");
+            System.out.println("Exception : Method " + name +" cannot be found.");
         }
     }
 }

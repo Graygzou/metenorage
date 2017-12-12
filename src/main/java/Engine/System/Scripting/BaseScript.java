@@ -4,6 +4,7 @@ import Engine.GameEngine;
 import Engine.Main.Entity;
 import Engine.System.Component.Component;
 import Engine.System.Component.Messaging.Message;
+import Engine.System.Component.Transform;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,12 +63,17 @@ public abstract class BaseScript {
      */
     protected List<Integer> getComponents(Class<? extends Component> type) {
         List<Integer> results = new ArrayList<>();
-        List<Component> l = this.entity.getComponents();
-        for(Component comp : l) {
-            if(comp.getClass().equals(type)) {
-                results.add(comp.getID());
+        if(type == Transform.class) {
+            results.add(this.entity.getTransform().getID());
+        } else {
+            List<Component> l = this.entity.getComponents();
+            for(Component comp : l) {
+                if(comp.getClass().equals(type)) {
+                    results.add(comp.getID());
+                }
             }
         }
+
         return results;
     }
 

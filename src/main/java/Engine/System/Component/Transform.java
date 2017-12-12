@@ -4,9 +4,8 @@ import Engine.Main.Entity;
 import Engine.System.Component.Messaging.Message;
 import org.joml.Vector3f;
 
-import java.util.Vector;
 
-        /*
+    /*
      * @author Noemy Artigouha
      */
 
@@ -33,7 +32,17 @@ public class Transform extends BaseComponent implements Component {
 
     @Override
     public void onMessage(Message message) {
-
+        switch (message.getInstruction()) {
+            case "setPosition":
+                setPosition((Vector3f)message.getData());
+                break;
+            case "setRotation":
+                rotate((Vector3f)message.getData());
+                break;
+            default:
+                System.out.println(message.getInstruction() + ": Corresponding method can't be found");
+                break;
+        }
     }
 
     public Vector3f getPosition() {
@@ -51,7 +60,7 @@ public class Transform extends BaseComponent implements Component {
     }
 
     public Vector3f getRotation() {
-        return rotation;
+        return this.rotation;
     }
 
     public void setRotation(Vector3f rotation) {
@@ -65,13 +74,15 @@ public class Transform extends BaseComponent implements Component {
     }
 
     public void rotate(float offsetX, float offsetY, float offsetZ) {
-        rotation.x += offsetX;
-        rotation.y += offsetY;
-        rotation.z += offsetZ;
+        this.rotation.x += offsetX;
+        this.rotation.y += offsetY;
+        this.rotation.z += offsetZ;
     }
 
     public void rotate(Vector3f vect) {
-        rotation = vect;
+        this.rotation.x += vect.x;
+        this.rotation.y += vect.y;
+        this.rotation.z += vect.z;
     }
 
     public Vector3f getScale() {

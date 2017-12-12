@@ -1,4 +1,6 @@
+import Engine.Main.Entity;
 import Engine.Main.Material;
+import Engine.System.Component.Transform;
 import Engine.System.Graphics.Component.Mesh3D;
 import Engine.System.Scripting.BaseScript;
 import Engine.System.Scripting.Callback;
@@ -14,7 +16,7 @@ public class ScriptPlayerCamera extends BaseScript {
     public void awake() {
 
         // Get the Component we're interested in
-        List<Integer> componentIDs = getComponents(Source.class);
+        List<Integer> componentIDs = getComponents(Transform.class);
 
         //callMethodComponent(componentIDs.get(0), "setLooping", true);
 
