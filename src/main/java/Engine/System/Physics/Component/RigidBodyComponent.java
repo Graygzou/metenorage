@@ -78,9 +78,9 @@ public abstract class RigidBodyComponent extends BasePhysicsComponent {
                         new Matrix4f(
                                 new Quat4f(0, 0, 0, 1),
                                 new Vector3f(
-                                        this.getEntity().getPosition().x,
-                                        this.getEntity().getPosition().y,
-                                        this.getEntity().getPosition().z),
+                                        this.getEntity().getTransform().getPosition().x,
+                                        this.getEntity().getTransform().getPosition().y,
+                                        this.getEntity().getTransform().getPosition().z),
                                 1f)));
 
         // Store the material properties.

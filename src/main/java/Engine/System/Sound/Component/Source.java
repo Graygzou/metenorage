@@ -35,7 +35,7 @@ public class Source extends BaseComponent implements SoundComponent {
         this.pitch = 0.5f;
         this.isLooping = false;
         this.velocity = new Vector3f(0,0,0);
-        this.position = entity.getPosition();
+        this.position = entity.getTransform().getPosition();
     }
 
     public void setVelocity(final Vector3f velocity) {

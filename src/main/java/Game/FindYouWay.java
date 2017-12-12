@@ -11,7 +11,7 @@ import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.Component.Mesh3D;
 import Engine.System.Physics.Component.BoxRigidBodyComponent;
 import Engine.Utils;
-import Game.Input.CameraKeyboard;
+import Game.Input.EntityKeyboard;
 import org.joml.Vector3f;
 
 /**
@@ -48,25 +48,26 @@ public class FindYouWay {
                 // Player block
                 Mesh3D cubeMesh = OBJLoader.loadMesh("/Game/Models/cube.obj");
                 cubeMesh.setMaterial(playerMaterial);
-                Entity block = new Entity("My block");
-                cubeMesh.setEntity(block);
-                block.addComponent(cubeMesh);
-                block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f,0.5f,0.5f));
-                block.setPosition(1f, -1f, -3.5f);
-                block.setScale(0.2f);
-                gameEngine.addEntity(block);
+                Entity blockPlayer = new Entity("My block");
+                cubeMesh.setEntity(blockPlayer);
+                blockPlayer.addComponent(cubeMesh);
+                blockPlayer.addComponent(new BoxRigidBodyComponent(blockPlayer, 1, 0.5f,0.5f,0.5f));
+                blockPlayer.getTransform().setPosition(1f, -1f, -3.5f);
+                blockPlayer.getTransform().setScale(0.2f);
+                gameEngine.addEntity(blockPlayer);
 
                 //Ground blocks
                 cubeMesh = OBJLoader.loadMesh("/Game/Models/cube.obj");
                 cubeMesh.setMaterial(groundMaterial);
+                Entity block = null;
                 for(int i = 0; i < 3; i++) {
                     for(int j = 0; j < 2; j++) {
                         block = new Entity("My block");
                         cubeMesh.setEntity(block);
                         block.addComponent(cubeMesh);
                         block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
-                        block.setPosition(i, -2f, -4f+j);
-                        block.setScale(0.5f);
+                        block.getTransform().setPosition(i, -2f, -4f+j);
+                        block.getTransform().setScale(0.5f);
                         gameEngine.addEntity(block);
 
                         if(i < 2) {
@@ -74,8 +75,8 @@ public class FindYouWay {
                             cubeMesh.setEntity(block);
                             block.addComponent(cubeMesh);
                             block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
-                            block.setPosition(2f+i, -2f, -6.5f+j);
-                            block.setScale(0.5f);
+                            block.getTransform().setPosition(2f+i, -2f, -6.5f+j);
+                            block.getTransform().setScale(0.5f);
                             gameEngine.addEntity(block);
                         }
                         if(j == 0) {
@@ -83,8 +84,8 @@ public class FindYouWay {
                             cubeMesh.setEntity(block);
                             block.addComponent(cubeMesh);
                             block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
-                            block.setPosition(2.5f+i, -1.5f, -8.5f+j);
-                            block.setScale(0.5f);
+                            block.getTransform().setPosition(2.5f+i, -1.5f, -8.5f+j);
+                            block.getTransform().setScale(0.5f);
                             gameEngine.addEntity(block);
                         }
                         if(j == 1 && i != 1) {
@@ -92,8 +93,8 @@ public class FindYouWay {
                             cubeMesh.setEntity(block);
                             block.addComponent(cubeMesh);
                             block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
-                            block.setPosition(2.5f+i, -0.5f, -9.5f+j);
-                            block.setScale(0.5f);
+                            block.getTransform().setPosition(2.5f+i, -0.5f, -9.5f+j);
+                            block.getTransform().setScale(0.5f);
                             gameEngine.addEntity(block);
                         }
                     }
@@ -101,8 +102,8 @@ public class FindYouWay {
                     cubeMesh.setEntity(block);
                     block.addComponent(cubeMesh);
                     block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
-                    block.setPosition(5.5f+i, 0f, -8.5f);
-                    block.setScale(0.5f);
+                    block.getTransform().setPosition(5.5f+i, 0f, -8.5f);
+                    block.getTransform().setScale(0.5f);
                     gameEngine.addEntity(block);
 
                     //bonus heart blocks
@@ -111,16 +112,16 @@ public class FindYouWay {
                         cubeMesh.setEntity(block);
                         block.addComponent(cubeMesh);
                         block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
-                        block.setPosition(9.15f+i, -0.15f, -8.5f);
-                        block.setScale(0.5f);
+                        block.getTransform().setPosition(9.15f+i, -0.15f, -8.5f);
+                        block.getTransform().setScale(0.5f);
                         gameEngine.addEntity(block);
                     } else {
                         block = new Entity("My block");
                         cubeMesh.setEntity(block);
                         block.addComponent(cubeMesh);
                         block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
-                        block.setPosition(9f+i*1.3f, 0f, -8.5f);
-                        block.setScale(0.35f);
+                        block.getTransform().setPosition(9f+i*1.3f, 0f, -8.5f);
+                        block.getTransform().setScale(0.35f);
                         gameEngine.addEntity(block);
                     }
 
@@ -132,13 +133,13 @@ public class FindYouWay {
                     block.addComponent(cubeMesh);
                     block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
                     if(i == 4) {
-                        block.setPosition(7.5f, 0f-i+1, -7.5f+i*2-1);
+                        block.getTransform().setPosition(7.5f, 0f-i+1, -7.5f+i*2-1);
                     } if(i == 5) {
-                        block.setPosition(7.5f, 0f-i+1, -7.5f+i*2-1);
+                        block.getTransform().setPosition(7.5f, 0f-i+1, -7.5f+i*2-1);
                     } else {
-                        block.setPosition(7.5f, 0f-i, -7.5f+i*2);
+                        block.getTransform().setPosition(7.5f, 0f-i, -7.5f+i*2);
                     }
-                    block.setScale(0.5f);
+                    block.getTransform().setScale(0.5f);
                     gameEngine.addEntity(block);
 
                     block = new Entity("My block");
@@ -146,11 +147,11 @@ public class FindYouWay {
                     block.addComponent(cubeMesh);
                     block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
                     if(i < 3) {
-                        block.setPosition(7.5f, -4f, 3f+i*0.7f);
+                        block.getTransform().setPosition(7.5f, -4f, 3f+i*0.7f);
                     } else {
-                        block.setPosition(9.5f-i, -4f, 2.5f+i);
+                        block.getTransform().setPosition(9.5f-i, -4f, 2.5f+i);
                     }
-                    block.setScale(0.35f);
+                    block.getTransform().setScale(0.35f);
                     gameEngine.addEntity(block);
                 }
                 //final point
@@ -160,8 +161,8 @@ public class FindYouWay {
                         cubeMesh.setEntity(block);
                         block.addComponent(cubeMesh);
                         block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
-                        block.setPosition(4f+i, -3.5f, 9f+j);
-                        block.setScale(0.5f);
+                        block.getTransform().setPosition(4f+i, -3.5f, 9f+j);
+                        block.getTransform().setScale(0.5f);
                         gameEngine.addEntity(block);
                     }
                 }
@@ -173,8 +174,8 @@ public class FindYouWay {
                 cubeMesh.setEntity(block);
                 block.addComponent(cubeMesh);
                 block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
-                block.setPosition(11.2f, 0.7f, -8.5f);
-                block.setScale(0.2f);
+                block.getTransform().setPosition(11.2f, 0.7f, -8.5f);
+                block.getTransform().setScale(0.2f);
                 gameEngine.addEntity(block);
 
 
@@ -217,10 +218,15 @@ public class FindYouWay {
                 gameEngine.addEntity(spotLight);
 
                 // Set the main camera.
-                Camera mainCamera = new Camera();
+                Vector3f cameraPosition = new Vector3f(blockPlayer.getTransform().getPosition().x,
+                        blockPlayer.getTransform().getPosition().y+1f, blockPlayer.getTransform().getPosition().z+2f);
+                Vector3f cameraRotation = new Vector3f(blockPlayer.getTransform().getRotation().x+20f,
+                        blockPlayer.getTransform().getRotation().y, blockPlayer.getTransform().getRotation().z);
+                Camera mainCamera = new Camera(cameraPosition,cameraRotation);
                 mainCamera.setName("Caméra principale");
-                mainCamera.addComponent(new CameraKeyboard(mainCamera));
                 gameEngine.setCamera(mainCamera);
+
+                blockPlayer.addComponent(new EntityKeyboard(blockPlayer));
 
                 gameEngine.start();
 

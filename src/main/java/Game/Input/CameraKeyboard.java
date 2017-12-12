@@ -2,6 +2,7 @@ package Game.Input;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
+ * @author Noemy Artigouha
  */
 
 
@@ -44,7 +45,7 @@ public class CameraKeyboard extends BaseComponent implements MouseListener, Keyb
             // Update camera based on mouse
             if (mouseInput.isRightButtonPressed()) {
                 Vector2f rotVec = mouseInput.getDisplayVector();
-                getEntity().rotate(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
+                getEntity().getTransform().rotate(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
             }
         }
 
@@ -68,7 +69,7 @@ public class CameraKeyboard extends BaseComponent implements MouseListener, Keyb
                 cameraPositionOffset.y = 1;
             }
 
-            getEntity().movePosition(cameraPositionOffset.x * CAMERA_STEP,
+            getEntity().getTransform().movePosition(cameraPositionOffset.x * CAMERA_STEP,
                     cameraPositionOffset.y * CAMERA_STEP,
                     cameraPositionOffset.z * CAMERA_STEP);
         }
