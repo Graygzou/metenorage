@@ -64,10 +64,10 @@ public class EntityKeyboard extends BaseComponent implements KeyboardListener, I
                     playerPositionOffset.y * CAMERA_STEP,
                     playerPositionOffset.z * CAMERA_STEP);
 
+
             getEntity().getTransform().rotate(playerRotationOffset.x * CAMERA_STEP,
                     playerRotationOffset.y * CAMERA_STEP,
                     playerRotationOffset.z * CAMERA_STEP);
-
         }
     }
 }

@@ -11,11 +11,12 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- * @author Grégoire Boiron
+ * @author Noemy Artigouha
  */
 public class ScriptRotateHealth extends BaseScript {
 
-    List<Integer> componentIDs;
+    private List<Integer> componentIDs;
+
     public void awake() {
         // Get the Component we're interested in
         this.componentIDs = getComponents(Transform.class);
@@ -26,7 +27,7 @@ public class ScriptRotateHealth extends BaseScript {
     }
 
     public void update() {
-        callMethodComponent(this.componentIDs.get(0), "setRotation", new Vector3f(0,2f,0));
+        callMethodComponent(this.componentIDs.get(0), "rotate", new Vector3f(0,2f,0));
     }
 
 }

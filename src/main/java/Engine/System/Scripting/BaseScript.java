@@ -7,6 +7,7 @@ import Engine.System.Component.Messaging.Message;
 import Engine.System.Component.Transform;
 
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -21,10 +22,10 @@ public abstract class BaseScript {
 
     private int scriptID;
 
-    private Map<Integer, Callback> waitingQueue;
+    private ArrayDeque<Callback> waitingQueue;
 
         public BaseScript() {
-        this.waitingQueue = new HashMap<>();
+        this.waitingQueue = new ArrayDeque<>();
     }
 
     private void setEntity(Entity entity) {
@@ -40,7 +41,7 @@ public abstract class BaseScript {
             switch (message.getInstruction()) {
                 case "return":
                     Object[] returnValues = (Object[])message.getData();
-                    Callback callback = this.waitingQueue.remove(message.getSender());
+                    Callback callback = this.waitingQueue.poll();
                     callback.call(returnValues[1]);
                     break;
                 default:
@@ -79,11 +80,11 @@ public abstract class BaseScript {
         List<Integer> results = new ArrayList<>();
         Entity test;
         // Find the entity that match the id
-        Optional firstResult = GameEngine.metadataManager.getEntities().stream()
-                                                        .map(entity1 -> entity1.getUniqueID().equals(entityID))
-                                                        .findFirst();
-        if(firstResult.isPresent()) {
-            Entity entity = (Entity) firstResult.get();
+        List<Entity> firstResult = GameEngine.metadataManager.getEntities().stream()
+                                                        .filter(entity1 -> entity1.getUniqueID() == entityID)
+                                                        .collect(Collectors.toList());
+        if(!firstResult.isEmpty()) {
+            Entity entity = firstResult.get(0);
             if(type == Transform.class) {
                 results.add(entity.getTransform().getID());
             } else {
@@ -101,22 +102,26 @@ public abstract class BaseScript {
     }
 
     protected List<Integer> getEntities() {
-        return GameEngine.metadataManager.getEntities().stream()
-                                    .map(entity -> entity.getUniqueID())
+        List<Integer> test = GameEngine.metadataManager.getEntities().stream()
+                                    .mapToInt(entity -> entity.getUniqueID())
+                                    .boxed()
                                     .collect(Collectors.toList());
+        return test;
     }
 
     protected List<Integer> getEntitiesWithTag(String tag) {
         return GameEngine.metadataManager.getEntities().stream()
-                                    .filter(entity1 -> entity1.getTag().equals(tag))
-                                    .map(entity -> entity.getUniqueID())
+                                    .filter(entity1 -> entity1.getTag() == tag)
+                                    .mapToInt(entity -> entity.getUniqueID())
+                                    .boxed()
                                     .collect(Collectors.toList());
     }
 
     protected List<Integer> getEntitiesByName(String name) {
         return GameEngine.metadataManager.getEntities().stream()
-                                    .filter(entity1 -> entity1.getName().equals(name))
-                                    .map(entity -> entity.getUniqueID())
+                                    .filter(entity1 -> entity1.getName() == name)
+                                    .mapToInt(entity -> entity.getUniqueID())
+                                    .boxed()
                                     .collect(Collectors.toList());
     }
 
@@ -147,7 +152,7 @@ public abstract class BaseScript {
         // Send the message to the messageQueue
         GameEngine.messageQueue.add(message);
         // Register the callback for an answer
-        this.waitingQueue.put(componentID, callback);
+        this.waitingQueue.add(callback);
     }
 
 }

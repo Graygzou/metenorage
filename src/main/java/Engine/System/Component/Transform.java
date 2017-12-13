@@ -1,5 +1,6 @@
 package Engine.System.Component;
 
+import Engine.GameEngine;
 import Engine.Main.Entity;
 import Engine.System.Component.Messaging.Message;
 import org.joml.Vector3f;
@@ -32,12 +33,30 @@ public class Transform extends BaseComponent implements Component {
 
     @Override
     public void onMessage(Message message) {
+        Message<Object[]> returnMessage = null;
         switch (message.getInstruction()) {
             case "setPosition":
                 setPosition((Vector3f)message.getData());
                 break;
             case "setRotation":
+                setRotation((Vector3f)message.getData());
+                break;
+            case "rotate":
                 rotate((Vector3f)message.getData());
+                break;
+            case "getPosition":
+                // Create a new message to send the return value to the scriptingSystem
+                Object[] returnPosition = {Vector3f.class, getPosition()};
+                returnMessage = new Message<>(getID(), message.getSender(), "return", returnPosition);
+                // Send it
+                GameEngine.messageQueue.add(returnMessage);
+                break;
+            case "getRotation":
+                // Create a new message to send the return value to the scriptingSystem
+                Object[] returnRotation = {Vector3f.class, getRotation()};
+               returnMessage = new Message<>(getID(), message.getSender(), "return", returnRotation);
+                // Send it
+                GameEngine.messageQueue.add(returnMessage);
                 break;
             default:
                 System.out.println(message.getInstruction() + ": Corresponding method can't be found");
