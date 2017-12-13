@@ -39,7 +39,7 @@ public class GameEngine implements Runnable {
     private float timePerRendering = 1f / 30;
 
     // Resources
-    private List<Entity> entities;
+    public static List<Entity> entities;
     private List<Material> materials;
     private List<Sound> sounds;
     private List<ScriptFile> scripts;
@@ -151,8 +151,8 @@ public class GameEngine implements Runnable {
     }
 
     private void cleanUp() {
-        // TODO REMETTRE :
-        // this.graphicsSystem.cleanUp();
+        // TODO ça marche ?
+        this.graphicsSystem.cleanUp();
         // Clean up song from the engine
         for (Sound s : this.sounds) {
             alDeleteBuffers(s.getId());
@@ -236,4 +236,5 @@ public class GameEngine implements Runnable {
     public void setAmbientLight(Vector3f ambientLight) {
         graphicsSystem.setAmbientLight(ambientLight);
     }
+
 }

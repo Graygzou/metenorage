@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Grégoire Boiron
@@ -25,7 +26,7 @@ public abstract class BaseScript {
 
     private Map<Integer, Callback> waitingQueue;
 
-    public BaseScript() {
+        public BaseScript() {
         this.waitingQueue = new HashMap<>();
     }
 
@@ -75,6 +76,26 @@ public abstract class BaseScript {
         }
 
         return results;
+    }
+
+    protected List<Integer> getEntities() {
+        return GameEngine.entities.stream()
+                                    .map(entity -> entity.getUniqueID())
+                                    .collect(Collectors.toList());
+    }
+
+    protected List<Integer> getEntitiesWithTag(String tag) {
+        return GameEngine.entities.stream()
+                                    .filter(entity1 -> entity1.getTag().equals(tag))
+                                    .map(entity -> entity.getUniqueID())
+                                    .collect(Collectors.toList());
+    }
+
+    protected List<Integer> getEntitiesByName(String name) {
+        return GameEngine.entities.stream()
+                                    .filter(entity1 -> entity1.getName().equals(name))
+                                    .map(entity -> entity.getUniqueID())
+                                    .collect(Collectors.toList());
     }
 
     /**
