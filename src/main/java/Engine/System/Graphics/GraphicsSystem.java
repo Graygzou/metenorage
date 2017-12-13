@@ -197,11 +197,12 @@ public class GraphicsSystem extends BaseSystem {
     }
 
     private void renderHud(HUD hud) {
-        hudShadersHandler.bind();
-
         Matrix4f orthogonalMatrix = TransformationUtils
                 .getOrthogonalProjectionMatrix(0, window.getWidth(), window.getHeight(), 0);
+
         for (Text2D text : hud.getHUDMeshes()) {
+            hudShadersHandler.bind();
+
             text.initialize();
 
             // Set ortohtaphic and model matrix for this HUD item
@@ -209,15 +210,16 @@ public class GraphicsSystem extends BaseSystem {
                     .getOrthogonalModelProjectionModelMatrix(text.getEntity(), orthogonalMatrix);
 
             // Set the uniforms.
-            hudShadersHandler.setUniform("projectionModelMatrix", projModelMatrix);
+            hudShadersHandler.setUniform("projectionModelMatrix", orthogonalMatrix);
             hudShadersHandler.setUniform("color", text.getMaterial().getAmbientColor());
 
             // Render the mesh for this HUD item.
-            System.out.println("Rendering text " + text.getText() + " at " + text.getEntity().getPosition());
-            text.render();
+            text.apply();
+
+            hudShadersHandler.unbind();
+
         }
 
-        hudShadersHandler.unbind();
     }
 
     public Camera getCamera() {

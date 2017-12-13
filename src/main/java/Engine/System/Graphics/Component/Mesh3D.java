@@ -133,6 +133,7 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
             // Bind the texture
             glBindTexture(GL_TEXTURE_2D, material.getTexture().getId());
         }
+
         // Bind to the VAO
         //GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
         GL30.glBindVertexArray(vaoId);
@@ -153,7 +154,6 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         GL20.glDisableVertexAttribArray(2);
         GL30.glBindVertexArray(0);
         glBindTexture(GL_TEXTURE_2D, 0);
-
     }
 
     @Override
@@ -188,10 +188,7 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
         // Create, bind and hydrate VBO.
         vboId = GL15.glGenBuffers();
         verticesBuffer = BufferUtils.createFloatBuffer(verticesCount);
-
         verticesBuffer.put(vertices).flip();
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboId);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
 
         this.vboId = GL15.glGenBuffers();
         // Binds a named buffer object. (target<=specifiedEnum, bufferObjectName)
@@ -264,8 +261,6 @@ public class Mesh3D extends BaseComponent implements GraphicsComponent {
     protected void setVertices(float[] vertices) {
         this.verticesCount = vertices.length;
         this.vertices = vertices;
-
-        System.out.println("Set verticesCount = " + this.verticesCount);
     }
 
     protected int[] getIndices() {

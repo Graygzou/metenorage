@@ -36,6 +36,8 @@ public class Text2D extends Mesh3D implements GraphicsComponent {
 
     private int charactersAmount;
 
+    private boolean hasBeenInitialized = false;
+
     public Text2D(Entity entity) {
         super(entity);
     }
@@ -139,12 +141,21 @@ public class Text2D extends Mesh3D implements GraphicsComponent {
 
     @Override
     public void initialize() {
-        this.getMaterial().initialize();
+        if(!hasBeenInitialized) {
+            this.getMaterial().initialize();
 
-        this.tileWidth = (float) this.getMaterial().getTexture().getWidth() / (float) numColumns;
-        this.tileHeight = (float) this.getMaterial().getTexture().getHeight() / (float) numRows;
+            this.tileWidth = (float) this.getMaterial().getTexture().getWidth() / (float) numColumns;
+            this.tileHeight = (float) this.getMaterial().getTexture().getHeight() / (float) numRows;
 
-        this.configureMeshInformation();
+            this.configureMeshInformation();
+
+            hasBeenInitialized = true;
+        }
+
+        System.out.println("Indices: " + indices.length + " (" + indicesCount + "), " +
+                "vertices: " + vertices.length + " (" + verticesCount + "), " +
+                "textureCoordinates: " + textureCoordinates.length + " (" + textureCoordinatesCount + "), " +
+                "normals: " + normals.length + " (" + normalsCount + ")");
 
         super.initialize();
     }
