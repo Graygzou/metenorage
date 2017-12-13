@@ -124,6 +124,7 @@ public class GameEngine implements Runnable {
      */
     protected void update(float timeStep) {
         logicSystem.iterate(entities);
+        physicsSystem.iterate(entities, timeStep);
         messageQueue.dispatch();
     }
 
