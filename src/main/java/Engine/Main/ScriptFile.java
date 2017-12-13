@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
 /**
  * @author Grégoire Boiron
  */
-public class ScriptFile {
+public class ScriptFile extends Metadata {
 
     // actual script class
     private Class<BaseScript> scriptClass;
@@ -24,12 +24,14 @@ public class ScriptFile {
     private String canonicalNameScript;
 
     public ScriptFile() {
+        super();
         this.canonicalNameScript = "";
         this.scriptClass = null;
         this.methods = null;
     }
 
     public ScriptFile(String name) {
+        super();
         loadScript(name);
     }
 

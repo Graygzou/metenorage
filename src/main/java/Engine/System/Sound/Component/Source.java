@@ -138,7 +138,7 @@ public class Source extends BaseComponent implements SoundComponent {
     }
 
     public void play() {
-        AL10.alSourcei(sourceId, AL10.AL_BUFFER, this.sound.getId());
+        AL10.alSourcei(sourceId, AL10.AL_BUFFER, this.sound.getUniqueID());
         continuePlaying();
     }
 

@@ -1,4 +1,4 @@
-package Engine;
+package Engine.Managers;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>

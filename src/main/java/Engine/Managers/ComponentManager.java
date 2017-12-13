@@ -1,4 +1,6 @@
-package Engine.System.Component;
+package Engine.Managers;
+
+import Engine.System.Component.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,11 +10,25 @@ import java.util.Map;
  */
 public class ComponentManager {
 
-    private Map<Integer, Component> componentMap;
+    private static ComponentManager instance;
+
+    private Map<Integer, Component> componentMap = new HashMap<>();
 
     public ComponentManager() {
-        this.componentMap = new HashMap<>();
+        instance = this;
     }
+
+    /**
+     * Use a singleton pattern to represent the component Manager
+     * @return the instance of the class
+     */
+    public static ComponentManager getInstance() {
+        if(instance == null)
+            instance = new ComponentManager();
+
+        return instance;
+    }
+
 
     /**
      * Register a component in the manager

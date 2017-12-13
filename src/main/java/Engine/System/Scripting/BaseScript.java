@@ -6,10 +6,7 @@ import Engine.System.Component.Component;
 import Engine.System.Component.Messaging.Message;
 import Engine.System.Component.Transform;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -78,21 +75,46 @@ public abstract class BaseScript {
         return results;
     }
 
+    protected List<Integer> getComponentsFromEntity(Integer entityID, Class<? extends Component> type) {
+        List<Integer> results = new ArrayList<>();
+        Entity test;
+        // Find the entity that match the id
+        Optional firstResult = GameEngine.metadataManager.getEntities().stream()
+                                                        .map(entity1 -> entity1.getUniqueID().equals(entityID))
+                                                        .findFirst();
+        if(firstResult.isPresent()) {
+            Entity entity = (Entity) firstResult.get();
+            if(type == Transform.class) {
+                results.add(entity.getTransform().getID());
+            } else {
+                List<Component> l = entity.getComponents();
+                for(Component comp : l) {
+                    if(comp.getClass().equals(type)) {
+                        results.add(comp.getID());
+                    }
+                }
+            }
+            return results;
+        } else {
+            return null;
+        }
+    }
+
     protected List<Integer> getEntities() {
-        return GameEngine.entities.stream()
+        return GameEngine.metadataManager.getEntities().stream()
                                     .map(entity -> entity.getUniqueID())
                                     .collect(Collectors.toList());
     }
 
     protected List<Integer> getEntitiesWithTag(String tag) {
-        return GameEngine.entities.stream()
+        return GameEngine.metadataManager.getEntities().stream()
                                     .filter(entity1 -> entity1.getTag().equals(tag))
                                     .map(entity -> entity.getUniqueID())
                                     .collect(Collectors.toList());
     }
 
     protected List<Integer> getEntitiesByName(String name) {
-        return GameEngine.entities.stream()
+        return GameEngine.metadataManager.getEntities().stream()
                                     .filter(entity1 -> entity1.getName().equals(name))
                                     .map(entity -> entity.getUniqueID())
                                     .collect(Collectors.toList());

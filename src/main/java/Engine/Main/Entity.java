@@ -7,20 +7,13 @@ import Engine.System.Component.Transform;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
+/**
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  * @author Noemy Artigouha
  * @author Gregoire Boiron
  */
 
-public class Entity {
-
-    private static int currentIDNumber = 0;
-
-    /**
-     * A unique ID used to identify the entity and its components.
-     */
-    private int uniqueID;
+public class Entity extends Metadata {
 
     private String name;
 
@@ -33,12 +26,10 @@ public class Entity {
 
 
     public Entity(String name) {
+        super();
         this.name = name;
         this.components = new ArrayList<Component>();
         this.transform = new Transform(this);
-        // Create a "ramdom" ID for the entity.
-        this.uniqueID = Entity.currentIDNumber;
-        Entity.currentIDNumber++;
         // Register the component to be able to communicate with him.
         GameEngine.componentManager.registerComponent(this.transform);
     }
@@ -64,8 +55,6 @@ public class Entity {
     public List<Component> getComponents() {
         return this.components;
     }
-
-    public Integer getUniqueID() { return this.uniqueID; }
 
     public String getName() {
         return this.name;
