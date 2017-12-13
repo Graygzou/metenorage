@@ -10,9 +10,7 @@ import Engine.System.Component.BaseComponent;
 import Engine.System.Component.Component;
 import Engine.System.Component.Messaging.Message;
 import Engine.System.Input.Component.KeyboardListener;
-import Engine.System.Input.Component.MouseListener;
 import Engine.System.Input.InputComponent;
-import Engine.System.Input.MouseInput;
 import Engine.System.Physics.Component.BoxRigidBodyComponent;
 import Engine.Window;
 import org.joml.Vector3f;
@@ -21,12 +19,14 @@ import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class EntityKeyboard extends BaseComponent implements KeyboardListener, InputComponent {
+public class PlayerKeyboard extends BaseComponent implements KeyboardListener, InputComponent {
     private static float CAMERA_STEP = 0.1f;
     private BoxRigidBodyComponent rigidBody; //Rigidbody MUST BE attached before EntityKeyboard
+    private static boolean isJumping;
 
-    public EntityKeyboard(Entity entity) {
+    public PlayerKeyboard(Entity entity) {
         super(entity);
+        isJumping = false;
         List<Component> components = this.getEntity().getComponents();
         for(int i = 0; i < components.size(); i++) {
             if(components.get(i) instanceof BoxRigidBodyComponent) {
@@ -70,12 +70,15 @@ public class EntityKeyboard extends BaseComponent implements KeyboardListener, I
                 playerRotationOffset.y = 50;
             }
 
-            if(window.isKeyPressed(GLFW_KEY_SPACE)) {
-                playerPositionOffset.y = 5;
+            if(window.isKeyPressed(GLFW_KEY_SPACE) && !isJumping) {
+                playerPositionOffset.y = 7;
                 this.rigidBody.getRigidBody().applyCentralImpulse(new javax.vecmath.Vector3f(playerPositionOffset.x * CAMERA_STEP,
                         playerPositionOffset.y * CAMERA_STEP,
                         playerPositionOffset.z * CAMERA_STEP));
-                System.out.println("Jump : " + playerPositionOffset);
+                isJumping = true;
+            }
+            if(window.isKeyRelease(GLFW_KEY_SPACE) && isJumping) {
+                isJumping = false;
             }
 
             javax.vecmath.Vector3f newPosition = new javax.vecmath.Vector3f(playerPositionOffset.x * CAMERA_STEP,

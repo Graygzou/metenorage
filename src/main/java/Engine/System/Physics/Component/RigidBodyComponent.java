@@ -1,4 +1,5 @@
 package Engine.System.Physics.Component;
+import Engine.GameEngine;
 import Engine.Main.Entity;
 import Engine.System.Component.Messaging.Message;
 import Engine.System.Physics.BasePhysicsComponent;

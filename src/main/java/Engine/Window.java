@@ -116,6 +116,10 @@ public class Window {
         return glfwGetKey(windowHandle, keyCode) == GLFW_PRESS;
     }
 
+    public boolean isKeyRelease(int keyCode) {
+        return glfwGetKey(windowHandle, keyCode) == GLFW_RELEASE;
+    }
+
     public boolean windowShouldClose() {
         return glfwWindowShouldClose(windowHandle);
     }

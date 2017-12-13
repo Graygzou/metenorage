@@ -23,7 +23,14 @@ public class BoxRigidBodyComponent extends RigidBodyComponent {
 
     @Override
     public void onMessage(Message message) {
-
+        switch (message.getInstruction()) {
+            case "initialize":
+                initialize();
+                break;
+            default:
+                System.out.println(message.getInstruction() + ": Corresponding method can't be found");
+                break;
+        }
     }
 
     @Override

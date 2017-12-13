@@ -12,9 +12,8 @@ import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.Component.Mesh3D;
 import Engine.System.Physics.Component.BoxRigidBodyComponent;
 import Engine.System.Scripting.Component.Script;
-import Engine.Utils;
-import Game.Input.CameraKeyboard;
-import Game.Input.EntityKeyboard;
+import Engine.Utils;;
+import Game.Input.PlayerKeyboard;
 import org.joml.Vector3f;
 
 /**
@@ -38,6 +37,9 @@ public class FindYouWay {
                 ScriptFile scriptCamera = new ScriptFile("ScriptPlayerCamera");
                 gameEngine.addScript(scriptCamera);
 
+                ScriptFile scriptPlayer = new ScriptFile("ScriptLostPlayer");
+                gameEngine.addScript(scriptPlayer);
+
                 // Create materials.
                 Material playerMaterial = new Material("/Game/Textures/feathers.png", 1f);
                 Material groundMaterial = new Material("/Game/Textures/block.png", 1f);
@@ -57,6 +59,7 @@ public class FindYouWay {
                 blockPlayer.addComponent(new BoxRigidBodyComponent(blockPlayer, 1, 0.2f,0.2f,0.2f));
                 blockPlayer.getTransform().setPosition(1f, -1f, -3.5f);
                 blockPlayer.getTransform().setScale(0.2f);
+                blockPlayer.addComponent(new Script(blockPlayer, scriptPlayer));
                 blockPlayer.setTag("player");
                 gameEngine.addEntity(blockPlayer);
 
@@ -228,7 +231,7 @@ public class FindYouWay {
                 mainCamera.addComponent(new Script(mainCamera, scriptCamera));
                 gameEngine.setCamera(mainCamera);
                 //Set the player controls
-                blockPlayer.addComponent(new EntityKeyboard(blockPlayer));
+                blockPlayer.addComponent(new PlayerKeyboard(blockPlayer));
 
                 gameEngine.start();
 
