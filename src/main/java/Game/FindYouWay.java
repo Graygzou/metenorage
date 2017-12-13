@@ -53,6 +53,7 @@ public class FindYouWay {
                 Entity blockPlayer = new Entity("Player");
                 cubeMesh.setEntity(blockPlayer);
                 blockPlayer.addComponent(cubeMesh);
+                //Rigidbody MUST BE attached before EntityKeyboard
                 blockPlayer.addComponent(new BoxRigidBodyComponent(blockPlayer, 1, 0.2f,0.2f,0.2f));
                 blockPlayer.getTransform().setPosition(1f, -1f, -3.5f);
                 blockPlayer.getTransform().setScale(0.2f);
