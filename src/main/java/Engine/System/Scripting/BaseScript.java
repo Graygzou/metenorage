@@ -78,24 +78,32 @@ public abstract class BaseScript {
 
     protected List<Integer> getComponentsFromEntity(Integer entityID, Class<? extends Component> type) {
         List<Integer> results = new ArrayList<>();
-        Entity test;
-        // Find the entity that match the id
-        List<Entity> firstResult = GameEngine.metadataManager.getEntities().stream()
-                                                        .filter(entity1 -> entity1.getUniqueID() == entityID)
-                                                        .collect(Collectors.toList());
-        if(!firstResult.isEmpty()) {
-            Entity entity = firstResult.get(0);
+        Entity entity;
+        // If the entity exist
+        if((entity = getEntity(entityID)) != null) {
             if(type == Transform.class) {
                 results.add(entity.getTransform().getID());
             } else {
-                List<Component> l = entity.getComponents();
-                for(Component comp : l) {
-                    if(comp.getClass().equals(type)) {
-                        results.add(comp.getID());
+                List<Component> components = entity.getComponents();
+                for(Component currentComponent : components) {
+                    if(currentComponent.getClass().equals(type)) {
+                        results.add(currentComponent.getID());
                     }
                 }
             }
             return results;
+        } else {
+            return null;
+        }
+    }
+
+    protected Entity getEntity(Integer entityID) {
+        // Find the entity that match the id
+        List<Entity> firstResult = GameEngine.metadataManager.getEntities().stream()
+                                .filter(entity1 -> entity1.getUniqueID() == entityID)
+                                .collect(Collectors.toList());
+        if(!firstResult.isEmpty()) {
+            return firstResult.get(0);
         } else {
             return null;
         }
@@ -123,6 +131,18 @@ public abstract class BaseScript {
                                     .mapToInt(entity -> entity.getUniqueID())
                                     .boxed()
                                     .collect(Collectors.toList());
+    }
+
+    protected void removeComponentFromEntitiy(Integer entityID, Integer componentID) {
+        if((entity = getEntity(entityID)) != null) {
+            List<Component> components = entity.getComponents();
+            Iterator<Component> iterator = components.iterator();
+            while(iterator.hasNext()) {
+                if(iterator.next().getID() == componentID) {
+                    iterator.remove();
+                }
+            }
+        }
     }
 
     /**
