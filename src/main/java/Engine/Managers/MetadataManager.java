@@ -1,9 +1,11 @@
 package Engine.Managers;
 
+import Engine.GameEngine;
 import Engine.Main.Entity;
 import Engine.Main.Material;
 import Engine.Main.ScriptFile;
 import Engine.Main.Sound;
+import Engine.System.Component.Component;
 
 import java.util.*;
 
@@ -33,6 +35,9 @@ public class MetadataManager {
 
     public void registerEntity(Entity entity) {
         this.entity.put(entity.getUniqueID(), entity);
+        // // Register the transform AND all the components to be able to communicate with him.
+        GameEngine.componentManager.registerComponent(entity.getTransform());
+        GameEngine.componentManager.registerComponent(entity.getComponents().stream().toArray(Component[]::new));
     }
 
     public void registerMaterial(Material material) {
@@ -57,6 +62,8 @@ public class MetadataManager {
 
     public void removeEntity(Entity entity) {
         this.entity.remove(entity.getUniqueID());
+        GameEngine.componentManager.removeComponent(entity.getTransform());
+        GameEngine.componentManager.removeComponent(entity.getComponents().stream().toArray(Component[]::new));
     }
 
     public void removeMaterial(Material material) {

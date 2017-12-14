@@ -115,7 +115,11 @@ public class GameEngine implements Runnable {
      * @param timeStep The theoretical time step between each update.
      */
     protected void update(float timeStep) {
+        //System.out.println(this.componentManager.getComponents().size());
+        //System.out.println(this.metadataManager.getEntities().size());
         logicSystem.iterate(this.metadataManager.getEntities());
+        soundSystem.iterate(this.metadataManager.getEntities());
+        scriptingSystem.iterate(this.metadataManager.getEntities());
         physicsSystem.iterate(this.metadataManager.getEntities(), timeStep);
         messageQueue.dispatch();
     }
@@ -132,19 +136,19 @@ public class GameEngine implements Runnable {
      * Delegates the control of the sounds to the sound system.
      */
     protected void playSounds() {
-        soundSystem.iterate(this.metadataManager.getEntities());
+
     }
 
     /**
      * Delegates the control of the sounds to the sound system.
      */
     protected void executeScripts() {
-        scriptingSystem.iterate(this.metadataManager.getEntities());
+
     }
 
     private void cleanUp() {
         // TODO ça marche ?
-        this.graphicsSystem.cleanUp();
+        //this.graphicsSystem.cleanUp();
         // Clean up song from the engine
         for (Sound s : this.metadataManager.getSounds()) {
             alDeleteBuffers(s.getUniqueID());
@@ -173,8 +177,8 @@ public class GameEngine implements Runnable {
                 timeSteps -= timePerUpdate;
             }
 
-            playSounds();
-            executeScripts();
+            //playSounds();
+            //executeScripts();
 
             render();
             synchronizeRenderer(currentLoopStartTime);

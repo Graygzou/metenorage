@@ -12,9 +12,13 @@ import Engine.System.Component.Messaging.Message;
 import Engine.System.Input.Component.KeyboardListener;
 import Engine.System.Input.InputComponent;
 import Engine.System.Physics.Component.BoxRigidBodyComponent;
+import Engine.System.Physics.Component.RigidBodyComponent;
 import Engine.Window;
+import com.bulletphysics.linearmath.Transform;
 import org.joml.Vector3f;
 
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Quat4f;
 import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -85,8 +89,8 @@ public class PlayerKeyboard extends BaseComponent implements KeyboardListener, I
                     playerPositionOffset.y * CAMERA_STEP,
                     playerPositionOffset.z * CAMERA_STEP);
 
+            System.out.println(this.rigidBody.getRigidBody().getActivationState());
             this.rigidBody.getRigidBody().translate(newPosition);
-
 
             getEntity().getTransform().rotate(playerRotationOffset.x * CAMERA_STEP,
                     playerRotationOffset.y * CAMERA_STEP,

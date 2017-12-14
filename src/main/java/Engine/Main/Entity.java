@@ -30,26 +30,19 @@ public class Entity extends Metadata {
         this.name = name;
         this.components = new ArrayList<Component>();
         this.transform = new Transform(this);
-        // Register the component to be able to communicate with him.
-        GameEngine.componentManager.registerComponent(this.transform);
     }
 
     public Entity() {
-        this.components = new ArrayList<Component>();
-        this.transform = new Transform(this);
-        GameEngine.componentManager.registerComponent(this.transform);
+        this("");
     }
 
     public void addComponent(Component component) {
         component.setEntity(this);
         this.components.add(component);
-        // Register the component to access it through messaging queue
-        GameEngine.componentManager.registerComponent(component);
     }
 
     public void removeComponent(Component component) {
         this.components.remove(component);
-        GameEngine.componentManager.removeComponent(component);
     }
 
     public List<Component> getComponents() {

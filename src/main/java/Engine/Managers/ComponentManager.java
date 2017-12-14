@@ -3,6 +3,8 @@ package Engine.Managers;
 import Engine.System.Component.Component;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,10 +34,15 @@ public class ComponentManager {
 
     /**
      * Register a component in the manager
+     * @param entityComponents
      */
-    public void registerComponent(Component component) {
-        this.componentMap.put(component.getID(), component);
+    public void registerComponent(Component... entityComponents) {
+        for(Component component : entityComponents) {
+            this.componentMap.put(component.getID(), component);
+        }
     }
+
+    public List<Component> getComponents() { return new LinkedList<>(this.componentMap.values()); }
 
     /**
      * Return a component based on the id given.
@@ -48,10 +55,12 @@ public class ComponentManager {
 
     /**
      * Remove a component from the manager
-     * @param component
+     * @param entityComponents
      */
-    public void removeComponent(Component component) {
-        this.componentMap.remove(component.getID());
+    public void removeComponent(Component... entityComponents) {
+        for(Component component : entityComponents) {
+            this.componentMap.remove(component.getID());
+        }
     }
 
     /**

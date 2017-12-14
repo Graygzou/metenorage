@@ -14,6 +14,8 @@ import javax.vecmath.Matrix4f;
 import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 
+import static com.bulletphysics.collision.dispatch.CollisionObject.DISABLE_DEACTIVATION;
+
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  */
@@ -91,6 +93,7 @@ public abstract class RigidBodyComponent extends BasePhysicsComponent {
         constructionInfo.angularDamping = this.angularDamping;
 
         this.rigidBody = new RigidBody(constructionInfo);
+        this.rigidBody.setActivationState(DISABLE_DEACTIVATION);
     }
 
     public float getMass() {
