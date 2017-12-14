@@ -3,12 +3,16 @@ package Engine.System.Scripting;
 import Engine.Main.Entity;
 import Engine.System.BaseSystem;
 import Engine.System.Component.Component;
+import Engine.System.Input.Component.KeyboardListener;
+import Engine.System.Input.Component.MouseListener;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * @author Grégoire Boiron
+ * @author Florian Vidal
  */
 public class ScriptingSystem extends BaseSystem {
 
@@ -16,7 +20,7 @@ public class ScriptingSystem extends BaseSystem {
     private List<Entity> startedEntities;
 
     public ScriptingSystem() {
-
+        super();
     }
 
     @Override
@@ -32,10 +36,12 @@ public class ScriptingSystem extends BaseSystem {
     }
 
     @Override
-    public void iterate(List<Entity> entities) {
+    public void iterate() {
+        checkPendingEntities();
+
         // initialize the first time list
         if(this.notStartedEntities.isEmpty() && this.startedEntities.isEmpty()) {
-            this.notStartedEntities = new LinkedList<>(entities);
+            this.notStartedEntities = new LinkedList<>(trackedEntities);
 
             // Call start method for each component script
             for(Entity entity : this.notStartedEntities) {
@@ -61,5 +67,14 @@ public class ScriptingSystem extends BaseSystem {
     }
 
     @Override
+    protected void checkPendingEntities() {
+        for(Entity entity : pendingEntities){
+            trackedEntities.add(entity);
+        }
+        pendingEntities.clear();
+    }
+
+    @Override
     public void cleanUp() { }
+
 }

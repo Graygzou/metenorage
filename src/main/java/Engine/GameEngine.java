@@ -4,6 +4,7 @@ package Engine;
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  * @author Noemy Artigouha
  * @author Grégoire Boiron
+ * @author Florian Vidal
  */
 
 import Engine.Helper.Timer;
@@ -121,7 +122,6 @@ public class GameEngine implements Runnable {
         soundSystem.iterate(this.metadataManager.getEntities());
         scriptingSystem.iterate(this.metadataManager.getEntities());
         physicsSystem.iterate(this.metadataManager.getEntities(), timeStep);
-        messageQueue.dispatch();
     }
 
     /**
@@ -136,14 +136,12 @@ public class GameEngine implements Runnable {
      * Delegates the control of the sounds to the sound system.
      */
     protected void playSounds() {
-
     }
 
     /**
      * Delegates the control of the sounds to the sound system.
      */
     protected void executeScripts() {
-
     }
 
     private void cleanUp() {
@@ -209,9 +207,27 @@ public class GameEngine implements Runnable {
     }
 
     public void addEntity(Entity entity) {
+      
+        this.entities.add(entity);
+        this.inputSystem.addEntity(entity);
+        this.scriptingSystem.addEntity(entity);
+        this.logicSystem.addEntity(entity);
+        this.graphicsSystem.addEntity(entity);
+        this.soundSystem.addEntity(entity);
+
         this.metadataManager.registerEntity(entity);
 
         this.physicsSystem.addEntity(entity);
+    }
+
+    public void removeEntity(Entity entity) {
+        this.entities.remove(entity);
+        this.inputSystem.removeEntity(entity);
+        this.scriptingSystem.removeEntity(entity);
+        this.logicSystem.removeEntity(entity);
+        this.graphicsSystem.removeEntity(entity);
+        this.soundSystem.removeEntity(entity);
+        this.physicsSystem.removeEntity(entity);
     }
 
     public void addMaterial(Material material) {
