@@ -22,7 +22,6 @@ import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 
 /**
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
- * @author Florian Vidal
  */
 public class GraphicsSystem extends BaseSystem {
     private ShadersHandler shadersHandler;
@@ -53,8 +52,8 @@ public class GraphicsSystem extends BaseSystem {
     private boolean isInitialized = false;
 
     public GraphicsSystem(Window window) {
-        super();
         this.window = window;
+
         this.camera = new Camera();
     }
 
@@ -72,7 +71,7 @@ public class GraphicsSystem extends BaseSystem {
     }
 
     @Override
-    public void iterate() {
+    public void iterate(List<Entity> entities) {
         if (window.isResized()) {
             try {
                 resetProjectionMatrix();
@@ -88,9 +87,7 @@ public class GraphicsSystem extends BaseSystem {
 
         int currentPointLightIndex = 0, currentSpotLightIndex = 0;
 
-        checkPendingEntities();
-
-        for (Entity entity : trackedEntities) {
+        for (Entity entity : entities) {
             // Update the model-view matrix for the current entity.
             shadersHandler.setUniform("modelViewMatrix",
                     TransformationUtils.getModelViewMatrix(entity, viewMatrix));
@@ -144,25 +141,6 @@ public class GraphicsSystem extends BaseSystem {
             }
 
             shadersHandler.unbind();
-        }
-    }
-
-    @Override
-    protected void checkPendingEntities() {
-        for (Entity entity : pendingEntities) {
-            int currentPointLightIndex = 0, currentSpotLightIndex = 0;
-
-            if(entity instanceof PointLight && currentPointLightIndex < MAX_POINT_LIGHTS) {
-                currentPointLightIndex++;
-                trackedEntities.add(entity);
-            } else if(entity instanceof DirectionalLight) {
-                trackedEntities.add(entity);
-            } else if(entity instanceof SpotLight && currentSpotLightIndex < MAX_SPOT_LIGHTS) {
-                trackedEntities.add(entity);
-                currentSpotLightIndex++;
-            }
-
-            pendingEntities.clear();
         }
     }
 

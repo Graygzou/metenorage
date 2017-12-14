@@ -9,12 +9,10 @@ import Engine.System.Input.Component.KeyboardListener;
 import Engine.System.Input.Component.MouseListener;
 import Engine.Window;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/**
+/*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
- * @author Florian Vidal <florianvidals@gmail.com>
  */
 
 public class InputSystem extends BaseSystem {
@@ -24,9 +22,7 @@ public class InputSystem extends BaseSystem {
 
     private MessageQueue messageQueue;
 
-
     public InputSystem(Window window, MessageQueue messageQueue) {
-        super();
         this.window = window;
         this.messageQueue = messageQueue;
     }
@@ -47,12 +43,10 @@ public class InputSystem extends BaseSystem {
     }
 
     @Override
-    public void iterate() {
+    public void iterate(List<Entity> entities) {
         this.mouseInput.handleInput();
 
-        checkPendingEntities();
-
-        for(Entity entity : trackedEntities) {
+        for(Entity entity : entities) {
             for(Component component : getLocalSystemComponentsFor(entity)) {
                 if(MouseListener.class.isAssignableFrom(component.getClass())) {
                     component.onMessage(new Message(null, component.getID(), "mouseEvent", this.mouseInput));
@@ -63,19 +57,6 @@ public class InputSystem extends BaseSystem {
                 }
             }
         }
-    }
-
-    @Override
-    protected void checkPendingEntities() {
-        for(Entity entity : pendingEntities){
-            for(Component component : getLocalSystemComponentsFor(entity)) {
-                if (MouseListener.class.isAssignableFrom(component.getClass()) || KeyboardListener.class.isAssignableFrom(component.getClass())) {
-                    trackedEntities.add(entity);
-                    break;
-                }
-            }
-        }
-        pendingEntities.clear();
     }
 
 }

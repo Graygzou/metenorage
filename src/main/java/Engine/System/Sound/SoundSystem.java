@@ -13,7 +13,6 @@ import static org.lwjgl.openal.ALC10.*;
 
 /**
  * @author Noemy Artigouha
- * @author Florian Vidal
  */
 
 public class SoundSystem extends BaseSystem {
@@ -22,7 +21,6 @@ public class SoundSystem extends BaseSystem {
     private long context;
 
     public SoundSystem() {
-        super();
         final String defaultDeviceName = alcGetString(0, ALC_DEFAULT_DEVICE_SPECIFIER);
         device = alcOpenDevice(defaultDeviceName);
 
@@ -31,14 +29,6 @@ public class SoundSystem extends BaseSystem {
         alcMakeContextCurrent(context);
 
         AL.createCapabilities(ALC.createCapabilities(device));
-    }
-
-    @Override
-    protected void checkPendingEntities() {
-        for(Entity entity : pendingEntities){
-            trackedEntities.add(entity);
-        }
-        pendingEntities.clear();
     }
 
     @Override
@@ -58,10 +48,9 @@ public class SoundSystem extends BaseSystem {
     }
 
     @Override
-    public void iterate() {
-        checkPendingEntities();
+    public void iterate(List<Entity> entities) {
         // For all the entity in the game
-        for(Entity entity : trackedEntities) {
+        for(Entity entity : entities) {
             // For the audio components
             for (Component component : getLocalSystemComponentsFor(entity)) {
                 // Active them
