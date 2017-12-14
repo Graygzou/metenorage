@@ -93,10 +93,13 @@ public class ScriptFile extends Metadata {
 
         } catch (IllegalAccessException e) {
             System.out.println("Exception : Method " + name +" cannot be access.");
+            e.printStackTrace();
         } catch (InvocationTargetException e) {
             System.out.println("Exception : Method " + name +" cannot be called.");
+            e.printStackTrace();
         } catch (NoSuchMethodException e) {
             System.out.println("Exception : Method " + name +" cannot be found.");
+            e.printStackTrace();
         }
     }
 }

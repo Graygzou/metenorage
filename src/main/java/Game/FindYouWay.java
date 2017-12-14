@@ -39,7 +39,7 @@ public class FindYouWay {
                 ScriptFile scriptCamera = new ScriptFile("ScriptPlayerCamera");
                 gameEngine.addScript(scriptCamera);
 
-                ScriptFile scriptPlayer = new ScriptFile("ScriptLostPlayer");
+                ScriptFile scriptPlayer = new ScriptFile("ScriptPlayer");
                 gameEngine.addScript(scriptPlayer);
 
                 // Create materials.
@@ -171,12 +171,13 @@ public class FindYouWay {
                 //final point
                 for(int i = 0; i < 2; i++) {
                     for (int j = 0; j < 2; j++) {
-                        block = new Entity("My block");
+                        block = new Entity("Final block");
                         cubeMesh.setEntity(block);
                         block.addComponent(cubeMesh);
                         block.addComponent(new BoxRigidBodyComponent(block, 0, 0.5f, 0.5f, 0.5f));
                         block.getTransform().setPosition(4f+i, -3.5f, 9f+j);
                         block.getTransform().setScale(0.5f);
+                        block.setTag("final block");
                         gameEngine.addEntity(block);
                     }
                 }

@@ -12,13 +12,10 @@ import Engine.System.Component.Messaging.Message;
 import Engine.System.Input.Component.KeyboardListener;
 import Engine.System.Input.InputComponent;
 import Engine.System.Physics.Component.BoxRigidBodyComponent;
-import Engine.System.Physics.Component.RigidBodyComponent;
 import Engine.System.Sound.Component.Source;
 import Engine.Window;
-import com.bulletphysics.linearmath.Transform;
-import org.joml.Vector3f;
 
-import javax.vecmath.Matrix4f;
+
 import javax.vecmath.Quat4f;
 import java.util.List;
 
@@ -58,8 +55,8 @@ public class PlayerKeyboard extends BaseComponent implements KeyboardListener, I
 
         if (message.getInstruction().equals("keyboardEvent")) {
             Window window = (Window) message.getData();
-            Vector3f playerPositionOffset = new Vector3f();
-            Vector3f playerRotationOffset = new Vector3f();
+            org.joml.Vector3f playerPositionOffset = new org.joml.Vector3f();
+            org.joml.Vector3f playerRotationOffset = new org.joml.Vector3f();
             //Move the entity
             if (window.isKeyPressed(GLFW_KEY_W)) {
                 playerPositionOffset.z = -1;
@@ -85,6 +82,7 @@ public class PlayerKeyboard extends BaseComponent implements KeyboardListener, I
                         playerPositionOffset.z * CAMERA_STEP));
                 isJumping = true;
                 this.sound.play();
+                System.out.println(this.sound.isPlaying());
             }
             if(window.isKeyRelease(GLFW_KEY_SPACE) && isJumping) {
                 isJumping = false;
@@ -102,8 +100,12 @@ public class PlayerKeyboard extends BaseComponent implements KeyboardListener, I
                     getEntity().getTransform().getPosition().y,
                     getEntity().getTransform().getPosition().z);
 
-            System.out.println(this.rigidBody.getRigidBody().getActivationState());
-            this.rigidBody.getRigidBody().translate(newPosition);
+            float angle = (float) (getEntity().getTransform().getRotation().y * (Math.PI / 180));
+            javax.vecmath.Vector3f newPosition2 = new javax.vecmath.Vector3f((float) (newPosition.x * Math.cos(angle) + -newPosition.z * Math.sin(angle)),
+                                                newPosition.y,
+                                                    (float) (newPosition.x * Math.sin(angle) + newPosition.z * Math.cos(angle)));
+
+            this.rigidBody.getRigidBody().translate(newPosition2);
         }
     }
 }

@@ -74,8 +74,10 @@ public class Source extends BaseComponent implements SoundComponent {
 
     @Override
     public void initialize() {
-        sourceId = AL10.alGenSources();
-
+        if(sourceId == 0) {
+            // Create the source ID
+            sourceId = AL10.alGenSources();
+        }
         // Set the looping
         this.setLooping(this.isLooping);
         // Set the velocity
@@ -87,7 +89,7 @@ public class Source extends BaseComponent implements SoundComponent {
         // Set the position
         this.setPosition(this.position);
         // Stop all the current songs
-        stop();
+        //stop();
     }
 
     @Override
