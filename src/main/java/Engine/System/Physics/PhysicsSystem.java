@@ -55,6 +55,7 @@ public class PhysicsSystem extends BaseSystem {
 
     }
 
+
     public void iterate(List<Entity> entities, float timeStep) {
         dynamicsWorld.stepSimulation(timeStep);
 
@@ -84,6 +85,11 @@ public class PhysicsSystem extends BaseSystem {
         for (RigidBodyComponent rigidBodyComponent : rigidBodiesComponents) {
             dynamicsWorld.addRigidBody(rigidBodyComponent.getRigidBody());
         }
+    }
+
+    @Override
+    protected void checkPendingEntities() {
+
     }
 
     public void addEntity(Entity entity) {
