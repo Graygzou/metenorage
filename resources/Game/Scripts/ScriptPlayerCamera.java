@@ -40,7 +40,7 @@ public class ScriptPlayerCamera extends BaseScript {
             public void call(Object result) {
                 Vector3f rot = (Vector3f) result;
                 // Call a specific method on this component with his id.
-                callMethodComponent(componentsCamera.get(0), "setRotation", new Vector3f(rot.x+20, rot.y, rot.z));
+                callMethodComponent(componentsCamera.get(0), "setRotation", new Vector3f(rot.x+30, rot.y, rot.z));
 
                 //set camera position thanks to player position
                 Callback callbackPosition = new Callback() {
@@ -51,7 +51,7 @@ public class ScriptPlayerCamera extends BaseScript {
                         // Call a specific method on this component with his id.
                         callMethodComponent(componentsCamera.get(0), "setPosition",
                                 new Vector3f(pos.x - (float)Math.sin(angle)*rayon,
-                                        pos.y + 1,
+                                        pos.y + 1.5f,
                                         pos.z + rayon + ( (float)Math.cos(angle)*rayon - rayon) ));
                     }
                 };

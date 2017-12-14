@@ -40,12 +40,13 @@ public class ScriptLostPlayer extends BaseScript {
             @Override
             public void call(Object result) {
                 Vector3f pos = (Vector3f) result;
-                if(pos.y <= -4f) {
+                if(pos.y <= -6f) {
                     callMethodComponent(componentsTransform, "setPosition", new Vector3f(1f, -1f, -3.5f));
+                    callMethodComponent(componentsTransform, "setRotation", new Vector3f(0,0,0));
                     callMethodComponent(components, "initialize",null);
                     if(nbHealth == 0) {
                         System.out.println("You lost !");
-
+                        removeComponentFromEntitiy(entity,componentsEntityKeyboard);
                     } else {
                         nbHealth--;
                     }

@@ -8,10 +8,12 @@ import Engine.Main.Light.PointLight;
 import Engine.Main.Light.SpotLight;
 import Engine.Main.Material;
 import Engine.Main.ScriptFile;
+import Engine.Main.Sound;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.Component.Mesh3D;
 import Engine.System.Physics.Component.BoxRigidBodyComponent;
 import Engine.System.Scripting.Component.Script;
+import Engine.System.Sound.Component.Source;
 import Engine.Utils;;
 import Game.Input.PlayerKeyboard;
 import org.joml.Vector3f;
@@ -48,6 +50,10 @@ public class FindYouWay {
                 gameEngine.addMaterial(groundMaterial);
                 gameEngine.addMaterial(healthMaterial);
 
+                //Sound when the player jump
+                Sound soundJump = new Sound("Test", "./resources/Game/Sounds/rebond.wav");
+                gameEngine.addSound(soundJump);
+
 
                 // Player block
                 Mesh3D cubeMesh = OBJLoader.loadMesh("/Game/Models/cube.obj");
@@ -60,6 +66,7 @@ public class FindYouWay {
                 blockPlayer.getTransform().setPosition(1f, -1f, -3.5f);
                 blockPlayer.getTransform().setScale(0.2f);
                 blockPlayer.addComponent(new Script(blockPlayer, scriptPlayer));
+                blockPlayer.addComponent(new Source(blockPlayer,soundJump));
                 blockPlayer.setTag("player");
                 gameEngine.addEntity(blockPlayer);
 
