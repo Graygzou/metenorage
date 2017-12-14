@@ -35,7 +35,7 @@ public class Source extends BaseComponent implements SoundComponent {
         this.pitch = 0.5f;
         this.isLooping = false;
         this.velocity = new Vector3f(0,0,0);
-        this.position = entity.getPosition();
+        this.position = entity.getTransform().getPosition();
     }
 
     public void setVelocity(final Vector3f velocity) {
@@ -74,8 +74,10 @@ public class Source extends BaseComponent implements SoundComponent {
 
     @Override
     public void initialize() {
-        sourceId = AL10.alGenSources();
-
+        if(sourceId == 0) {
+            // Create the source ID
+            sourceId = AL10.alGenSources();
+        }
         // Set the looping
         this.setLooping(this.isLooping);
         // Set the velocity
@@ -87,7 +89,7 @@ public class Source extends BaseComponent implements SoundComponent {
         // Set the position
         this.setPosition(this.position);
         // Stop all the current songs
-        stop();
+        //stop();
     }
 
     @Override
@@ -138,7 +140,7 @@ public class Source extends BaseComponent implements SoundComponent {
     }
 
     public void play() {
-        AL10.alSourcei(sourceId, AL10.AL_BUFFER, this.sound.getId());
+        AL10.alSourcei(sourceId, AL10.AL_BUFFER, this.sound.getUniqueID());
         continuePlaying();
     }
 

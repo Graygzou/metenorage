@@ -1,4 +1,5 @@
 package Engine.System.Physics.Component;
+import Engine.GameEngine;
 import Engine.Main.Entity;
 import Engine.System.Component.Messaging.Message;
 import Engine.System.Physics.BasePhysicsComponent;
@@ -12,6 +13,8 @@ import com.bulletphysics.linearmath.Transform;
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
+
+import static com.bulletphysics.collision.dispatch.CollisionObject.DISABLE_DEACTIVATION;
 
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
@@ -78,9 +81,9 @@ public abstract class RigidBodyComponent extends BasePhysicsComponent {
                         new Matrix4f(
                                 new Quat4f(0, 0, 0, 1),
                                 new Vector3f(
-                                        this.getEntity().getPosition().x,
-                                        this.getEntity().getPosition().y,
-                                        this.getEntity().getPosition().z),
+                                        this.getEntity().getTransform().getPosition().x,
+                                        this.getEntity().getTransform().getPosition().y,
+                                        this.getEntity().getTransform().getPosition().z),
                                 1f)));
 
         // Store the material properties.
@@ -90,6 +93,7 @@ public abstract class RigidBodyComponent extends BasePhysicsComponent {
         constructionInfo.angularDamping = this.angularDamping;
 
         this.rigidBody = new RigidBody(constructionInfo);
+        this.rigidBody.setActivationState(DISABLE_DEACTIVATION);
     }
 
     public float getMass() {

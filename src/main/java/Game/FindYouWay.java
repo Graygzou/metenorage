@@ -7,11 +7,15 @@ import Engine.Main.Light.DirectionalLight;
 import Engine.Main.Light.PointLight;
 import Engine.Main.Light.SpotLight;
 import Engine.Main.Material;
+import Engine.Main.ScriptFile;
+import Engine.Main.Sound;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.Component.Mesh3D;
 import Engine.System.Physics.Component.BoxRigidBodyComponent;
-import Engine.Utils;
-import Game.Input.CameraKeyboard;
+import Engine.System.Scripting.Component.Script;
+import Engine.System.Sound.Component.Source;
+import Engine.Utils;;
+import Game.Input.PlayerKeyboard;
 import org.joml.Vector3f;
 
 /**
@@ -29,123 +33,166 @@ public class FindYouWay {
             if(!testParser) {
                 GameEngine gameEngine = new GameEngine("FindYourWay", 800, 600);
 
-                // Create a game sound
-                //Sound son = new Sound("Test", "./resources/Game/Sounds/sonTest.wav");
-                //gameEngine.addSound(son);
+                ScriptFile scriptRotateHealth = new ScriptFile("ScriptRotateHealth");
+                gameEngine.addScript(scriptRotateHealth);
 
-                //ScriptFile script = new ScriptFile("ScriptTest");
-                //gameEngine.addScript(script);
+                ScriptFile scriptCamera = new ScriptFile("ScriptPlayerCamera");
+                gameEngine.addScript(scriptCamera);
+
+                ScriptFile scriptPlayer = new ScriptFile("ScriptPlayer");
+                gameEngine.addScript(scriptPlayer);
 
                 // Create materials.
                 Material playerMaterial = new Material("/Game/Textures/feathers.png", 1f);
-                Material groundMaterial = new Material("/Game/Textures/leaf.png", 1f);
-                Material groundSolutionMaterial = new Material("/Game/Textures/block.png", 1f);
+                Material groundMaterial = new Material("/Game/Textures/block.png", 1f);
+                Material healthMaterial = new Material("/Game/Textures/heart.png", 1f);
                 gameEngine.addMaterial(playerMaterial);
                 gameEngine.addMaterial(groundMaterial);
-                gameEngine.addMaterial(groundSolutionMaterial);
+                gameEngine.addMaterial(healthMaterial);
+
+                //Sound when the player jump
+                Sound soundJump = new Sound("Test", "./resources/Game/Sounds/rebond.wav");
+                gameEngine.addSound(soundJump);
 
 
                 // Player block
                 Mesh3D cubeMesh = OBJLoader.loadMesh("/Game/Models/cube.obj");
                 cubeMesh.setMaterial(playerMaterial);
-                Entity block = new Entity("My block");
-                cubeMesh.setEntity(block);
-                block.addComponent(cubeMesh);
-                block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f,0.5f,0.5f));
-                block.setPosition(1f, -1f, -3.5f);
-                block.setScale(0.2f);
-                gameEngine.addEntity(block);
+                Entity blockPlayer = new Entity("Player");
+                cubeMesh.setEntity(blockPlayer);
+                blockPlayer.addComponent(cubeMesh);
+                //Rigidbody MUST BE attached before EntityKeyboard
+                blockPlayer.addComponent(new BoxRigidBodyComponent(blockPlayer, 1, 0.2f,0.2f,0.2f));
+                blockPlayer.getTransform().setPosition(1f, -1f, -3.5f);
+                blockPlayer.getTransform().setScale(0.2f);
+                blockPlayer.addComponent(new Script(blockPlayer, scriptPlayer));
+                blockPlayer.addComponent(new Source(blockPlayer,soundJump));
+                blockPlayer.setTag("player");
+                gameEngine.addEntity(blockPlayer);
 
                 //Ground blocks
                 cubeMesh = OBJLoader.loadMesh("/Game/Models/cube.obj");
                 cubeMesh.setMaterial(groundMaterial);
+                Entity block = null;
                 for(int i = 0; i < 3; i++) {
                     for(int j = 0; j < 2; j++) {
                         block = new Entity("My block");
                         cubeMesh.setEntity(block);
                         block.addComponent(cubeMesh);
-                        block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
-                        block.setPosition(i, -2f, -4f+j);
-                        block.setScale(0.5f);
+                        block.addComponent(new BoxRigidBodyComponent(block, 0, 0.5f, 0.5f, 0.5f));
+                        block.getTransform().setPosition(i, -2f, -4f+j);
+                        block.getTransform().setScale(0.5f);
                         gameEngine.addEntity(block);
 
                         if(i < 2) {
                             block = new Entity("My block");
                             cubeMesh.setEntity(block);
                             block.addComponent(cubeMesh);
-                            block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
-                            block.setPosition(2f+i, -2f, -6.5f+j);
-                            block.setScale(0.5f);
+                            block.addComponent(new BoxRigidBodyComponent(block, 0, 0.5f, 0.5f, 0.5f));
+                            block.getTransform().setPosition(2f+i, -2f, -6.5f+j);
+                            block.getTransform().setScale(0.5f);
                             gameEngine.addEntity(block);
                         }
                         if(j == 0) {
                             block = new Entity("My block");
                             cubeMesh.setEntity(block);
                             block.addComponent(cubeMesh);
-                            block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
-                            block.setPosition(2.5f+i, -1.5f, -8.5f+j);
-                            block.setScale(0.5f);
+                            block.addComponent(new BoxRigidBodyComponent(block, 0, 0.5f, 0.5f, 0.5f));
+                            block.getTransform().setPosition(2.5f+i, -1.5f, -8.5f+j);
+                            block.getTransform().setScale(0.5f);
                             gameEngine.addEntity(block);
                         }
                         if(j == 1 && i != 1) {
                             block = new Entity("My block");
                             cubeMesh.setEntity(block);
                             block.addComponent(cubeMesh);
-                            block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
-                            block.setPosition(2.5f+i, -0.5f, -9.5f+j);
-                            block.setScale(0.5f);
+                            block.addComponent(new BoxRigidBodyComponent(block, 0, 0.5f, 0.5f, 0.5f));
+                            block.getTransform().setPosition(2.5f+i, -0.5f, -9.5f+j);
+                            block.getTransform().setScale(0.5f);
                             gameEngine.addEntity(block);
                         }
                     }
                     block = new Entity("My block");
                     cubeMesh.setEntity(block);
                     block.addComponent(cubeMesh);
-                    block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
-                    block.setPosition(5.5f+i, 0f, -8.5f);
-                    block.setScale(0.5f);
+                    block.addComponent(new BoxRigidBodyComponent(block, 0, 0.5f, 0.5f, 0.5f));
+                    block.getTransform().setPosition(5.5f+i, 0f, -8.5f);
+                    block.getTransform().setScale(0.5f);
                     gameEngine.addEntity(block);
+
+                    //bonus heart blocks
+                    if(i == 2) {
+                        block = new Entity("My block");
+                        cubeMesh.setEntity(block);
+                        block.addComponent(cubeMesh);
+                        block.addComponent(new BoxRigidBodyComponent(block, 0, 0.5f, 0.5f, 0.5f));
+                        block.getTransform().setPosition(9.15f+i, -0.15f, -8.5f);
+                        block.getTransform().setScale(0.5f);
+                        gameEngine.addEntity(block);
+                    } else {
+                        block = new Entity("My block");
+                        cubeMesh.setEntity(block);
+                        block.addComponent(cubeMesh);
+                        block.addComponent(new BoxRigidBodyComponent(block, 0, 0.35f, 0.35f, 0.35f));
+                        block.getTransform().setPosition(9f+i*1.3f, 0f, -8.5f);
+                        block.getTransform().setScale(0.35f);
+                        gameEngine.addEntity(block);
+                    }
+
                 }
 
                 for(int i = 0; i < 6; i++) {
                     block = new Entity("My block");
                     cubeMesh.setEntity(block);
                     block.addComponent(cubeMesh);
-                    block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
+                    block.addComponent(new BoxRigidBodyComponent(block, 0, 0.5f, 0.5f, 0.5f));
                     if(i == 4) {
-                        block.setPosition(7.5f, 0f-i+1, -7.5f+i*2-1);
+                        block.getTransform().setPosition(7.5f, 0f-i+1, -7.5f+i*2-1);
                     } if(i == 5) {
-                        block.setPosition(7.5f, 0f-i+1, -7.5f+i*2-1);
+                        block.getTransform().setPosition(7.5f, 0f-i+1, -7.5f+i*2-1);
                     } else {
-                        block.setPosition(7.5f, 0f-i, -7.5f+i*2);
+                        block.getTransform().setPosition(7.5f, 0f-i, -7.5f+i*2);
                     }
-                    block.setScale(0.5f);
+                    block.getTransform().setScale(0.5f);
                     gameEngine.addEntity(block);
 
                     block = new Entity("My block");
                     cubeMesh.setEntity(block);
                     block.addComponent(cubeMesh);
-                    block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
+                    block.addComponent(new BoxRigidBodyComponent(block, 0, 0.35f, 0.35f, 0.35f));
                     if(i < 3) {
-                        block.setPosition(7.5f, -4f, 3f+i*0.7f);
+                        block.getTransform().setPosition(7.5f, -4f, 3f+i*0.7f);
                     } else {
-                        block.setPosition(9.5f-i, -4f, 2.5f+i);
+                        block.getTransform().setPosition(9.5f-i, -4f, 2.5f+i);
                     }
-                    block.setScale(0.35f);
+                    block.getTransform().setScale(0.35f);
                     gameEngine.addEntity(block);
                 }
-                cubeMesh = OBJLoader.loadMesh("/Game/Models/cube.obj");
-                cubeMesh.setMaterial(groundSolutionMaterial);
+                //final point
                 for(int i = 0; i < 2; i++) {
                     for (int j = 0; j < 2; j++) {
-                        block = new Entity("My block");
+                        block = new Entity("Final block");
                         cubeMesh.setEntity(block);
                         block.addComponent(cubeMesh);
-                        block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f, 0.5f, 0.5f));
-                        block.setPosition(4f+i, -3.5f, 9f+j);
-                        block.setScale(0.5f);
+                        block.addComponent(new BoxRigidBodyComponent(block, 0, 0.5f, 0.5f, 0.5f));
+                        block.getTransform().setPosition(4f+i, -3.5f, 9f+j);
+                        block.getTransform().setScale(0.5f);
+                        block.setTag("final block");
                         gameEngine.addEntity(block);
                     }
                 }
+
+                // bonus heart element
+                cubeMesh = OBJLoader.loadMesh("/Game/Models/cube.obj");
+                cubeMesh.setMaterial(healthMaterial);
+                block = new Entity("My block");
+                cubeMesh.setEntity(block);
+                block.addComponent(cubeMesh);
+                block.addComponent(new BoxRigidBodyComponent(block, 0, 0.2f, 0.2f, 0.2f));
+                block.addComponent(new Script(block, scriptRotateHealth));
+                block.getTransform().setPosition(11.2f, 0.7f, -8.5f);
+                block.getTransform().setScale(0.2f);
+                gameEngine.addEntity(block);
 
 
                 // Set lighting.
@@ -189,8 +236,10 @@ public class FindYouWay {
                 // Set the main camera.
                 Camera mainCamera = new Camera();
                 mainCamera.setName("Caméra principale");
-                mainCamera.addComponent(new CameraKeyboard(mainCamera));
+                mainCamera.addComponent(new Script(mainCamera, scriptCamera));
                 gameEngine.setCamera(mainCamera);
+                //Set the player controls
+                blockPlayer.addComponent(new PlayerKeyboard(blockPlayer));
 
                 gameEngine.start();
 

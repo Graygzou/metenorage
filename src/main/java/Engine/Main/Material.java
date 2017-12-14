@@ -1,14 +1,15 @@
 package Engine.Main;
 
-/*
+/**
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
+ * @author Gregoire Boiron
  */
 
 import Engine.System.Graphics.Texture;
-import Engine.TexturesManager;
+import Engine.Managers.TexturesManager;
 import org.joml.Vector4f;
 
-public class Material {
+public class Material extends Metadata {
     /**
      * The default color of a material when no further info is provided.
      */
@@ -38,6 +39,7 @@ public class Material {
     private String textureName;
 
     public Material() {
+        super();
         this.ambientColor = DEFAULT_COLOUR;
         this.diffuseColor = DEFAULT_COLOUR;
         this.specularColor = DEFAULT_COLOUR;

@@ -1,9 +1,11 @@
 package Engine.System.Component.Messaging;
 
 import Engine.GameEngine;
+import Engine.Main.Entity;
 import Engine.System.Component.Component;
 
 import java.util.ArrayDeque;
+import java.util.Iterator;
 
 /**
  * @author Florian VIDAL <florianvidals@gmail.com>
@@ -33,6 +35,14 @@ public class MessageQueue {
      * Dispatch all the messages in the queue at that time. The queue follows a FIFO behaviour.
      */
     public void dispatch(){
+        /*
+        System.out.println(this.queue.toArray().length);
+        // debug
+        Iterator<Message> i = this.queue.iterator();
+        while (i.hasNext()) {
+            System.out.println(i.next().getInstruction());
+        }*/
+        // fin debug
         while (!this.queue.isEmpty()){
             // Remove the element from the queue
             Message message = (Message)this.queue.poll();

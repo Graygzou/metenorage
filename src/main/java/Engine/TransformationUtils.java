@@ -24,8 +24,8 @@ public class TransformationUtils {
     public static Matrix4f getViewMatrix(Camera camera) {
         Matrix4f viewMatrix = new Matrix4f();
 
-        Vector3f cameraPos = camera.getPosition();
-        Vector3f rotation = camera.getRotation();
+        Vector3f cameraPos = camera.getTransform().getPosition();
+        Vector3f rotation = camera.getTransform().getRotation();
 
         viewMatrix.identity();
 
@@ -39,13 +39,13 @@ public class TransformationUtils {
 
     public static Matrix4f getModelViewMatrix(Entity entity, Matrix4f viewMatrix) {
         Matrix4f modelViewMatrix = new Matrix4f();
-        Vector3f rotation = entity.getRotation();
+        Vector3f rotation = entity.getTransform().getRotation();
 
-        modelViewMatrix.identity().translate(entity.getPosition()).
+        modelViewMatrix.identity().translate(entity.getTransform().getPosition()).
                 rotateX((float) Math.toRadians(-rotation.x)).
                 rotateY((float) Math.toRadians(-rotation.y)).
                 rotateZ((float) Math.toRadians(-rotation.z)).
-                scale(entity.getScale());
+                scale(entity.getTransform().getScale());
 
         Matrix4f currentView = new Matrix4f(viewMatrix);
 

@@ -71,8 +71,8 @@ public class Minedraft {
 
                         block.addComponent(new BoxRigidBodyComponent(block, 0, 0.5f,0.5f,0.5f));
 
-                        block.setPosition(i, BED_ROCK_DEPTH, -2f - j);
-                        block.setScale(0.5f);
+                        block.getTransform().setPosition(i, BED_ROCK_DEPTH, -2f - j);
+                        block.getTransform().setScale(0.5f);
                         gameEngine.addEntity(block);
                     }
                 }
@@ -84,16 +84,16 @@ public class Minedraft {
                 cubeMesh.setEntity(block);
                 block.addComponent(cubeMesh);
                 block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f,0.5f,0.5f));
-                block.setPosition(3, 0, -2f - 2);
-                block.setScale(0.5f);
+                block.getTransform().setPosition(3, 0, -2f - 2);
+                block.getTransform().setScale(0.5f);
                 gameEngine.addEntity(block);
 
                 block = new Entity("My block");
                 cubeMesh.setEntity(block);
                 block.addComponent(cubeMesh);
                 block.addComponent(new BoxRigidBodyComponent(block, 1, 0.5f,0.5f,0.5f));
-                block.setPosition(3.8f, 1f, -2f - 2);
-                block.setScale(0.5f);
+                block.getTransform().setPosition(3.8f, 1f, -2f - 2);
+                block.getTransform().setScale(0.5f);
                 gameEngine.addEntity(block);
 
                 // Set lighting.
