@@ -41,6 +41,9 @@ public class Transform extends BaseComponent implements Component {
             case "setRotation":
                 setRotation((Vector3f)message.getData());
                 break;
+            case "setScale":
+                setScale((float)message.getData());
+                break;
             case "rotate":
                 rotate((Vector3f)message.getData());
                 break;

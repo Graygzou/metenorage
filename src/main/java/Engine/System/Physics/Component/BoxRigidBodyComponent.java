@@ -23,13 +23,16 @@ public class BoxRigidBodyComponent extends RigidBodyComponent {
     public void apply() {
 
     }
-
+    
     @Override
     public void onMessage(Message message) {
         Message<Object[]> returnMessage = null;
         switch (message.getInstruction()) {
             case "initialize":
                 initialize();
+                break;
+            case "setCollisionShape":
+                setCollisionShape((Vector3f)message.getData());
                 break;
             case "translate":
                 this.getRigidBody().translate((Vector3f)message.getData());

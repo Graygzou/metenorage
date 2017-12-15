@@ -270,7 +270,7 @@
     {
       "Type": "Cube", "Entity": "Heart", "Material": "Heart",
       "x": 11.2, "y": 0.7, "z": -8.5, "scale":0.5,
-      "Script": "ScriptRotateHealth", "Rigidbody": "HeartBlockRigidBody", "Tag": ""
+      "Script": "ScriptRotateHealth", "Rigidbody": "HeartBlockRigidBody", "Tag": "life"
     }
     ],
 

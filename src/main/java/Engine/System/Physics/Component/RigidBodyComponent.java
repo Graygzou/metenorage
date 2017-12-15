@@ -3,6 +3,7 @@ import Engine.GameEngine;
 import Engine.Main.Entity;
 import Engine.System.Component.Messaging.Message;
 import Engine.System.Physics.BasePhysicsComponent;
+import com.bulletphysics.collision.shapes.BoxShape;
 import com.bulletphysics.collision.shapes.CollisionShape;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
@@ -103,6 +104,7 @@ public abstract class RigidBodyComponent extends BasePhysicsComponent {
     public CollisionShape getCollisionShape() {
         return collisionShape;
     }
+    public void setCollisionShape(Vector3f val) { collisionShape = new BoxShape(val); }
 
     public MotionState getMotionState() {
         return motionState;

@@ -14,6 +14,7 @@ import Engine.System.Input.InputComponent;
 import Engine.System.Physics.Component.BoxRigidBodyComponent;
 import Engine.System.Sound.Component.Source;
 import Engine.Window;
+import Game.Scripts.ScriptPlayer;
 
 
 import javax.vecmath.Quat4f;
@@ -40,6 +41,15 @@ public class PlayerKeyboard extends BaseComponent implements KeyboardListener, I
         }
     }
 
+    public void findRigidbody() {
+        List<Component> components = this.getEntity().getComponents();
+        for(int i = 0; i < components.size(); i++) {
+            if(components.get(i) instanceof BoxRigidBodyComponent) {
+                this.rigidBody = (BoxRigidBodyComponent) components.get(i);
+            }
+        }
+    }
+
     @Override
     public void apply() {
 
@@ -57,6 +67,12 @@ public class PlayerKeyboard extends BaseComponent implements KeyboardListener, I
             Window window = (Window) message.getData();
             org.joml.Vector3f playerPositionOffset = new org.joml.Vector3f();
             org.joml.Vector3f playerRotationOffset = new org.joml.Vector3f();
+
+            if(ScriptPlayer.rigidbodyChange) {
+                findRigidbody();
+                ScriptPlayer.rigidbodyChange = false;
+            }
+
             //Move the entity
             if (window.isKeyPressed(GLFW_KEY_W)) {
                 playerPositionOffset.z = -1;
@@ -82,7 +98,6 @@ public class PlayerKeyboard extends BaseComponent implements KeyboardListener, I
                         playerPositionOffset.z * CAMERA_STEP));
                 isJumping = true;
                 this.sound.play();
-                System.out.println(this.sound.isPlaying());
             }
             if(window.isKeyRelease(GLFW_KEY_SPACE) && isJumping) {
                 isJumping = false;

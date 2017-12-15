@@ -193,6 +193,7 @@ public class FindYouWay {
                 block.addComponent(new Script(block, scriptRotateHealth));
                 block.getTransform().setPosition(11.2f, 0.7f, -8.5f);
                 block.getTransform().setScale(0.2f);
+                block.setTag("life");
                 gameEngine.addEntity(block);
 
 
