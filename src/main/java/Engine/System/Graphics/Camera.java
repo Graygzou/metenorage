@@ -8,12 +8,13 @@ import org.joml.Vector3f;
  */
 public class Camera extends Entity {
     public Camera() {
-        position = new Vector3f(0, 0, 0);
-        rotation = new Vector3f(0, 0, 0);
+        this.getTransform().setPosition(new Vector3f(0, 0, 0));
+        this.getTransform().setRotation(new Vector3f(0, 0, 0));
     }
 
     public Camera(Vector3f position, Vector3f rotation) {
-        this.position = position;
-        this.rotation = rotation;
+        this.getTransform().setPosition(position);
+        this.getTransform().setRotation(rotation);
     }
+
 }

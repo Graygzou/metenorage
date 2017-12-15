@@ -12,7 +12,8 @@ import Engine.Main.Entity;
 import Engine.Main.Material;
 import Engine.Main.ScriptFile;
 import Engine.Main.Sound;
-import Engine.System.Component.ComponentManager;
+import Engine.Managers.ComponentManager;
+import Engine.Managers.MetadataManager;
 import Engine.System.Component.Messaging.MessageQueue;
 import Engine.System.Graphics.Camera;
 import Engine.System.Graphics.GraphicsSystem;
@@ -22,9 +23,6 @@ import Engine.System.Physics.PhysicsSystem;
 import Engine.System.Scripting.ScriptingSystem;
 import Engine.System.Sound.SoundSystem;
 import org.joml.Vector3f;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.lwjgl.openal.AL10.alDeleteBuffers;
 
@@ -39,12 +37,6 @@ public class GameEngine implements Runnable {
     private float timePerUpdate = 1f / 50;
     private float timePerRendering = 1f / 30;
 
-    // Resources
-    private List<Entity> entities;
-    private List<Material> materials;
-    private List<Sound> sounds;
-    private List<ScriptFile> scripts;
-
     // Systems
     private LogicSystem logicSystem;
     private PhysicsSystem physicsSystem;
@@ -54,6 +46,8 @@ public class GameEngine implements Runnable {
     private ScriptingSystem scriptingSystem;
 
     public static MessageQueue messageQueue;
+    // Resources Manager
+    public static MetadataManager metadataManager;
     public static ComponentManager componentManager;
 
     public GameEngine(String windowTitle, int windowWidth, int windowHeight) {
@@ -62,6 +56,7 @@ public class GameEngine implements Runnable {
         this.window = new Window(windowTitle, windowWidth, windowHeight, true);
         this.timer = new Timer();
         this.messageQueue = new MessageQueue();
+
         this.componentManager = new ComponentManager();
 
         // Systems setup.
@@ -73,10 +68,7 @@ public class GameEngine implements Runnable {
         this.scriptingSystem = new ScriptingSystem();
 
         // Resources setup.
-        this.entities = new ArrayList<>();
-        this.materials = new ArrayList<>();
-        this.sounds = new ArrayList<>();
-        this.scripts = new ArrayList<>();
+        this.metadataManager = MetadataManager.getInstance();
     }
 
     public void start() {
@@ -101,7 +93,7 @@ public class GameEngine implements Runnable {
         window.initialize();
         timer.initialize();
 
-        for (Material material : materials) {
+        for (Material material : this.metadataManager.getMaterials()) {
             material.initialize();
         }
 
@@ -116,7 +108,7 @@ public class GameEngine implements Runnable {
      * Delegates the input handling to the input handling system.
      */
     protected void handleInput() {
-        inputSystem.iterate();
+        inputSystem.iterate(this.metadataManager.getEntities());
     }
 
     /**
@@ -124,8 +116,12 @@ public class GameEngine implements Runnable {
      * @param timeStep The theoretical time step between each update.
      */
     protected void update(float timeStep) {
-        logicSystem.iterate();
-        messageQueue.dispatch();
+        //System.out.println(this.componentManager.getComponents().size());
+        //System.out.println(this.metadataManager.getEntities().size());
+        logicSystem.iterate(this.metadataManager.getEntities());
+        soundSystem.iterate(this.metadataManager.getEntities());
+        scriptingSystem.iterate(this.metadataManager.getEntities());
+        physicsSystem.iterate(this.metadataManager.getEntities(), timeStep);
     }
 
     /**
@@ -133,29 +129,27 @@ public class GameEngine implements Runnable {
      */
     protected void render() {
         window.update();
-        graphicsSystem.iterate();
+        graphicsSystem.iterate(this.metadataManager.getEntities());
     }
 
     /**
      * Delegates the control of the sounds to the sound system.
      */
     protected void playSounds() {
-        soundSystem.iterate();
     }
 
     /**
      * Delegates the control of the sounds to the sound system.
      */
     protected void executeScripts() {
-        scriptingSystem.iterate();
     }
 
     private void cleanUp() {
-        // TODO REMETTRE :
-        // this.graphicsSystem.cleanUp();
+        // TODO ça marche ?
+        //this.graphicsSystem.cleanUp();
         // Clean up song from the engine
-        for (Sound s : this.sounds) {
-            alDeleteBuffers(s.getId());
+        for (Sound s : this.metadataManager.getSounds()) {
+            alDeleteBuffers(s.getUniqueID());
         }
         this.soundSystem.cleanUp();
     }
@@ -181,8 +175,8 @@ public class GameEngine implements Runnable {
                 timeSteps -= timePerUpdate;
             }
 
-            playSounds();
-            executeScripts();
+            //playSounds();
+            //executeScripts();
 
             render();
             synchronizeRenderer(currentLoopStartTime);
@@ -213,12 +207,16 @@ public class GameEngine implements Runnable {
     }
 
     public void addEntity(Entity entity) {
+      
         this.entities.add(entity);
         this.inputSystem.addEntity(entity);
         this.scriptingSystem.addEntity(entity);
         this.logicSystem.addEntity(entity);
         this.graphicsSystem.addEntity(entity);
         this.soundSystem.addEntity(entity);
+
+        this.metadataManager.registerEntity(entity);
+
         this.physicsSystem.addEntity(entity);
     }
 
@@ -233,12 +231,12 @@ public class GameEngine implements Runnable {
     }
 
     public void addMaterial(Material material) {
-        this.materials.add(material);
+        this.metadataManager.registerMaterial(material);
     }
 
-    public void addSound(Sound sound) { this.sounds.add(sound); }
+    public void addSound(Sound sound) { this.metadataManager.registerSound(sound); }
 
-    public void addScript(ScriptFile script) { this.scripts.add(script); }
+    public void addScript(ScriptFile script) { this.metadataManager.registerScript(script); }
 
     public void setCamera(Camera camera) {
         if(this.graphicsSystem != null)
@@ -250,4 +248,5 @@ public class GameEngine implements Runnable {
     public void setAmbientLight(Vector3f ambientLight) {
         graphicsSystem.setAmbientLight(ambientLight);
     }
+
 }

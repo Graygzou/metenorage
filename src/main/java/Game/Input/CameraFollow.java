@@ -43,7 +43,7 @@ public class CameraFollow extends BaseComponent implements MouseListener, Keyboa
             // Update camera based on mouse
             if (mouseInput.isRightButtonPressed()) {
                 Vector2f rotVec = mouseInput.getDisplayVector();
-                getEntity().rotate(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
+                getEntity().getTransform().rotate(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
             }
         }
 
@@ -67,7 +67,7 @@ public class CameraFollow extends BaseComponent implements MouseListener, Keyboa
                 cameraPositionOffset.y = 1;
             }
 
-            getEntity().movePosition(cameraPositionOffset.x * CAMERA_STEP,
+            getEntity().getTransform().movePosition(cameraPositionOffset.x * CAMERA_STEP,
                     cameraPositionOffset.y * CAMERA_STEP,
                     cameraPositionOffset.z * CAMERA_STEP);
         }

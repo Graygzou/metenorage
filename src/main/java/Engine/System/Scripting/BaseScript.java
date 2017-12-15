@@ -4,11 +4,11 @@ import Engine.GameEngine;
 import Engine.Main.Entity;
 import Engine.System.Component.Component;
 import Engine.System.Component.Messaging.Message;
+import Engine.System.Component.Transform;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * @author Grégoire Boiron
@@ -22,10 +22,10 @@ public abstract class BaseScript {
 
     private int scriptID;
 
-    private Map<Integer, Callback> waitingQueue;
+    private ArrayDeque<Callback> waitingQueue;
 
-    public BaseScript() {
-        this.waitingQueue = new HashMap<>();
+        public BaseScript() {
+        this.waitingQueue = new ArrayDeque<>();
     }
 
     private void setEntity(Entity entity) {
@@ -41,7 +41,7 @@ public abstract class BaseScript {
             switch (message.getInstruction()) {
                 case "return":
                     Object[] returnValues = (Object[])message.getData();
-                    Callback callback = this.waitingQueue.remove(message.getSender());
+                    Callback callback = this.waitingQueue.poll();
                     callback.call(returnValues[1]);
                     break;
                 default:
@@ -62,13 +62,87 @@ public abstract class BaseScript {
      */
     protected List<Integer> getComponents(Class<? extends Component> type) {
         List<Integer> results = new ArrayList<>();
-        List<Component> l = this.entity.getComponents();
-        for(Component comp : l) {
-            if(comp.getClass().equals(type)) {
-                results.add(comp.getID());
+        if(type == Transform.class) {
+            results.add(this.entity.getTransform().getID());
+        } else {
+            List<Component> l = this.entity.getComponents();
+            for(Component comp : l) {
+                if(comp.getClass().equals(type)) {
+                    results.add(comp.getID());
+                }
             }
         }
+
         return results;
+    }
+
+    protected List<Integer> getComponentsFromEntity(Integer entityID, Class<? extends Component> type) {
+        List<Integer> results = new ArrayList<>();
+        Entity entity;
+        // If the entity exist
+        if((entity = getEntity(entityID)) != null) {
+            if(type == Transform.class) {
+                results.add(entity.getTransform().getID());
+            } else {
+                List<Component> components = entity.getComponents();
+                for(Component currentComponent : components) {
+                    if(currentComponent.getClass().equals(type)) {
+                        results.add(currentComponent.getID());
+                    }
+                }
+            }
+            return results;
+        } else {
+            return null;
+        }
+    }
+
+    protected Entity getEntity(Integer entityID) {
+        // Find the entity that match the id
+        List<Entity> firstResult = GameEngine.metadataManager.getEntities().stream()
+                                .filter(entity1 -> entity1.getUniqueID() == entityID)
+                                .collect(Collectors.toList());
+        if(!firstResult.isEmpty()) {
+            return firstResult.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    protected List<Integer> getEntities() {
+        List<Integer> test = GameEngine.metadataManager.getEntities().stream()
+                                    .mapToInt(entity -> entity.getUniqueID())
+                                    .boxed()
+                                    .collect(Collectors.toList());
+        return test;
+    }
+
+    protected List<Integer> getEntitiesWithTag(String tag) {
+        return GameEngine.metadataManager.getEntities().stream()
+                                    .filter(entity1 -> entity1.getTag() == tag)
+                                    .mapToInt(entity -> entity.getUniqueID())
+                                    .boxed()
+                                    .collect(Collectors.toList());
+    }
+
+    protected List<Integer> getEntitiesByName(String name) {
+        return GameEngine.metadataManager.getEntities().stream()
+                                    .filter(entity1 -> entity1.getName() == name)
+                                    .mapToInt(entity -> entity.getUniqueID())
+                                    .boxed()
+                                    .collect(Collectors.toList());
+    }
+
+    protected void removeComponentFromEntitiy(Integer entityID, Integer componentID) {
+        if((entity = getEntity(entityID)) != null) {
+            List<Component> components = entity.getComponents();
+            Iterator<Component> iterator = components.iterator();
+            while(iterator.hasNext()) {
+                if(iterator.next().getID() == componentID) {
+                    iterator.remove();
+                }
+            }
+        }
     }
 
     /**
@@ -98,7 +172,7 @@ public abstract class BaseScript {
         // Send the message to the messageQueue
         GameEngine.messageQueue.add(message);
         // Register the callback for an answer
-        this.waitingQueue.put(componentID, callback);
+        this.waitingQueue.add(callback);
     }
 
 }

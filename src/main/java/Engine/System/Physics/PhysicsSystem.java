@@ -63,10 +63,10 @@ public class PhysicsSystem extends BaseSystem {
             MotionState motionState = rigidBodyComponent.getRigidBody().getMotionState();
             Transform worldTransform = new Transform();
             motionState.getWorldTransform(worldTransform);
-            rigidBodyComponent.getEntity().setPosition(worldTransform.origin.x, worldTransform.origin.y, worldTransform.origin.z);
+            rigidBodyComponent.getEntity().getTransform().setPosition(worldTransform.origin.x, worldTransform.origin.y, worldTransform.origin.z);
             Quat4f rotation = new Quat4f();
             worldTransform.getRotation(rotation);
-            rigidBodyComponent.getEntity().rotate(QuaternionHelper.getPitch(rotation), QuaternionHelper.getRoll(rotation), QuaternionHelper.getYaw(rotation));
+            rigidBodyComponent.getEntity().getTransform().rotate(QuaternionHelper.getPitch(rotation), QuaternionHelper.getRoll(rotation), QuaternionHelper.getYaw(rotation));
         }
     }
 
