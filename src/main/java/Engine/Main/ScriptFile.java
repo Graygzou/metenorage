@@ -17,35 +17,24 @@ public class ScriptFile extends Metadata {
     // actual script class
     private BaseScript actualScriptClass;
 
-    // Method of the current script
-    private Method[] methods;
-
-    //Path of the script
-    private String canonicalNameScript;
+    // Name of the script
+    private String name;
 
     public ScriptFile() {
-        super();
-        this.canonicalNameScript = "";
-        this.scriptClass = null;
-        this.methods = null;
+        this("");
     }
 
     public ScriptFile(String name) {
         super();
-        loadScript(name);
+        this.name = name;
     }
 
     /**
      * Load a script to be use by the ScriptingSystem
      */
-    public void loadScript(String name) {
+    public void loadScript() {
         try {
-            this.scriptClass = (Class<BaseScript>)Class.forName("Game.Scripts." + name);
-            this.canonicalNameScript = this.scriptClass.getCanonicalName();
-
-            // Get all the methods of the class to be able to retrieve knowns one.
-            methods = this.scriptClass.getSuperclass().getDeclaredMethods();
-
+            this.scriptClass = (Class<BaseScript>)Class.forName("Game.Scripts." + this.name);
         } catch (ClassNotFoundException e) {
             System.out.println("The class located at Game.Scripts." + name + " cannot be found.");
             e.printStackTrace();

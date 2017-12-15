@@ -18,7 +18,6 @@ public class Script extends BaseComponent implements ScriptingComponent {
     public Script(Entity entity, ScriptFile script) {
         super(entity);
         this.script = script;
-        this.script.loadClass(entity, this.getID());
     }
 
     @Override
@@ -29,6 +28,8 @@ public class Script extends BaseComponent implements ScriptingComponent {
 
     @Override
     public void initialize() {
+        this.script.loadClass(this.getEntity(), this.getID());
+
         this.awake();
 
         if(isActive()) {

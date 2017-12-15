@@ -105,8 +105,13 @@ public class GameEngine implements Runnable {
         window.initialize();
         timer.initialize();
 
+        // Initialize materials
         for (Material material : this.metadataManager.getMaterials()) {
             material.initialize();
+        }
+        // Initialize scripts
+        for (ScriptFile scriptFile : this.metadataManager.getScriptFile()) {
+            scriptFile.loadScript();
         }
 
         for(GameSystem system : this.systems) {

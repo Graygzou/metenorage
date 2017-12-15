@@ -4,7 +4,9 @@ import Editor.RightWindow.SubPanels.CenterPanel;
 import Editor.RightWindow.SubPanels.TopPanel;
 import Engine.GameEngine;
 import Engine.Main.Entity;
+import Engine.Main.ScriptFile;
 import Engine.System.Component.Component;
+import Engine.System.Scripting.Component.Script;
 import org.joml.Vector3f;
 
 import javax.swing.*;
@@ -33,7 +35,7 @@ public class RightFrame extends JFrame {
         this.getContentPane().setLayout(new BorderLayout());
 
         // Add the list at the top of the frame
-        this.getContentPane().add(new TopPanel(), BorderLayout.NORTH);
+        this.getContentPane().add(new TopPanel(this), BorderLayout.NORTH);
 
         // Add the component Panel
         this.componentsPanel = new CenterPanel(this);
@@ -63,5 +65,27 @@ public class RightFrame extends JFrame {
         this.currentEntitySelected.getTransform().setPosition(position);
         this.currentEntitySelected.getTransform().setRotation(rotation);
         this.currentEntitySelected.getTransform().setScale(scale);
+    }
+
+    public void addComponentToEntity(String name) {
+        Component component;
+        switch (name) {
+            case "KeyboardListener":
+                break;
+            case "RigidBodyComponent":
+                break;
+            case "Script":
+                ScriptFile scriptPlayer = new ScriptFile("ScriptPlayer");
+                gameEngine.addScript(scriptPlayer);
+                // Add the script
+                this.currentEntitySelected.addComponent(new Script(this.currentEntitySelected, scriptPlayer));
+                break;
+            case "Source":
+                break;
+            default:
+                System.out.println("Component can't be identified.");
+                break;
+        }
+
     }
 }
