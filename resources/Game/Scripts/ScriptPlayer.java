@@ -57,7 +57,7 @@ public class ScriptPlayer extends BaseScript {
                         bonusTook = false;
                         callMethodComponent(getComponentsFromEntity(lifeBlock,Transform.class).get(0),"setScale",0.2f);
                         callMethodComponent(getComponentsFromEntity(lifeBlock,BoxRigidBodyComponent.class).get(0),"setCollisionShape",new javax.vecmath.Vector3f(0.2f,0.2f,0.2f));
-                        System.out.println("You fell !");
+                        System.out.println("You fell ! Life : " + nbLife);
                     }
                 } //VICTORY of the player
                 else if(pos.x > 3.7 && pos.x < 5.2 && pos.y > -3 && pos.z > 9.5 && pos.z < 11) {
