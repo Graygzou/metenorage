@@ -9,9 +9,9 @@ import java.nio.file.Paths;
 /**
  * Gregoire Boiron
  */
-public class Tools extends JPanel {
+public class ToolsPanel extends JPanel {
 
-    public Tools(LeftFrame parent) {
+    public ToolsPanel(LeftFrame parent) {
         this.setLayout(new FlowLayout());
 
         this.add(this.createTool("Player","Editor/playerCube.PNG", parent));

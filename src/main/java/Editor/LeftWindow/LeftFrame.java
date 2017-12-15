@@ -6,7 +6,6 @@ import Engine.Helper.Loader.OBJLoader;
 import Engine.Main.Entity;
 import Engine.System.Graphics.Component.Mesh3D;
 import Engine.System.Physics.Component.BoxRigidBodyComponent;
-import Engine.System.Scripting.Component.Script;
 
 import javax.swing.*;
 import javax.swing.event.TreeModelEvent;
@@ -23,7 +22,7 @@ import java.awt.event.KeyListener;
  */
 public class LeftFrame extends JFrame implements TreeModelListener, KeyListener, ActionListener {
 
-    private Hierarchy hierarchy;
+    private HierarchyPanel hierarchy;
 
     private GameEngine gameEngine;
 
@@ -47,10 +46,10 @@ public class LeftFrame extends JFrame implements TreeModelListener, KeyListener,
         JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
         // First add an hierarchie of components.
-        this.hierarchy = new Hierarchy(this, splitPane);
+        this.hierarchy = new HierarchyPanel(this, splitPane);
 
         // Second, add the list of tools.
-        splitPane.setBottomComponent(new Tools(this));
+        splitPane.setBottomComponent(new ToolsPanel(this));
 
         this.getContentPane().add(splitPane, BorderLayout.CENTER);
 

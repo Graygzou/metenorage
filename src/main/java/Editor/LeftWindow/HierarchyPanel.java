@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Gregoire Boiron
  */
-public class Hierarchy {
+public class HierarchyPanel {
 
     private HashMap<MutableTreeNode, Entity> entitiesHashMap;
 
@@ -25,7 +25,7 @@ public class Hierarchy {
     private DefaultTreeModel treeModel;
     private JTree tree;
 
-    public Hierarchy(LeftFrame parent, JSplitPane t) {
+    public HierarchyPanel(LeftFrame parent, JSplitPane t) {
 
         this.categories = new ArrayList<>();
         this.entitiesHashMap = new HashMap<>();

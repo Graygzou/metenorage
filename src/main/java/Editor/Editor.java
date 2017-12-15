@@ -1,6 +1,7 @@
 package Editor;
 
 import Editor.LeftWindow.LeftFrame;
+import Editor.RightWindow.RightFrame;
 import Engine.GameEngine;
 import Engine.Main.Light.DirectionalLight;
 import Engine.Main.Light.PointLight;
@@ -90,10 +91,12 @@ public class Editor {
 
         gameEngine.start();
 
+        // Create the Components panel that will be on the right side
+        RightFrame rightFrame = new RightFrame(gameEngine);
+
         // Create the tools panel that will be on the left side
         new LeftFrame(gameEngine);
 
-        // Create the Components panel that will be on the right side
-        // TODO
+
     }
 }
