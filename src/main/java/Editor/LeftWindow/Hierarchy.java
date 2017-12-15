@@ -1,5 +1,7 @@
 package Editor.LeftWindow;
 
+import Engine.Main.Entity;
+
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -8,12 +10,15 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Gregoire Boiron
  */
-public class Hierarchy implements KeyListener {
+public class Hierarchy {
+
+    private HashMap<MutableTreeNode, Entity> entitiesHashMap;
 
     private List<DefaultMutableTreeNode> categories;
     private DefaultMutableTreeNode rootNode;
@@ -23,17 +28,18 @@ public class Hierarchy implements KeyListener {
     public Hierarchy(LeftFrame parent, JSplitPane t) {
 
         this.categories = new ArrayList<>();
+        this.entitiesHashMap = new HashMap<>();
 
-        rootNode = new DefaultMutableTreeNode("Game Entities");
-        treeModel = new DefaultTreeModel(rootNode);
-        treeModel.addTreeModelListener(parent);
+        this.rootNode = new DefaultMutableTreeNode("Game Entities");
+        this.treeModel = new DefaultTreeModel(rootNode);
+        this.treeModel.addTreeModelListener(parent);
 
         //Create the folders.
         this.createFolders();
 
         //Create a tree that allows one selection at a time.
         this.tree = new JTree(this.treeModel);
-        this.tree.addKeyListener(this);
+        this.tree.addKeyListener(parent);
         tree.setEditable(true);
         tree.getSelectionModel().setSelectionMode
                 (TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -49,17 +55,21 @@ public class Hierarchy implements KeyListener {
         DefaultMutableTreeNode category = new DefaultMutableTreeNode("Player");
         this.rootNode.add(category);
         categories.add(category);
-        // Second folder : ground element
+        // Second folder : grass element
+        category = new DefaultMutableTreeNode("Grass");
+        this.rootNode.add(category);
+        categories.add(category);
+        // Third folder : ground element
         category = new DefaultMutableTreeNode("Gound");
         this.rootNode.add(category);
         categories.add(category);
-        // Third folder : items
+        // Forth folder : items
         category = new DefaultMutableTreeNode("Items");
         this.rootNode.add(category);
         categories.add(category);
     }
 
-    public void createNode(int i, String name) {
+    public void createNode(int i, String name, Entity entity) {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(name + this.categories.get(i).getChildCount());
 
         //There is no selection. Default to the root node.
@@ -69,9 +79,10 @@ public class Hierarchy implements KeyListener {
 
         this.tree.scrollPathToVisible(new TreePath(node.getPath()));
 
+        this.entitiesHashMap.put(node, entity);
     }
 
-    public void removeNode() {
+    public Entity removeNode() {
         TreePath currentSelection = tree.getSelectionPath();
         if (currentSelection != null) {
             DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode)
@@ -79,24 +90,9 @@ public class Hierarchy implements KeyListener {
             MutableTreeNode parent = (MutableTreeNode)(currentNode.getParent());
             if (parent != null && !this.categories.contains(currentNode)) {
                 this.treeModel.removeNodeFromParent(currentNode);
-                return;
+                return this.entitiesHashMap.remove(currentNode);
             }
         }
+        return null;
     }
-
-    /**
-     * Managed key actions on the hierarchie
-     */
-    @Override
-    public void keyTyped(KeyEvent keyEvent) { }
-
-    @Override
-    public void keyPressed(KeyEvent keyEvent) {
-        if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE) {
-            this.removeNode();
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent keyEvent) { }
 }

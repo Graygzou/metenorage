@@ -28,7 +28,7 @@ public class Editor {
         materials = new ArrayList<>();
 
         // Center panel that will contains a preview of the game
-        GameEngine gameEngine = new GameEngine("FindYourWay", 800, 600);
+        GameEngine gameEngine = new GameEngine("FindYourWay", 800, 600, 1);
 
         ScriptFile scriptRotateHealth = new ScriptFile("ScriptRotateHealth");
         gameEngine.addScript(scriptRotateHealth);
@@ -36,11 +36,9 @@ public class Editor {
         ScriptFile scriptCamera = new ScriptFile("ScriptPlayerCamera");
         gameEngine.addScript(scriptCamera);
 
-        ScriptFile scriptPlayer = new ScriptFile("ScriptLostPlayer");
-        gameEngine.addScript(scriptPlayer);
-
         // Create materials.
         materials.add(new Material("/Game/Textures/feathers.png", 1f));
+        materials.add(new Material("/Game/Textures/grassblock.png", 1f));
         materials.add(new Material("/Game/Textures/block.png", 1f));
         materials.add(new Material("/Game/Textures/heart.png", 1f));
         gameEngine.addMaterial(materials.get(0));

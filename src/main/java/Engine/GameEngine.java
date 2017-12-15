@@ -49,6 +49,11 @@ public class GameEngine implements Runnable {
     public static ComponentManager componentManager;
 
     public GameEngine(String windowTitle, int windowWidth, int windowHeight) {
+        this(windowTitle, windowWidth, windowHeight, 0);
+    }
+
+
+    public GameEngine(String windowTitle, int windowWidth, int windowHeight, int mode) {
         this.gameLoopThread = new Thread(this);
 
         this.window = new Window(windowTitle, windowWidth, windowHeight, true);
@@ -67,6 +72,12 @@ public class GameEngine implements Runnable {
         this.systems.add(new SoundSystem());
         this.systems.add(new ScriptingSystem());
 
+        // Check the current mode (if the editor is running)
+        if(mode == 1) {
+            for(int i = 1; i < systems.size(); i++) {
+                this.systems.get(i).setActiveState(false);
+            }
+        }
 
         // Resources setup.
         this.metadataManager = MetadataManager.getInstance();
@@ -109,7 +120,9 @@ public class GameEngine implements Runnable {
      * Delegates the input handling to the input handling system.
      */
     protected void handleInput() {
-        systems.get(1).iterate(this.metadataManager.getEntities());
+        if(systems.get(1).isActive()) {
+            systems.get(1).iterate(this.metadataManager.getEntities());
+        }
     }
 
     /**
@@ -118,10 +131,14 @@ public class GameEngine implements Runnable {
      */
     protected void update(float timeStep) {
         for(int i = 3; i < systems.size() ; i++) {
-            systems.get(i).iterate(this.metadataManager.getEntities());
+            if(systems.get(i).isActive()) {
+                systems.get(i).iterate(this.metadataManager.getEntities());
+            }
         }
         // Special case of the physic system that need timeStep in iterate.
-        ((PhysicsSystem) systems.get(2)).iterate(this.metadataManager.getEntities(), timeStep);
+        if(systems.get(2).isActive()) {
+            ((PhysicsSystem) systems.get(2)).iterate(this.metadataManager.getEntities(), timeStep);
+        }
         messageQueue.dispatch();
     }
 
@@ -130,7 +147,9 @@ public class GameEngine implements Runnable {
      */
     protected void render() {
         window.update();
-        systems.get(0).iterate(this.metadataManager.getEntities());
+        if(systems.get(0).isActive()) {
+            systems.get(0).iterate(this.metadataManager.getEntities());
+        }
     }
 
     /**
@@ -149,7 +168,9 @@ public class GameEngine implements Runnable {
 
     private void cleanUp() {
         for(GameSystem system : this.systems) {
-            system.cleanUp();
+            if(system.isActive()) {
+                system.cleanUp();
+            }
         }
         // Clean up song from the engine
         for (Sound s : this.metadataManager.getSounds()) {
@@ -211,8 +232,12 @@ public class GameEngine implements Runnable {
 
     public void addEntity(Entity entity) {
         this.metadataManager.registerEntity(entity);
-
         ((PhysicsSystem)this.systems.get(2)).addEntity(entity);
+    }
+
+    public void removeEntity(Entity entity) {
+        this.metadataManager.removeEntity(entity);
+        ((PhysicsSystem)this.systems.get(2)).removeEntity(entity);
     }
 
     public void addMaterial(Material material) {

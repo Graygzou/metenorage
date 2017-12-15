@@ -21,6 +21,7 @@ import org.joml.Vector3f;
 /**
  * @author Noemy Artigouha
  * @author Matthieu Le Boucher
+ * @author Gregoire Boiron
  */
 
 public class FindYouWay {
