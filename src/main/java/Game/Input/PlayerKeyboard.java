@@ -60,11 +60,6 @@ public class PlayerKeyboard extends BaseComponent implements KeyboardListener, I
     @Override
     public void onMessage(Message message) {
 
-        if(ScriptPlayer.rigidbodyChange) {
-            findRigidbody();
-            ScriptPlayer.rigidbodyChange = false;
-        }
-
         if (message.getInstruction().equals("keyboardEvent")) {
             Window window = (Window) message.getData();
             org.joml.Vector3f playerPositionOffset = new org.joml.Vector3f();

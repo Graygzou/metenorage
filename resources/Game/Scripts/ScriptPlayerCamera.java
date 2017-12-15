@@ -16,15 +16,15 @@ import java.util.List;
  */
 public class ScriptPlayerCamera extends BaseScript {
 
-    private List<Integer> entititesPlayer;
-    private List<Integer> componentsCamera;
-    private List<Integer> componentsPlayer;
+    private Integer entitityPlayer;
+    private Integer componentCamera;
+    private Integer componentPlayer;
     private float rayon;
 
     public void awake() {
-        this.entititesPlayer = this.getEntitiesWithTag("player");
-        this.componentsCamera = this.getComponents(Transform.class);
-        this.componentsPlayer = this.getComponentsFromEntity(this.entititesPlayer.get(0),Transform.class);
+        this.entitityPlayer = this.getEntitiesWithTag("player").get(0);
+        this.componentCamera = this.getComponents(Transform.class).get(0);
+        this.componentPlayer = this.getComponentsFromEntity(this.entitityPlayer,Transform.class).get(0);
         rayon = 2.0f;
     }
 
@@ -40,7 +40,7 @@ public class ScriptPlayerCamera extends BaseScript {
             public void call(Object result) {
                 Vector3f rot = (Vector3f) result;
                 // Call a specific method on this component with his id.
-                callMethodComponent(componentsCamera.get(0), "setRotation", new Vector3f(rot.x+30, rot.y, rot.z));
+                callMethodComponent(componentCamera, "setRotation", new Vector3f(rot.x+30, rot.y, rot.z));
 
                 //set camera position thanks to player position
                 Callback callbackPosition = new Callback() {
@@ -49,18 +49,18 @@ public class ScriptPlayerCamera extends BaseScript {
                         Vector3f pos = (Vector3f) result;
                         float angle = (float) (rot.y * (Math.PI / 180));
                         // Call a specific method on this component with his id.
-                        callMethodComponent(componentsCamera.get(0), "setPosition",
+                        callMethodComponent(componentCamera, "setPosition",
                                 new Vector3f(pos.x - (float)Math.sin(angle)*rayon,
                                         pos.y + 1.5f,
                                         pos.z + rayon + ( (float)Math.cos(angle)*rayon - rayon) ));
                     }
                 };
                 //get player position
-                callReturnMethodComponent(componentsPlayer.get(0), "getPosition", null, callbackPosition);
+                callReturnMethodComponent(componentPlayer, "getPosition", null, callbackPosition);
             }
         };
         //get player rotation
-        callReturnMethodComponent(componentsPlayer.get(0), "getRotation", null, callbackRotation);
+        callReturnMethodComponent(componentPlayer, "getRotation", null, callbackRotation);
     }
 
 }

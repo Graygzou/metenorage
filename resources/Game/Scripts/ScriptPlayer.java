@@ -20,7 +20,7 @@ public class ScriptPlayer extends BaseScript {
     private Integer lifeBlock;
     static int nbLife;
     static boolean bonusTook;
-    public static boolean rigidbodyChange;
+    static boolean playerWin;
 
 
     public void awake() {
@@ -31,7 +31,7 @@ public class ScriptPlayer extends BaseScript {
         this.lifeBlock = this.getEntitiesWithTag("life").get(0);
         bonusTook = false;
         nbLife = 3;
-        rigidbodyChange = false;
+        playerWin = false;
     }
 
     public void start() {
@@ -48,7 +48,6 @@ public class ScriptPlayer extends BaseScript {
                     callMethodComponent(componentTransform, "setPosition", new Vector3f(1f, -1f, -3.5f));
                     callMethodComponent(componentTransform, "setRotation", new Vector3f(0,0,0));
                     callMethodComponent(componentRigidBody, "reInitialize",null);
-                    rigidbodyChange = true;
                     if(nbLife == 0) {
                         System.out.println("You lost !");
                         removeComponentFromEntitiy(entity,componentEntityKeyboard);
@@ -57,11 +56,14 @@ public class ScriptPlayer extends BaseScript {
                         bonusTook = false;
                         callMethodComponent(getComponentsFromEntity(lifeBlock,Transform.class).get(0),"setScale",0.2f);
                         callMethodComponent(getComponentsFromEntity(lifeBlock,BoxRigidBodyComponent.class).get(0),"setCollisionShape",new javax.vecmath.Vector3f(0.2f,0.2f,0.2f));
-                        System.out.println("You fell ! Life : " + nbLife);
+                        System.out.println("You fell ! Remaining life : " + nbLife);
                     }
                 } //VICTORY of the player
                 else if(pos.x > 3.7 && pos.x < 5.2 && pos.y > -3 && pos.z > 9.5 && pos.z < 11) {
-                    System.out.println("You win !");
+                    if(!playerWin) {
+                        System.out.println("You win !");
+                    }
+                   playerWin = true;
                     removeComponentFromEntitiy(entity,componentEntityKeyboard);
                 } //BONUS LIFE
                 else if(pos.x > 10 && pos.x < 10.1 && pos.y > 0.3 && pos.z > -9 && pos.z < -8) {

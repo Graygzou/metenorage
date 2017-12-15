@@ -15,11 +15,11 @@ import java.util.Vector;
  */
 public class ScriptRotateHealth extends BaseScript {
 
-    private List<Integer> componentIDs;
+    private Integer component;
 
     public void awake() {
         // Get the Component we're interested in
-        this.componentIDs = getComponents(Transform.class);
+        this.component = getComponents(Transform.class).get(0);
     }
 
     public void start() {
@@ -27,7 +27,7 @@ public class ScriptRotateHealth extends BaseScript {
     }
 
     public void update() {
-        callMethodComponent(this.componentIDs.get(0), "rotate", new Vector3f(0,2f,0));
+        callMethodComponent(this.component, "rotate", new Vector3f(0,2f,0));
     }
 
 }
