@@ -15,9 +15,6 @@ import Engine.System.Physics.Component.BoxRigidBodyComponent;
 import Engine.System.Sound.Component.Source;
 import Engine.Window;
 import Game.Scripts.ScriptPlayer;
-
-
-import javax.vecmath.Quat4f;
 import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -63,15 +60,15 @@ public class PlayerKeyboard extends BaseComponent implements KeyboardListener, I
     @Override
     public void onMessage(Message message) {
 
+        if(ScriptPlayer.rigidbodyChange) {
+            findRigidbody();
+            ScriptPlayer.rigidbodyChange = false;
+        }
+
         if (message.getInstruction().equals("keyboardEvent")) {
             Window window = (Window) message.getData();
             org.joml.Vector3f playerPositionOffset = new org.joml.Vector3f();
             org.joml.Vector3f playerRotationOffset = new org.joml.Vector3f();
-
-            if(ScriptPlayer.rigidbodyChange) {
-                findRigidbody();
-                ScriptPlayer.rigidbodyChange = false;
-            }
 
             //Move the entity
             if (window.isKeyPressed(GLFW_KEY_W)) {

@@ -1,10 +1,15 @@
 package Engine.System.Scripting;
 
 import Engine.GameEngine;
+import Engine.Helper.Loader.OBJLoader;
 import Engine.Main.Entity;
 import Engine.System.Component.Component;
 import Engine.System.Component.Messaging.Message;
 import Engine.System.Component.Transform;
+import Engine.System.Graphics.Component.Mesh3D;
+import Engine.System.Physics.Component.BoxRigidBodyComponent;
+import Engine.System.Scripting.Component.Script;
+import Engine.System.Sound.Component.Source;
 
 import java.util.*;
 import java.util.stream.Collector;
@@ -54,6 +59,7 @@ public abstract class BaseScript {
             exception.printStackTrace();
         }
     }
+
 
     /**
      * Let the user get IDs from Components he's looking for

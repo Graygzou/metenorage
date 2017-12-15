@@ -5,7 +5,12 @@ import Engine.Main.Entity;
 import Engine.System.Component.Messaging.Message;
 import com.bulletphysics.collision.shapes.BoxShape;
 import com.bulletphysics.dynamics.RigidBody;
+import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
+import com.bulletphysics.linearmath.DefaultMotionState;
+import com.bulletphysics.linearmath.Transform;
 
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 
 /*
@@ -28,8 +33,17 @@ public class BoxRigidBodyComponent extends RigidBodyComponent {
     public void onMessage(Message message) {
         Message<Object[]> returnMessage = null;
         switch (message.getInstruction()) {
-            case "initialize":
-                initialize();
+            case "reInitialize":
+                this.motionState = new DefaultMotionState(
+                        new Transform(
+                                new Matrix4f(
+                                        new Quat4f(0, 0, 0, 1),
+                                        new Vector3f(
+                                                this.getEntity().getTransform().getPosition().x,
+                                                this.getEntity().getTransform().getPosition().y,
+                                                this.getEntity().getTransform().getPosition().z),
+                                        1f)));
+                this.rigidBody.setMotionState(this.motionState);
                 break;
             case "setCollisionShape":
                 setCollisionShape((Vector3f)message.getData());

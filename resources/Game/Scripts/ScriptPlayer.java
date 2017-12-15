@@ -47,7 +47,7 @@ public class ScriptPlayer extends BaseScript {
                 if(pos.y <= -6f) {
                     callMethodComponent(componentTransform, "setPosition", new Vector3f(1f, -1f, -3.5f));
                     callMethodComponent(componentTransform, "setRotation", new Vector3f(0,0,0));
-                    callMethodComponent(componentRigidBody, "initialize",null);
+                    callMethodComponent(componentRigidBody, "reInitialize",null);
                     rigidbodyChange = true;
                     if(nbLife == 0) {
                         System.out.println("You lost !");
