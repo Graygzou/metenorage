@@ -35,9 +35,7 @@ public class SoundSystem extends BaseSystem {
 
     @Override
     protected void checkPendingEntities() {
-        for(Entity entity : pendingEntities){
-            trackedEntities.add(entity);
-        }
+        trackedEntities.addAll(pendingEntities);
         pendingEntities.clear();
     }
 

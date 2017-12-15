@@ -150,20 +150,20 @@ public class GraphicsSystem extends BaseSystem {
     @Override
     protected void checkPendingEntities() {
         for (Entity entity : pendingEntities) {
-            int currentPointLightIndex = 0, currentSpotLightIndex = 0;
-
-            if(entity instanceof PointLight && currentPointLightIndex < MAX_POINT_LIGHTS) {
-                currentPointLightIndex++;
+            if(entity instanceof PointLight || entity instanceof  DirectionalLight || entity instanceof  SpotLight) {
                 trackedEntities.add(entity);
-            } else if(entity instanceof DirectionalLight) {
-                trackedEntities.add(entity);
-            } else if(entity instanceof SpotLight && currentSpotLightIndex < MAX_SPOT_LIGHTS) {
-                trackedEntities.add(entity);
-                currentSpotLightIndex++;
+            } else {
+                for (Component component : getLocalSystemComponentsFor(entity)) {
+                    if (component instanceof Mesh3D) {
+                        if (((Mesh3D) component).getMaterial() != null) {
+                            trackedEntities.add(entity);
+                            break;
+                        }
+                    }
+                }
             }
-
-            pendingEntities.clear();
         }
+        pendingEntities.clear();
     }
 
     @Override
