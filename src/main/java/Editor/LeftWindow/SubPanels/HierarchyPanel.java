@@ -1,5 +1,6 @@
-package Editor.LeftWindow;
+package Editor.LeftWindow.SubPanels;
 
+import Editor.LeftWindow.LeftFrame;
 import Engine.Main.Entity;
 
 import javax.swing.*;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Gregoire Boiron
+ * @author Gregoire Boiron
  */
 public class HierarchyPanel {
 
@@ -40,10 +41,11 @@ public class HierarchyPanel {
         //Create a tree that allows one selection at a time.
         this.tree = new JTree(this.treeModel);
         this.tree.addKeyListener(parent);
-        tree.setEditable(true);
-        tree.getSelectionModel().setSelectionMode
+        this.tree.addTreeSelectionListener(parent);
+        this.tree.setEditable(true);
+        this.tree.getSelectionModel().setSelectionMode
                 (TreeSelectionModel.SINGLE_TREE_SELECTION);
-        tree.setShowsRootHandles(true);
+        this.tree.setShowsRootHandles(true);
 
         //Create the scroll pane and add the tree to it.
         JScrollPane j = new JScrollPane(tree);
@@ -94,5 +96,9 @@ public class HierarchyPanel {
             }
         }
         return null;
+    }
+
+    public Entity getEntityFromTreeNode(DefaultMutableTreeNode node) {
+        return this.entitiesHashMap.get(node);
     }
 }

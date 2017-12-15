@@ -167,16 +167,16 @@ public class GameEngine implements Runnable {
     }
 
     private void cleanUp() {
+        // TODO clean up les sources pour eviter l'erreur a chaque fois.
+        // Clean up song from the engine
+        for (Sound s : this.metadataManager.getSounds()) {
+            alDeleteBuffers(s.getUniqueID());
+        }
         // Clean all the systems
         for(GameSystem system : this.systems) {
             if(system.isActive()) {
                 system.cleanUp();
             }
-        }
-        // TODO clean up les sources pour eviter l'erreur a chaque fois.
-        // Clean up song from the engine
-        for (Sound s : this.metadataManager.getSounds()) {
-            alDeleteBuffers(s.getUniqueID());
         }
     }
 

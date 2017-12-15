@@ -95,7 +95,7 @@ public class Editor {
         RightFrame rightFrame = new RightFrame(gameEngine);
 
         // Create the tools panel that will be on the left side
-        new LeftFrame(gameEngine);
+        new LeftFrame(gameEngine, rightFrame);
 
 
     }

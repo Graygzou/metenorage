@@ -1,6 +1,10 @@
 package Editor.LeftWindow;
 
 import Editor.Editor;
+import Editor.LeftWindow.SubPanels.HierarchyPanel;
+import Editor.LeftWindow.SubPanels.LaunchGamePanel;
+import Editor.LeftWindow.SubPanels.ToolsPanel;
+import Editor.RightWindow.RightFrame;
 import Engine.GameEngine;
 import Engine.Helper.Loader.OBJLoader;
 import Engine.Main.Entity;
@@ -10,6 +14,8 @@ import Engine.System.Physics.Component.BoxRigidBodyComponent;
 import javax.swing.*;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,17 +24,19 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 /**
- * Gregoire Boiron
+ * @author Gregoire Boiron
  */
-public class LeftFrame extends JFrame implements TreeModelListener, KeyListener, ActionListener {
-
-    private HierarchyPanel hierarchy;
+public class LeftFrame extends JFrame implements TreeSelectionListener, TreeModelListener, KeyListener, ActionListener {
 
     private GameEngine gameEngine;
+    private RightFrame componentsFrame;
+    private HierarchyPanel hierarchy;
 
-    public LeftFrame(GameEngine gameEngine) {
 
+
+    public LeftFrame(GameEngine gameEngine, RightFrame componentsFrame) {
         this.gameEngine = gameEngine;
+        this.componentsFrame = componentsFrame;
 
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -83,7 +91,7 @@ public class LeftFrame extends JFrame implements TreeModelListener, KeyListener,
                     cubeMesh.setEntity(blockPlayer);
                     blockPlayer.addComponent(cubeMesh);
                     //Rigidbody MUST BE attached before EntityKeyboard
-                    blockPlayer.addComponent(new BoxRigidBodyComponent(blockPlayer, 1, 0.2f,0.2f,0.2f));
+                    //blockPlayer.addComponent(new BoxRigidBodyComponent(blockPlayer, 1, 0.2f,0.2f,0.2f));
                     blockPlayer.getTransform().setPosition(1f, -1f, -3.5f);
                     blockPlayer.getTransform().setScale(0.2f);
                     //blockPlayer.addComponent(new Script(blockPlayer, scriptPlayer));
@@ -203,7 +211,6 @@ public class LeftFrame extends JFrame implements TreeModelListener, KeyListener,
 
     @Override
     public void treeStructureChanged(TreeModelEvent treeModelEvent) {
-
     }
 
     /**
@@ -215,10 +222,30 @@ public class LeftFrame extends JFrame implements TreeModelListener, KeyListener,
     @Override
     public void keyPressed(KeyEvent keyEvent) {
         if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE) {
-            gameEngine.removeEntity(this.hierarchy.removeNode());
+            Entity entity = this.hierarchy.removeNode();
+            if(entity != null) {
+                gameEngine.removeEntity(entity);
+            }
         }
     }
 
     @Override
     public void keyReleased(KeyEvent keyEvent) { }
+
+    @Override
+    public void valueChanged(TreeSelectionEvent treeSelectionEvent) {
+        // Get the node selected
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+                (treeSelectionEvent.getPath().getLastPathComponent());
+
+        System.out.println(node.toString());
+
+        // Get the corresponding entity.
+        Entity entity = this.hierarchy.getEntityFromTreeNode(node);
+
+        // Notice
+        if(entity != null) {
+            this.componentsFrame.showComponentsFromEntity(entity);
+        }
+    }
 }

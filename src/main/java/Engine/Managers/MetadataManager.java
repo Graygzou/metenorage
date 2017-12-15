@@ -81,7 +81,7 @@ public class MetadataManager {
     /**
      * clears all element from the manager
      */
-    public void ResetAll(){
+    public void cleanUp() {
         this.entity.clear();
         this.materials.clear();
         this.scripts.clear();

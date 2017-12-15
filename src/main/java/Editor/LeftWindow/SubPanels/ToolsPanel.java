@@ -1,4 +1,6 @@
-package Editor.LeftWindow;
+package Editor.LeftWindow.SubPanels;
+
+import Editor.LeftWindow.LeftFrame;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -7,7 +9,7 @@ import java.io.File;
 import java.nio.file.Paths;
 
 /**
- * Gregoire Boiron
+ * @author Gregoire Boiron
  */
 public class ToolsPanel extends JPanel {
 

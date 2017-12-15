@@ -1,8 +1,11 @@
-package Editor.RightWindow;
+package Editor.RightWindow.SubPanels;
 
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * @author Gregoire Boiron
+ */
 public class TopPanel extends JPanel {
 
     public TopPanel() {

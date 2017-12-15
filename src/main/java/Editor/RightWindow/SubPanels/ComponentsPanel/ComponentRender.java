@@ -1,4 +1,4 @@
-package Editor.RightWindow;
+package Editor.RightWindow.SubPanels.ComponentsPanel;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package Editor.LeftWindow;
+package Editor.LeftWindow.SubPanels;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,10 +15,10 @@ public class LaunchGamePanel extends JPanel {
         this.add(new JButton("Play"));
 
         // Pause Button
-        this.add(new JButton("Pause"));
-
-        // Pause Button
         this.add(new JButton("Stop"));
+
+        // Save Button
+        this.add(new JButton("Save"));
     }
 
 }
