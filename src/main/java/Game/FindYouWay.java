@@ -198,7 +198,7 @@ public class FindYouWay {
 
                 // Set lighting.
                 int gridWidth = 8, gridHeight = 8;
-                Vector3f ambientLight = new Vector3f(0.6f, 0.6f, 0.6f);
+                Vector3f ambientLight = new Vector3f(0.9f, 0.9f, 0.9f);
                 Vector3f lightColor = new Vector3f(1, 0.7f, 0.7f);
                 Vector3f lightPosition = new Vector3f(gridWidth / 2, 2f, -2 - gridHeight / 2);
                 float lightIntensity = 5.0f;
@@ -216,23 +216,6 @@ public class FindYouWay {
                 directionalLight.getDirection().x = (float) Math.sin(angle);
                 directionalLight.getDirection().y = (float) Math.cos(angle);
                 gameEngine.addEntity(directionalLight);
-
-                // Set up a spotlight.
-                lightPosition = new Vector3f(0, 8f, -gridHeight / 4);
-                pointLight = new PointLight(new Vector3f(0.2f, 1, 0), lightPosition, 1f);
-                pointLight.setAttenuation(new PointLight.Attenuation(0.0f, 0.0f, 0.02f));
-                Vector3f coneDirection = new Vector3f(0.5f, -1f, -0.5f);
-                float cutOff = (float) Math.toRadians(240);
-                SpotLight spotLight = new SpotLight(pointLight, coneDirection, cutOff);
-                gameEngine.addEntity(spotLight);
-
-                lightPosition = new Vector3f(0, 7.2f, -gridHeight / 4);
-                pointLight = new PointLight(new Vector3f(1, 0.2f, 0), lightPosition, 1f);
-                pointLight.setAttenuation(new PointLight.Attenuation(0.0f, 0.0f, 0.02f));
-                coneDirection = new Vector3f(0.5f, -1f, -0.5f);
-                cutOff = (float) Math.toRadians(170);
-                spotLight = new SpotLight(pointLight, coneDirection, cutOff);
-                gameEngine.addEntity(spotLight);
 
                 // Set the main camera.
                 Camera mainCamera = new Camera();
