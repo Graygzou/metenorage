@@ -9,18 +9,22 @@ import Engine.Main.Light.SpotLight;
 import Engine.Main.Material;
 import Engine.Main.ScriptFile;
 import Engine.System.Graphics.Camera;
-import Engine.System.Scripting.Component.Script;
-import Game.Input.PlayerKeyboard;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 /**
  * Gregoire Boiron
  */
 public class Editor {
+
+    public static Path outputFile = Paths.get("./resources/Game/gameEditor.json");
 
     public static List<Material> materials;
 
@@ -96,7 +100,24 @@ public class Editor {
 
         // Create the tools panel that will be on the left side
         new LeftFrame(gameEngine, rightFrame);
+    }
 
-
+    public static Collection<String> writeDataFile() {
+        // Construction of the entities
+        List<String> lines = new LinkedList<>();
+        lines.add("{");
+        lines.add("\"Materials\": [");
+        for(int i = 0; i < Editor.materials.size(); i++) {
+            lines.add("{");
+            lines.add("\"Name\": \"" + Editor.materials.get(i).getTextureName() + "\",");
+            lines.add("\"Reflectance\": \"" + String.valueOf(Editor.materials.get(i).getReflectance()) + "\"");
+            if(i < Editor.materials.size()-1) {
+                lines.add("},");
+            } else {
+                lines.add("}");
+            }
+        }
+        lines.add("],");
+        return lines;
     }
 }

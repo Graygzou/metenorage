@@ -66,6 +66,14 @@ public class Source extends BaseComponent implements SoundComponent {
         AL10.alSource3f(sourceId, AL10.AL_POSITION, x, y, z);
     }
 
+    public String getSoundName() {
+        return this.sound.getName();
+    }
+
+    public String getSoundPath() {
+        return this.sound.getPathSound();
+    }
+
     @Override
     public void apply() {
         // Play the current sound

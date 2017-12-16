@@ -119,6 +119,8 @@ public class Material extends Metadata {
         return texture;
     }
 
+    public String getTextureName() { return this.textureName; }
+
     public void setTexture(Texture texture) {
         this.texture = texture;
     }

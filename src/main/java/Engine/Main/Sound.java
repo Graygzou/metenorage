@@ -52,4 +52,7 @@ public class Sound extends Metadata {
     public void setPathSound(String pathSound) { this.pathSound = pathSound; }
     public void setName(String name) { this.name = name; }
 
+    public String getPathSound() { return this.pathSound; }
+    public String getName() { return this.name; }
+
 }

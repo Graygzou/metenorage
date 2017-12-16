@@ -20,6 +20,10 @@ public class Script extends BaseComponent implements ScriptingComponent {
         this.script = script;
     }
 
+    public void setName(String name) { this.script.setName(name); }
+
+    public String getName() { return this.script.getName(); }
+
     @Override
     public void apply() {
         this.update();

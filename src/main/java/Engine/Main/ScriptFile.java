@@ -29,6 +29,9 @@ public class ScriptFile extends Metadata {
         this.name = name;
     }
 
+    public void setName(String name) { this.name = name; }
+    public String getName() { return this.name; }
+
     /**
      * Load a script to be use by the ScriptingSystem
      */
