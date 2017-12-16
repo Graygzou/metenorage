@@ -138,15 +138,15 @@ public class TransformPanel extends ComponentPanel implements ChangeListener {
         switch (spinnerChanged.getName()) {
             case "Transform":
                 DecimalFormat decimalFormat = new DecimalFormat("#");
-                float posX = ((Double)this.spinners.get(0).getValue()).floatValue();
-                float posY = ((Double)this.spinners.get(3).getValue()).floatValue();
-                float posZ = ((Double)this.spinners.get(6).getValue()).floatValue();
-                float rotX = ((Double)this.spinners.get(1).getValue()).floatValue();
-                float rotY = ((Double)this.spinners.get(4).getValue()).floatValue();
-                float rotZ = ((Double)this.spinners.get(7).getValue()).floatValue();
-                float scaX = ((Double)this.spinners.get(2).getValue()).floatValue();
-                float scaY = ((Double)this.spinners.get(5).getValue()).floatValue();
-                float scaZ = ((Double)this.spinners.get(8).getValue()).floatValue();
+                float posX = new Float(this.spinners.get(0).getValue().toString());
+                float posY = new Float(this.spinners.get(3).getValue().toString());
+                float posZ = new Float(this.spinners.get(6).getValue().toString());
+                float rotX = new Float(this.spinners.get(1).getValue().toString());
+                float rotY = new Float(this.spinners.get(4).getValue().toString());
+                float rotZ = new Float(this.spinners.get(7).getValue().toString());
+                float scaX = new Float(this.spinners.get(2).getValue().toString());
+                float scaY = new Float(this.spinners.get(5).getValue().toString());
+                float scaZ = new Float(this.spinners.get(8).getValue().toString());
                 this.parentFrame.updateTransform(new Vector3f(posX, posY, posZ),
                         new Vector3f(rotX, rotY, rotZ),
                         new Vector3f(scaX, scaY, scaZ));
