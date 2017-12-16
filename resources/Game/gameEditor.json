@@ -1,0 +1,118 @@
+{
+"Materials": [
+{
+"Name": "/Game/Textures/feathers.png",
+"Reflectance": "1.0"
+},
+{
+"Name": "/Game/Textures/grassblock.png",
+"Reflectance": "1.0"
+},
+{
+"Name": "/Game/Textures/block.png",
+"Reflectance": "1.0"
+},
+{
+"Name": "/Game/Textures/heart.png",
+"Reflectance": "1.0"
+}
+],
+"Game": [
+{
+"Name": "My block",
+"Tag": "null",
+"Position": {
+"x": 1.0,
+"y": -2.0,
+"z": -3.5
+},
+"Rotation": {
+"x": 0.0,
+"y": 0.0,
+"z": 0.0
+},
+"Scale": {
+"x": 0.5,
+"y": 0.5,
+"z": 0.5
+},
+"Components": [
+{
+"Type": "Mesh3D",
+"Model": "/Game/Models/cube.obj",
+"Material": "/Game/Textures/grassblock.png"
+},
+{
+"Type": "BoxRigidBodyComponent",
+"Mass": 0.0,
+"Scale": {
+"dx": 0.5,
+"dy": 0.5,
+"dz": 0.5
+}
+}
+]
+},
+{
+"Name": "Player",
+"Tag": "player",
+"Position": {
+"x": 1.0,
+"y": -1.0,
+"z": -3.5
+},
+"Rotation": {
+"x": 0.0,
+"y": 0.0,
+"z": 0.0
+},
+"Scale": {
+"x": 0.2,
+"y": 0.2,
+"z": 0.2
+},
+"Components": [
+{
+"Type": "Mesh3D",
+"Model": "/Game/Models/cube.obj",
+"Material": "/Game/Textures/feathers.png"
+}
+]
+},
+{
+"Name": "My block",
+"Tag": "null",
+"Position": {
+"x": 1.0,
+"y": 0.0,
+"z": -3.5
+},
+"Rotation": {
+"x": 0.0,
+"y": 0.0,
+"z": 0.0
+},
+"Scale": {
+"x": 0.5,
+"y": 0.5,
+"z": 0.5
+},
+"Components": [
+{
+"Type": "Mesh3D",
+"Model": "/Game/Models/cube.obj",
+"Material": "/Game/Textures/block.png"
+},
+{
+"Type": "BoxRigidBodyComponent",
+"Mass": 0.0,
+"Scale": {
+"dx": 0.5,
+"dy": 0.5,
+"dz": 0.5
+}
+}
+]
+}
+]
+}

@@ -3,6 +3,8 @@ import Engine.Main.Entity;
 import Engine.System.Component.Messaging.Message;
 import com.bulletphysics.collision.shapes.SphereShape;
 
+import javax.vecmath.Vector3f;
+
 /*
  * @author Matthieu Le Boucher <matt.leboucher@gmail.com>
  */

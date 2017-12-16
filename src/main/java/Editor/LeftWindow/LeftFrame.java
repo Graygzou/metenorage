@@ -22,6 +22,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Gregoire Boiron
@@ -31,8 +36,6 @@ public class LeftFrame extends JFrame implements TreeSelectionListener, TreeMode
     private GameEngine gameEngine;
     private RightFrame componentsFrame;
     private HierarchyPanel hierarchy;
-
-
 
     public LeftFrame(GameEngine gameEngine, RightFrame componentsFrame) {
         this.gameEngine = gameEngine;
@@ -48,7 +51,7 @@ public class LeftFrame extends JFrame implements TreeSelectionListener, TreeMode
         this.getContentPane().setLayout(new BorderLayout());
 
         // Add the playable menu at the top
-        this.getContentPane().add(new LaunchGamePanel(), BorderLayout.NORTH);
+        this.getContentPane().add(new LaunchGamePanel(this), BorderLayout.NORTH);
 
         //Add the scroll panes to a split pane.
         JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -246,6 +249,24 @@ public class LeftFrame extends JFrame implements TreeSelectionListener, TreeMode
         // Notice
         if(entity != null) {
             this.componentsFrame.showComponentsFromEntity(entity);
+        }
+    }
+
+    public static void writeDataFile() {
+        List<String> lines = new LinkedList<>();
+
+        // Write data of the gameEngine
+        lines.addAll(Editor.writeDataFile());
+
+        // Write entities
+        lines.addAll(HierarchyPanel.writeEntitiesFile());
+
+        lines.add("}");
+        try {
+            // Write materials inside the file
+            Files.write(Editor.outputFile, lines, Charset.forName("UTF-8"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

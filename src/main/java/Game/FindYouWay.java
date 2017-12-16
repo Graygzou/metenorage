@@ -29,7 +29,7 @@ public class FindYouWay {
 
     public static void main(String[] args) {
         try {
-            boolean testParser = false;
+            boolean testParser = true;
 
             if(!testParser) {
                 GameEngine gameEngine = new GameEngine("FindYourWay", 800, 600);
@@ -54,7 +54,6 @@ public class FindYouWay {
                 //Sound when the player jump
                 Sound soundJump = new Sound("Test", "./resources/Game/Sounds/rebond.wav");
                 gameEngine.addSound(soundJump);
-
 
                 // Player block
                 Mesh3D cubeMesh = OBJLoader.loadMesh("/Game/Models/cube.obj");
@@ -232,7 +231,28 @@ public class FindYouWay {
 
                 GameEngine gameEngine = new GameEngine("FindYourWay", 800, 600);
 
-                Utils.parser("Game/example.json", gameEngine);
+                Utils.parser("Game/gameEditor.json", gameEngine);
+
+                // Set lighting.
+                int gridWidth = 8, gridHeight = 8;
+                Vector3f ambientLight = new Vector3f(0.9f, 0.9f, 0.9f);
+                Vector3f lightColor = new Vector3f(1, 0.7f, 0.7f);
+                Vector3f lightPosition = new Vector3f(gridWidth / 2, 2f, -2 - gridHeight / 2);
+                float lightIntensity = 5.0f;
+                PointLight pointLight = new PointLight(lightColor, lightPosition, lightIntensity);
+                pointLight.setAttenuation(new PointLight.Attenuation(0.0f, 0.0f, 1.0f));
+
+                //gameEngine.addEntity(pointLight);
+                gameEngine.setAmbientLight(ambientLight);
+
+                lightPosition = new Vector3f(0, 1f, -2);
+                lightColor = new Vector3f(0, 0, 1);
+                double angle = Math.toRadians(-60);
+
+                DirectionalLight directionalLight = new DirectionalLight(lightColor, lightPosition, 2f);
+                directionalLight.getDirection().x = (float) Math.sin(angle);
+                directionalLight.getDirection().y = (float) Math.cos(angle);
+                gameEngine.addEntity(directionalLight);
 
                 gameEngine.start();
             }

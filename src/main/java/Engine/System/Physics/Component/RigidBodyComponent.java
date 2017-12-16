@@ -46,6 +46,7 @@ public abstract class RigidBodyComponent extends BasePhysicsComponent {
     /**
      * The shape of the rigid body.
      */
+
     protected CollisionShape collisionShape;
 
     protected MotionState motionState;
@@ -54,7 +55,6 @@ public abstract class RigidBodyComponent extends BasePhysicsComponent {
 
     public RigidBodyComponent(Entity entity, float mass) {
         super(entity);
-
         this.mass = mass;
     }
 
@@ -97,6 +97,8 @@ public abstract class RigidBodyComponent extends BasePhysicsComponent {
         this.rigidBody.setActivationState(DISABLE_DEACTIVATION);
     }
 
+    public void setMass(float mass) { this.mass = mass; }
+
     public float getMass() {
         return mass;
     }
@@ -104,6 +106,7 @@ public abstract class RigidBodyComponent extends BasePhysicsComponent {
     public CollisionShape getCollisionShape() {
         return collisionShape;
     }
+
     public void setCollisionShape(Vector3f val) { collisionShape = new BoxShape(val); }
 
     public MotionState getMotionState() {

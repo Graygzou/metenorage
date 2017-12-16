@@ -19,10 +19,21 @@ import javax.vecmath.Vector3f;
  */
 
 public class BoxRigidBodyComponent extends RigidBodyComponent {
+
+    protected  Vector3f scale;
+
+    public BoxRigidBodyComponent(Entity entity) {
+        this(entity, 0, 0, 0, 0);
+    }
+
     public BoxRigidBodyComponent(Entity entity, float mass, float dx, float dy, float dz) {
         super(entity, mass);
+        this.scale = new Vector3f(dx, dy, dz);
+        this.collisionShape = new BoxShape(this.scale);
+    }
 
-        this.collisionShape = new BoxShape(new Vector3f(dx, dy, dz));
+    public Vector3f getScale() {
+        return scale;
     }
 
     public void apply() {

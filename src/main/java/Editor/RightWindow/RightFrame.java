@@ -14,6 +14,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.util.List;
+import static javax.swing.ScrollPaneConstants.*;
 
 public class RightFrame extends JFrame {
 
@@ -41,6 +42,7 @@ public class RightFrame extends JFrame {
         this.componentsPanel = new CenterPanel(this);
         //Create the scroll pane and add the tree to it.
         JScrollPane scrollPane = new JScrollPane(this.componentsPanel);
+        scrollPane.setHorizontalScrollBarPolicy(HORIZONTAL_SCROLLBAR_NEVER);
         this.getContentPane().add(scrollPane, BorderLayout.CENTER);
 
         this.pack();
@@ -69,23 +71,26 @@ public class RightFrame extends JFrame {
 
     public void addComponentToEntity(String name) {
         Component component;
-        switch (name) {
-            case "KeyboardListener":
-                break;
-            case "RigidBodyComponent":
-                break;
-            case "Script":
-                ScriptFile scriptPlayer = new ScriptFile("ScriptPlayer");
-                gameEngine.addScript(scriptPlayer);
-                // Add the script
-                this.currentEntitySelected.addComponent(new Script(this.currentEntitySelected, scriptPlayer));
-                break;
-            case "Source":
-                break;
-            default:
-                System.out.println("Component can't be identified.");
-                break;
+        if(this.currentEntitySelected != null) {
+            switch (name) {
+                case "KeyboardListener":
+                    break;
+                case "RigidBodyComponent":
+                    break;
+                case "Script":
+                    ScriptFile scriptPlayer = new ScriptFile("");
+                    gameEngine.addScript(scriptPlayer);
+                    // Add the script
+                    this.currentEntitySelected.addComponent(new Script(this.currentEntitySelected, scriptPlayer));
+                    break;
+                case "Source":
+                    break;
+                default:
+                    System.out.println("Component can't be identified.");
+                    break;
+            }
+            // Repaint component of this script
+            this.showComponentsFromEntity(this.currentEntitySelected);
         }
-
     }
 }

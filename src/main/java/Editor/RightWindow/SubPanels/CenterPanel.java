@@ -1,12 +1,14 @@
 package Editor.RightWindow.SubPanels;
 
 import Editor.RightWindow.RightFrame;
+import Editor.RightWindow.SubPanels.ComponentsPanel.ScriptPanel;
 import Editor.RightWindow.SubPanels.ComponentsPanel.TransformPanel;
 import Engine.Main.Entity;
 import Engine.System.Component.Component;
 import Engine.System.Component.Transform;
 import Engine.System.Graphics.Component.Mesh3D;
 import Engine.System.Physics.Component.BoxRigidBodyComponent;
+import Engine.System.Scripting.Component.Script;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
@@ -61,8 +63,8 @@ public class CenterPanel extends JPanel implements ItemListener {
         // Add the transform component
         Transform transform;
         if((transform = entity.getTransform()) != null) {
-            TransformPanel transformPanel = new TransformPanel(this.parent, transform.getPosition(),
-                    transform.getRotation(), transform.getScale());
+            TransformPanel transformPanel = new TransformPanel(this.parent, entity.getTransform(),
+                    transform.getPosition(), transform.getRotation(), transform.getScale());
             this.add(transformPanel, constraints);
             constraints.insets.top = 5;
         }
@@ -78,6 +80,9 @@ public class CenterPanel extends JPanel implements ItemListener {
                 //TransformPanel transformPanel = new TransformPanel();
                 //this.add(transformPanel, constraints);
 
+            } else if(components.get(i).getClass() == Script.class) {
+                ScriptPanel scriptPanel = new ScriptPanel(this.parent, components.get(i));
+                this.add(scriptPanel, constraints);
             }
             constraints.insets.top = 5;
             // To have a nice layout
@@ -88,6 +93,4 @@ public class CenterPanel extends JPanel implements ItemListener {
         this.revalidate();
         this.repaint();
     }
-
-
 }

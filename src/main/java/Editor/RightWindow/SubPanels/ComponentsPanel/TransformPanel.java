@@ -1,6 +1,7 @@
 package Editor.RightWindow.SubPanels.ComponentsPanel;
 
 import Editor.RightWindow.RightFrame;
+import Engine.System.Component.Component;
 import javafx.scene.control.Spinner;
 import org.joml.Vector3f;
 
@@ -19,31 +20,19 @@ import java.util.List;
 /**
  * @author Gregoire Boiron
  */
-public class TransformPanel extends JPanel implements ChangeListener {
-
-    private RightFrame parentFrame;
+public class TransformPanel extends ComponentPanel implements ChangeListener {
 
     private List<JSpinner> spinners;
 
-    public TransformPanel(RightFrame parentFrame) {
-        this(parentFrame, new Vector3f(0,0,0),
-                new Vector3f(0,0,0),
-                new Vector3f(0,0,0));
-    }
-
-    public TransformPanel(RightFrame parentFrame, Vector3f position, Vector3f rotation, Vector3f scale) {
+    public TransformPanel(RightFrame parentFrame, Component component, Vector3f position, Vector3f rotation, Vector3f scale) {
         this.parentFrame = parentFrame;
+        this.component = component;
         this.spinners = new ArrayList<>();
 
         this.setLayout(new BorderLayout());
         this.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
 
         this.add(new JLabel("Transform :"), BorderLayout.NORTH);
-
-        Dimension size = new Dimension(0, 70);
-        this.setMaximumSize(size);
-        this.setPreferredSize(size);
-        this.setMinimumSize(size);
 
         // Add the actual coordinates
         JPanel coordinates = new JPanel();
@@ -75,8 +64,8 @@ public class TransformPanel extends JPanel implements ChangeListener {
     }
 
     private JPanel createCoordinatesPanel(String legend, float position, float rotation, float scale) {
-        double min = -Float.MAX_VALUE;
-        double max = Float.MAX_VALUE;
+        double min = -9999;
+        double max = 9999;
         double stepSize = 0.1;
 
         JPanel panel = new JPanel();
@@ -88,13 +77,14 @@ public class TransformPanel extends JPanel implements ChangeListener {
         pX.add(new JLabel(legend), BorderLayout.WEST);
 
         // Define the float Spinner
-        SpinnerNumberModel model = new SpinnerNumberModel(position, min, max, stepSize);
+        SpinnerNumberModel model = new SpinnerNumberModel(0.0, min, max, stepSize);
         JSpinner posSpinner = new JSpinner(model);
         JSpinner.NumberEditor editor = (JSpinner.NumberEditor)posSpinner.getEditor();
         DecimalFormat format = editor.getFormat();
         format.setMinimumFractionDigits(3);
 
         posSpinner.setName("Transform");
+        posSpinner.setValue(position);
         this.spinners.add(posSpinner);
         posSpinner.addChangeListener(this);
         pX.add(posSpinner);
@@ -106,13 +96,14 @@ public class TransformPanel extends JPanel implements ChangeListener {
         rX.add(new JLabel(legend), BorderLayout.WEST);
 
         // Define the float Spinner
-        model = new SpinnerNumberModel(rotation, min, max, stepSize);
+        model = new SpinnerNumberModel(0.0, min, max, stepSize);
         JSpinner rotSpinner = new JSpinner(model);
         editor = (JSpinner.NumberEditor)rotSpinner.getEditor();
         format = editor.getFormat();
         format.setMinimumFractionDigits(3);
 
         rotSpinner.setName("Transform");
+        rotSpinner.setValue(rotation);
         this.spinners.add(rotSpinner);
         rotSpinner.addChangeListener(this);
         rX.add(rotSpinner);
@@ -124,13 +115,14 @@ public class TransformPanel extends JPanel implements ChangeListener {
         sX.add(new JLabel(legend), BorderLayout.WEST);
 
         // Define the float Spinner
-        model = new SpinnerNumberModel(scale, min, max, stepSize);
+        model = new SpinnerNumberModel(0.0, min, max, stepSize);
         JSpinner scaleSpinner = new JSpinner(model);
         editor = (JSpinner.NumberEditor)scaleSpinner.getEditor();
         format = editor.getFormat();
         format.setMinimumFractionDigits(3);
 
         scaleSpinner.setName("Transform");
+        scaleSpinner.setValue(scale);
         this.spinners.add(scaleSpinner);
         scaleSpinner.addChangeListener(this);
         sX.add(scaleSpinner);

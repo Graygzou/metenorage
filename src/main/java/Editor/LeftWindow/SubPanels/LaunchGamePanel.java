@@ -1,14 +1,23 @@
 package Editor.LeftWindow.SubPanels;
 
+import Editor.Editor;
+import Editor.LeftWindow.LeftFrame;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author Gregoire Boiron
  */
 public class LaunchGamePanel extends JPanel {
 
-    public LaunchGamePanel() {
+    LeftFrame parent;
+
+    public LaunchGamePanel(LeftFrame parent) {
+        this.parent = parent;
+
         this.setLayout(new FlowLayout());
 
         // Play Button
@@ -18,7 +27,13 @@ public class LaunchGamePanel extends JPanel {
         this.add(new JButton("Stop"));
 
         // Save Button
-        this.add(new JButton("Save"));
+        JButton saveButton = new JButton("Save");
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                parent.writeDataFile();
+            }
+        });
+        this.add(saveButton);
     }
-
 }
