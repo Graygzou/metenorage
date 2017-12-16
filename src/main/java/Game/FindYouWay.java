@@ -29,7 +29,7 @@ public class FindYouWay {
 
     public static void main(String[] args) {
         try {
-            boolean testParser = true;
+            boolean testParser = false;
 
             if(!testParser) {
                 GameEngine gameEngine = new GameEngine("FindYourWay", 800, 600);
