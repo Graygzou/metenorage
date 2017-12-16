@@ -9,11 +9,13 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
+import java.awt.*;
+
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-public class Window {
+public class Window extends Component {
     /**
      * The title displayed at the top of the window.
      */
@@ -114,6 +116,10 @@ public class Window {
 
     public boolean isKeyPressed(int keyCode) {
         return glfwGetKey(windowHandle, keyCode) == GLFW_PRESS;
+    }
+
+    public boolean isKeyRelease(int keyCode) {
+        return glfwGetKey(windowHandle, keyCode) == GLFW_RELEASE;
     }
 
     public boolean windowShouldClose() {

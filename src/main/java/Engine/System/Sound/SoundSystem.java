@@ -65,6 +65,7 @@ public class SoundSystem extends BaseSystem {
     @Override
     public void cleanUp() {
         //Terminate OpenAL
+        alcMakeContextCurrent(0);
         alcDestroyContext(context);
         alcCloseDevice(device);
     }

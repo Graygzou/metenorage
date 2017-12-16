@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseSystem implements GameSystem {
+
+    private boolean isActive = true;
+
     public void iterate(List<Entity> entities) {
         entities.forEach(entity -> getLocalSystemComponentsFor(entity).forEach(this::applyComponent));
     }
@@ -30,4 +33,13 @@ public abstract class BaseSystem implements GameSystem {
     }
 
     public abstract Class<? extends Component> getRecognizedInterface();
+
+    public void setActiveState(boolean state) {
+        this.isActive = state;
+    }
+
+    public boolean isActive() {
+        return this.isActive;
+    }
+
 }

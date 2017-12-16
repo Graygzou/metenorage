@@ -61,5 +61,8 @@ public class ScriptingSystem extends BaseSystem {
     }
 
     @Override
-    public void cleanUp() { }
+    public void cleanUp() {
+        this.startedEntities = null;
+        this.notStartedEntities = null;
+    }
 }
