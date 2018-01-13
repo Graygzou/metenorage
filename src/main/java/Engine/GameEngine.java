@@ -49,11 +49,11 @@ public class GameEngine implements Runnable {
     public static ComponentManager componentManager;
 
     public GameEngine(String windowTitle, int windowWidth, int windowHeight) {
-        this(windowTitle, windowWidth, windowHeight, 0);
+        this(windowTitle, windowWidth, windowHeight, false);
     }
 
 
-    public GameEngine(String windowTitle, int windowWidth, int windowHeight, int mode) {
+    public GameEngine(String windowTitle, int windowWidth, int windowHeight, boolean inEditorMode) {
         this.gameLoopThread = new Thread(this);
 
         this.window = new Window(windowTitle, windowWidth, windowHeight, true);
@@ -73,7 +73,7 @@ public class GameEngine implements Runnable {
         this.systems.add(new ScriptingSystem());
 
         // Check the current mode (if the editor is running)
-        if(mode == 1) {
+        if(inEditorMode) {
             for(int i = 1; i < systems.size(); i++) {
                 this.systems.get(i).setActiveState(false);
             }
@@ -115,7 +115,7 @@ public class GameEngine implements Runnable {
         }
 
         for(GameSystem system : this.systems) {
-            if(system.isActive()) {
+            if(system.isActive() || (system.getClass() == InputSystem.class)) {
                 system.initialize();
             }
         }
@@ -125,9 +125,7 @@ public class GameEngine implements Runnable {
      * Delegates the input handling to the input handling system.
      */
     protected void handleInput() {
-        if(systems.get(1).isActive()) {
-            systems.get(1).iterate(this.metadataManager.getEntities());
-        }
+        systems.get(1).iterate(this.metadataManager.getEntities());
     }
 
     /**

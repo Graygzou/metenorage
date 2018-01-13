@@ -9,6 +9,8 @@ import Engine.Main.Light.SpotLight;
 import Engine.Main.Material;
 import Engine.Main.ScriptFile;
 import Engine.System.Graphics.Camera;
+import Game.Input.CameraFollow;
+import Game.Input.CameraKeyboard;
 import org.joml.Vector3f;
 
 import java.io.File;
@@ -33,7 +35,7 @@ public class Editor {
         materials = new ArrayList<>();
 
         // Center panel that will contains a preview of the game
-        GameEngine gameEngine = new GameEngine("FindYourWay", 800, 600, 1);
+        GameEngine gameEngine = new GameEngine("FindYourWay", 800, 600, true);
 
         ScriptFile scriptRotateHealth = new ScriptFile("ScriptRotateHealth");
         gameEngine.addScript(scriptRotateHealth);
@@ -91,6 +93,7 @@ public class Editor {
         // Set the main camera.
         Camera mainCamera = new Camera();
         mainCamera.setName("Camera principale");
+        mainCamera.addComponent(new CameraFollow(mainCamera));
         gameEngine.setCamera(mainCamera);
 
         gameEngine.start();

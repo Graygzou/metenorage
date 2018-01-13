@@ -14,7 +14,6 @@ import Engine.System.Input.InputComponent;
 import Engine.System.Physics.Component.BoxRigidBodyComponent;
 import Engine.System.Sound.Component.Source;
 import Engine.Window;
-import Game.Scripts.ScriptPlayer;
 import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;

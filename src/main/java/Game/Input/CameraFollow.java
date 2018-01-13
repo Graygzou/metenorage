@@ -70,6 +70,7 @@ public class CameraFollow extends BaseComponent implements MouseListener, Keyboa
             getEntity().getTransform().movePosition(cameraPositionOffset.x * CAMERA_STEP,
                     cameraPositionOffset.y * CAMERA_STEP,
                     cameraPositionOffset.z * CAMERA_STEP);
+
         }
     }
 }
