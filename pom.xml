@@ -321,6 +321,11 @@
             <artifactId>joml</artifactId>
             <version>${joml.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.lwjgl</groupId>
+            <artifactId>lwjgl-nanovg</artifactId>
+            <version>3.1.5</version>
+        </dependency>
     </dependencies>
 
     <profiles>
