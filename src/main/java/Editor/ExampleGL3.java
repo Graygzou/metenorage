@@ -116,6 +116,16 @@ public final class ExampleGL3 extends Demo {
             throw new RuntimeException();
         }
 
+        // Create second
+        long vg2 = nvgCreate(DEMO_MSAA ? 0 : NVG_ANTIALIAS);
+        if (vg2 == NULL) {
+            throw new RuntimeException("Could not init nanovg.");
+        }
+
+        if (loadDemoData(vg2, data) == -1) {
+            throw new RuntimeException();
+        }
+
         glfwSwapInterval(0);
 
         initGPUTimer(gpuTimer);
@@ -148,7 +158,7 @@ public final class ExampleGL3 extends Demo {
             pxRatio = (float)fbWidth.get(0) / (float)winWidth.get(0);
 
             // Update and render
-            glViewport(0, 0, fbWidth.get(0), fbHeight.get(0));
+            glViewport(100, 20, 500, 500);
             if (premult) {
                 glClearColor(0, 0, 0, 0);
             } else {
@@ -156,16 +166,25 @@ public final class ExampleGL3 extends Demo {
             }
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-            nvgBeginFrame(vg, winWidth.get(0), winHeight.get(0), pxRatio);
+            nvgBeginFrame(vg, 1000, 1000, pxRatio);
 
             renderDemo(vg, (float)mx.get(0), (float)my.get(0), winWidth.get(0), winHeight.get(0), (float)t, blowup, data);
-            renderGraph(vg, 5, 5, fps);
-            renderGraph(vg, 5 + 200 + 5, 5, cpuGraph);
             if (gpuTimer.supported) {
                 renderGraph(vg, 5 + 200 + 5 + 200 + 5, 5, gpuGraph);
             }
 
             nvgEndFrame(vg);
+
+            nvgBeginFrame(vg2, 50, 50, pxRatio);
+
+            renderGraph(vg2, 5, 5, fps);
+            renderGraph(vg2, 5 + 200 + 5, 5, cpuGraph);
+            if (gpuTimer.supported) {
+                renderGraph(vg2, 5 + 200 + 5 + 200 + 5, 5, gpuGraph);
+            }
+
+            nvgEndFrame(vg2);
+
 
             // Measure the CPU time taken excluding swap buffers (as the swap may wait for GPU)
             double cpuTime = glfwGetTime() - t;
