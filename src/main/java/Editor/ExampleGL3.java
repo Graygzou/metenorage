@@ -121,7 +121,6 @@ public final class ExampleGL3 extends Demo {
         if (vg2 == NULL) {
             throw new RuntimeException("Could not init nanovg.");
         }
-
         if (loadDemoData(vg2, data) == -1) {
             throw new RuntimeException();
         }
@@ -148,17 +147,12 @@ public final class ExampleGL3 extends Demo {
             glfwGetWindowSize(window, winWidth, winHeight);
             glfwGetFramebufferSize(window, fbWidth, fbHeight);
 
-            /*
-            System.out.println(winWidth.get(0));
-            System.out.println(winHeight.get(0));
-            System.out.println(fbWidth.get(0));
-            System.out.println(fbHeight.get(0));*/
-
             // Calculate pixel ration for hi-dpi devices.
             pxRatio = (float)fbWidth.get(0) / (float)winWidth.get(0);
 
             // Update and render
-            glViewport(100, 20, 500, 500);
+            //--------- First viewport ----------
+            glViewport(0, 0, fbWidth.get(0)/2, fbHeight.get(0));
             if (premult) {
                 glClearColor(0, 0, 0, 0);
             } else {
@@ -166,25 +160,24 @@ public final class ExampleGL3 extends Demo {
             }
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-            nvgBeginFrame(vg, 1000, 1000, pxRatio);
+            nvgBeginFrame(vg, winWidth.get(0), winHeight.get(0), pxRatio);
 
             renderDemo(vg, (float)mx.get(0), (float)my.get(0), winWidth.get(0), winHeight.get(0), (float)t, blowup, data);
-            if (gpuTimer.supported) {
-                renderGraph(vg, 5 + 200 + 5 + 200 + 5, 5, gpuGraph);
-            }
-
             nvgEndFrame(vg);
 
-            nvgBeginFrame(vg2, 50, 50, pxRatio);
 
+            // -----Second viewport-------
+            glViewport(fbWidth.get(0)/2, 0, fbWidth.get(0)/2, fbHeight.get(0));
+            nvgBeginFrame(vg2, winWidth.get(0), winHeight.get(0), pxRatio);
+            renderDemo(vg2, (float)mx.get(0), (float)my.get(0), winWidth.get(0), winHeight.get(0), (float)t, blowup, data);
+            /*
             renderGraph(vg2, 5, 5, fps);
             renderGraph(vg2, 5 + 200 + 5, 5, cpuGraph);
             if (gpuTimer.supported) {
                 renderGraph(vg2, 5 + 200 + 5 + 200 + 5, 5, gpuGraph);
-            }
-
+            }*/
             nvgEndFrame(vg2);
-
+            //-------end-------------
 
             // Measure the CPU time taken excluding swap buffers (as the swap may wait for GPU)
             double cpuTime = glfwGetTime() - t;
@@ -218,8 +211,6 @@ public final class ExampleGL3 extends Demo {
         glfwFreeCallbacks(window);
         glfwTerminate();
         Objects.requireNonNull(glfwSetErrorCallback(null)).free();
-
-
 
     }
 
