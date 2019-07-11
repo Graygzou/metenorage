@@ -1,12 +1,12 @@
-# Metenorage
+﻿# Metenorage
 Game engine developed for class [*Game Engines Principles* **(8INF871)**](http://cours.uqac.ca/8INF871) at [UQAC](https://uqac.ca) (QC, CA). We implemented this engine in Java with the framework [LWJGL](https://www.lwjgl.org/) (Lightweight Java Game Library).
 
 #### - Screenshots in-game of "FindYourWay" (See the [mini-game section](#minigame)) :
 
-<img  width="430px" height="400px" src="https://github.com/Graygzou/Metenorage/blob/master/Images/image1.png"> <img width="430px" height="400px" src="https://github.com/Graygzou/Metenorage/blob/master/Images/image2.png">
+<img  width="430px" height="400px" src="https://github.com/Graygzou/Metenorage/blob/master/images/image1.png"> <img width="430px" height="400px" src="https://github.com/Graygzou/Metenorage/blob/master/images/image2.png">
 
 #### - Engine Editor :
-<img height="400px" src="https://github.com/Graygzou/Metenorage/blob/master/Images/editor.png">
+<img height="400px" src="https://github.com/Graygzou/Metenorage/blob/master/images/editor.png">
 
 ## Libraries used
 This engine is based on a Entity-Component-System (ECS) architecture. We used the following libraries :
